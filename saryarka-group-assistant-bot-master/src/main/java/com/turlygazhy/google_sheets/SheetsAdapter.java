@@ -59,9 +59,10 @@ public class SheetsAdapter {
             List<Object> dataRow = new ArrayList<>();
             dataRow.add(data.getFIO());
             dataRow.add(data.getCompanyName());
-            dataRow.add(data.getNaviki());
+            dataRow.add(data.getNisha());
+//            dataRow.add(data.getNaviki());
             dataRow.add(data.getContact());
-            dataRow.add(data.getPhoneNumber());
+//            dataRow.add(data.getPhoneNumber());
             writeData.add(dataRow);
         }
 

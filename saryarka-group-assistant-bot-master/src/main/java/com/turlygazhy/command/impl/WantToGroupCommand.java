@@ -24,7 +24,14 @@ public class WantToGroupCommand extends Command {
         Long chatId = updateMessage.getChatId();
 
         if (memberAdded) {
-            sendMessage(70, chatId, bot);
+            if(!memberDao.checkMemberAgreeToRules(memberDao.getMemberId(chatId))) {
+                bot.sendMessage(messageDao.getMessage(70).getSendMessage()
+                .setChatId(chatId).setReplyMarkup(keyboardMarkUpDao.select(36)));
+            }
+            else{
+                sendMessage(70, chatId, bot);
+            }
+//            sendMessage(11, chatId, bot);
             return true;
         }
 
@@ -33,7 +40,7 @@ public class WantToGroupCommand extends Command {
             String text = messageDao.getMessage(42).getSendMessage().getText();
             text = text.replaceAll("fio", member.getFIO()).replaceAll("companyName", member.getCompanyName())
                     .replaceAll("contact", member.getContact()).replaceAll("nisha", member.getNisha())
-                    .replaceAll("naviki", member.getNaviki()).replaceAll("phoneNumber", member.getPhoneNumber());
+                    .replaceAll("phoneNumber", member.getPhoneNumber());
 
             bot.sendMessage(new SendMessage()
                     .setChatId(getAdminChatId())

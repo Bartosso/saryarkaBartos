@@ -84,7 +84,7 @@ public class SearchCommand extends Command {
         String template = messageDao.getMessage(37).getSendMessage().getText();
         Member first = members.get(i);
         String messageInfo = template.replaceAll("fio", first.getFIO()).replaceAll("companyName", first.getCompanyName())
-                .replaceAll("contact", first.getContact()).replaceAll("nisha", first.getNisha()).replaceAll("naviki", first.getNaviki());
+                .replaceAll("contact", first.getContact()).replaceAll("nisha", first.getNisha());
 
         SendMessage sendMessage = new SendMessage().setChatId(chatId).setText(messageInfo);
         InlineKeyboardMarkup keyboard = (InlineKeyboardMarkup) keyboardMarkUpDao.select(13);

@@ -23,10 +23,13 @@ import java.util.List;
  * Created by Eshu on 16.06.2017.
  */
 public class SearchMembersCommand extends Command {
+    private ArrayList<Member> members;
+    private int iterator;
 
     @Override
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
         org.telegram.telegrambots.api.objects.Message updateMessage = update.getMessage();
+
 
         if (updateMessage == null) {
             updateMessage = update.getCallbackQuery().getMessage();
@@ -35,32 +38,60 @@ public class SearchMembersCommand extends Command {
 
         String text = updateMessage.getText();
         long chatId = Long.valueOf(updateMessage.getFrom().getId());
-        ArrayList<Member> memberList = giveMeList(text);
-         String infoForButtonWrite = String.valueOf(memberList.get(0).getId());
+//        String searchString = text.substring(text.indexOf(""));
+
+//        if(text.substring(text.indexOf(""))==null){
+//            bot.sendMessage(new SendMessage().setChatId(chatId).setText(messageDao.getMessage(36)
+//                    .getSendMessage().getText()));
+//            return true;
+//        }
+        members = giveMeList(text);
+        if(members.isEmpty()){
+            bot.sendMessage(new SendMessage().setChatId(chatId).setText(messageDao.getMessage(38)
+                    .getSendMessage().getText()));
+            return true;
+        }
+
+         String infoForButtonWrite = String.valueOf(members.get(0).getId());
          String infoForButtonNext = "";
          String tempInfoForButtonNext = "";
 
-         for(Member member : memberList){
-           tempInfoForButtonNext = tempInfoForButtonNext.concat(String.valueOf(member.getId())+"|");
+
+
+         for(int count = 0; count<7; count++){
+             Member memberIn = members.get(count);
+           tempInfoForButtonNext = tempInfoForButtonNext.concat(String.valueOf(memberIn.getId())+"|");
+           if(count==members.size()-1){
+               break;
+             }
          }
          infoForButtonNext                 = tempInfoForButtonNext.substring(tempInfoForButtonNext.indexOf("|")+1);
-         Member first                      = memberList.get(0);
+         Member first                      = members.get(0);
         ReplyKeyboard inlineKeyboardMarkup = getKeyBoardForSearch(infoForButtonNext,infoForButtonWrite);
          String pattern = messageDao.getMessage(37).getSendMessage().getText()
                  .replaceAll("fio", first.getFIO()).replaceAll("companyName", first.getCompanyName())
-                 .replaceAll("contact", first.getContact()).replaceAll("nisha", first.getNisha()).replaceAll("naviki", first.getNaviki());
+                 .replaceAll("contact", first.getContact()).replaceAll("nisha", first.getNisha());
 
          SendMessage sendMessage = new SendMessage().setChatId(chatId).setText(pattern).setReplyMarkup(inlineKeyboardMarkup);
          SendMessage sendHello   = messageDao.getMessage(63).getSendMessage().setChatId(chatId);
          bot.sendMessage(sendHello);
          bot.sendMessage(sendMessage);
 
-        return true;
-    }
+
+
+
+
+    return true;}
 
     private ArrayList<Member> giveMeList(String whatToFind) throws SQLException {
         ArrayList<Member> memberList;
         memberList = memberDao.search(whatToFind);
     return memberList;}
+
+    private void listIsEnded(Bot bot,long chatId) throws TelegramApiException {
+        SendMessage sendMessage = new SendMessage().setText("К сожалению больше кандидатов нет").setChatId(chatId);
+        bot.sendMessage(sendMessage);
+    }
+
 
 }

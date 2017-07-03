@@ -1,5 +1,7 @@
 package com.turlygazhy.entity;
 
+import javax.print.DocFlavor;
+
 /**
  * Created by Eshu on 19.06.2017.
  */
@@ -10,43 +12,63 @@ public class Event {
     private String  WHEN;
     private String  RULES;
     private String  PHOTO;
-    private String  VIDEO;
     private String  CONTACT_INFORMATION;
     private boolean ADMIN_ACKNOWLEDGE;
+    private boolean BY_ADMIN;
+    private String  DRESS_CODE;
+    private String  PROGRAM;
+    private String  PAGE;
+    private String  DOCUMENT;
 
-    public long    getId() {return id;}
+    public long    getId()                                         {return id;}
 
-    public String  getEVENT_NAME() {return EVENT_NAME;}
+    public String  getEVENT_NAME()                                 {return EVENT_NAME;}
 
-    public String  getPLACE() {return PLACE;}
+    public String  getPLACE()                                      {return PLACE;}
 
-    public String  getWHEN() {return WHEN;}
+    public String  getWHEN()                                       {return WHEN;}
 
-    public String  getRULES() {return RULES;}
+    public String  getRULES()                                      {return RULES;}
 
-    public String  getPHOTO() {return PHOTO;}
+    public String  getPHOTO()                                      {return PHOTO;}
 
-    public String  getVIDEO() {return VIDEO;}
+    public String  getCONTACT_INFORMATION()                        {return CONTACT_INFORMATION;}
 
-    public String  getCONTACT_INFORMATION() {return CONTACT_INFORMATION;}
+    public String getDRESS_CODE()                                  {return DRESS_CODE;}
 
-    public boolean isADMIN_ACKNOWLEDGE() {return ADMIN_ACKNOWLEDGE;}
+    public String getPAGE()                                        {return PAGE;}
 
-    public void setId(long id) {this.id = id;}
+    public String getPROGRAM()                                     {return PROGRAM;}
 
-    public void setEVENT_NAME(String EVENT_NAME) {this.EVENT_NAME = EVENT_NAME;}
+    public boolean isADMIN_ACKNOWLEDGE()                           {return ADMIN_ACKNOWLEDGE;}
 
-    public void setPLACE(String PLACE) {this.PLACE = PLACE;}
+    public boolean isBY_ADMIN()                                    {return BY_ADMIN;}
 
-    public void setWHEN(String WHEN) {this.WHEN = WHEN;}
+    public String getDOCUMENT()                                    {return DOCUMENT;}
 
-    public void setRULES(String RULES) {this.RULES = RULES;}
+    public void setDOCUMENT(String DOCUMENT)                       {this.DOCUMENT = DOCUMENT;}
 
-    public void setPHOTO(String PHOTO) {this.PHOTO = PHOTO;}
+    public void setId(long id)                                     {this.id = id;}
 
-    public void setVIDEO(String VIDEO) {this.VIDEO = VIDEO;}
+    public void setEVENT_NAME(String EVENT_NAME)                   {this.EVENT_NAME = EVENT_NAME;}
+
+    public void setPLACE(String PLACE)                             {this.PLACE = PLACE;}
+
+    public void setWHEN(String WHEN)                               {this.WHEN = WHEN;}
+
+    public void setRULES(String RULES)                             {this.RULES = RULES;}
+
+    public void setPHOTO(String PHOTO)                             {this.PHOTO = PHOTO;}
 
     public void setCONTACT_INFORMATION(String CONTACT_INFORMATION) {this.CONTACT_INFORMATION = CONTACT_INFORMATION;}
 
-    public void setADMIN_ACKNOWLEDGE(boolean ADMIN_ACKNOWLEDGE) {this.ADMIN_ACKNOWLEDGE = ADMIN_ACKNOWLEDGE;}
+    public void setADMIN_ACKNOWLEDGE(boolean ADMIN_ACKNOWLEDGE)    {this.ADMIN_ACKNOWLEDGE = ADMIN_ACKNOWLEDGE;}
+
+    public void setDRESS_CODE(String DRESS_CODE)                   {this.DRESS_CODE = DRESS_CODE;}
+
+    public void setPAGE(String PAGE)                               {this.PAGE = PAGE;}
+
+    public void setPROGRAM(String PROGRAM)                         {this.PROGRAM = PROGRAM;}
+
+    public void setBY_ADMIN(boolean BY_ADMIN)                      {this.BY_ADMIN = BY_ADMIN;}
 }

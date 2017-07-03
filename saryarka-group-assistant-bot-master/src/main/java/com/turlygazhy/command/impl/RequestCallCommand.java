@@ -31,7 +31,7 @@ public class RequestCallCommand extends Command {
         String text = messageDao.getMessage(56).getSendMessage().getText();
         text = text.replaceAll("fio", member.getFIO()).replaceAll("companyName", member.getCompanyName())
                 .replaceAll("contact", member.getContact()).replaceAll("nisha", member.getNisha())
-                .replaceAll("naviki", member.getNaviki()).replaceAll("phoneNumber", member.getPhoneNumber());
+                .replaceAll("phoneNumber", member.getPhoneNumber());
         sendMessageToAdmin(text, bot);
         sendMessage(57, chatId, bot);
         return true;

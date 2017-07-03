@@ -60,15 +60,15 @@ public class SolutionForPartnerCommand extends Command {
         }
         if(step==2){
             SendMessage sendMessage          = new SendMessage().setChatId(chatId).setText("Ваше сообщение отправленно");
-            String text                      = "Запрос принят.\n<b>Ответное сообщение</b>: " + messageToWannaBe + "\n<b>Номер телефона</b>: " + member.getPhoneNumber();
+            String text                      = "Вам ответили.\nОтветное сообщение: " + messageToWannaBe + "\nКонтакты отправителя\nНомер телефона: " + member.getPhoneNumber();
             if(member.getUserName()!=null){
-                text = text.concat("\n<b>Telegram</b>:@" +member.getUserName());
+                text = text.concat("\nTelegram:@" +member.getUserName());
             }
-            SendMessage sendMessageToWannaBe = new SendMessage().setText(text).setChatId(wannaBePartner).setParseMode(ParseMode.HTML);
-            String partnerMemberId           = String.valueOf(member.getId());
-            String wannaBeMemberId           = String.valueOf(Integer.parseInt(memberDao.getMemberId(Long.parseLong(wannaBePartner))));
-            memberDao.addNewPartner(partnerMemberId,wannaBeMemberId);
-            memberDao.addNewPartner(wannaBeMemberId,partnerMemberId);
+            SendMessage sendMessageToWannaBe = new SendMessage().setText(text).setChatId(wannaBePartner);
+//            String partnerMemberId           = String.valueOf(member.getId());
+//            String wannaBeMemberId           = String.valueOf(Integer.parseInt(memberDao.getMemberId(Long.parseLong(wannaBePartner))));
+//            memberDao.addNewPartner(partnerMemberId,wannaBeMemberId);
+//            memberDao.addNewPartner(wannaBeMemberId,partnerMemberId);
 
             bot.sendMessage(sendMessageToWannaBe);
             bot.sendMessage(sendMessage);

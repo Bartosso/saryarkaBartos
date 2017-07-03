@@ -73,6 +73,14 @@ public class CreateDiscountFromMemberCommand extends Command {
                     step         = 4;
                     break;
                 case 4:
+                    address      = updateMessage.getText();
+                    step         = 5;
+                    break;
+                case 5:
+                    page         = updateMessage.getText();
+                    step = 6;
+                    break;
+                case 6:
                     try {
                         photo    = updateMessage.getPhoto().get(updateMessage.getPhoto().size() - 1).getFileId();
                     } catch (Exception e) {
@@ -80,15 +88,7 @@ public class CreateDiscountFromMemberCommand extends Command {
                             needPhoto = false;
                         }
                     }
-                    step         = 5;
-                    break;
-                case 5:
-                    address      = updateMessage.getText();
-                    step         = 6;
-                    break;
-                case 6:
-                    page         = updateMessage.getText();
-                    step = 7;
+                    step         = 7;
                     break;
                 case 7:
                     discount = updateMessage.getText();
@@ -99,7 +99,7 @@ public class CreateDiscountFromMemberCommand extends Command {
 
         if (step == 1 && discountType == null) {
             ReplyKeyboard keyboard = keyboardMarkUpDao.select(28);
-            SendMessage sendMessage = new SendMessage().setChatId(chatId).setText("Выберите категорию в которой хотите опубликовать discount")
+            SendMessage sendMessage = new SendMessage().setChatId(chatId).setText("В какую категорию добавить ваше предложение?")
                     .setReplyMarkup(keyboard);
 
             bot.sendMessage(sendMessage);
@@ -124,17 +124,7 @@ public class CreateDiscountFromMemberCommand extends Command {
             expectedMessageElement = MessageElement.TEXT;
             return false;
         }
-        if ( step == 4 && photo == null) {
-            Message message = messageDao.getMessage(28);
-            SendMessage sendMessage = message.getSendMessage()
-                    .setChatId(chatId)
-                    .setReplyMarkup(keyboardMarkUpDao.select(message.getKeyboardMarkUpId()));
-
-            bot.sendMessage(sendMessage);
-            expectedMessageElement = MessageElement.PHOTO;
-            return false;
-        }
-        if (step == 5 && address == null) {
+        if (step == 4 && address == null) {
             Message message = messageDao.getMessage(103);
             SendMessage sendMessage = message.getSendMessage()
                     .setChatId(chatId)
@@ -145,13 +135,23 @@ public class CreateDiscountFromMemberCommand extends Command {
             expectedMessageElement = MessageElement.TEXT;
             return false;
         }
-        if (step == 6 & page == null) {
+        if (step == 5 & page == null) {
             Message message = messageDao.getMessage(104);
             SendMessage sendMessage = message.getSendMessage()
                     .setChatId(chatId)
                     .setReplyMarkup(keyboardMarkUpDao.select(message.getKeyboardMarkUpId()))
                     .setParseMode(ParseMode.HTML);
             bot.sendMessage(sendMessage);
+            return false;
+        }
+        if ( step == 6 && photo == null) {
+            Message message = messageDao.getMessage(28);
+            SendMessage sendMessage = message.getSendMessage()
+                    .setChatId(chatId)
+                    .setReplyMarkup(keyboardMarkUpDao.select(message.getKeyboardMarkUpId()));
+
+            bot.sendMessage(sendMessage);
+            expectedMessageElement = MessageElement.PHOTO;
             return false;
         }
         if (step == 7 & discount == null){
@@ -164,23 +164,32 @@ public class CreateDiscountFromMemberCommand extends Command {
         if (step == 8){
             Discount discountReady = new Discount(discountType, name, textAbout, photo, address, page, discount,
                     memberDao.getMemberId(chatId));
-            listDao.createDiscount(discountReady, false);
-            discountReady.setId(listDao.getDiscountId(discountReady,false));
-            ReplyKeyboard keyboard =  getAdminKeys(discountReady);
+//            listDao.createDiscount(discountReady, false);
+//            discountReady.setId(listDao.getDiscountId(discountReady,false));
+//            ReplyKeyboard keyboard =  getAdminKeys(discountReady);
             SendMessage sendMessageToAdmin = new SendMessage().setText(messageDao.getMessage(106).getSendMessage()
                     .getText().replaceAll("discount_type", discountType)
                     .replaceAll("company_name", name)
                     .replaceAll("text_about"  , textAbout)
                     .replaceAll("address"     , address)
                     .replaceAll("page"        , page)
-                    .replaceAll("discount"    , discount)).setChatId(getAdminChatId()).setParseMode(ParseMode.HTML)
-                    .setReplyMarkup(keyboard);
-            SendMessage sendMessageToMember = new SendMessage().setChatId(chatId).setText("Ваше предложение отправлено администратору");
+                    .replaceAll("discount"    , discount)).setChatId(getAdminChatId()).setParseMode(ParseMode.HTML);
+//                    .setReplyMarkup(keyboard);
+            SendMessage sendMessageToMember = messageDao.getMessage(147).getSendMessage().setChatId(chatId);
             if (photo != null) {
                 SendPhoto sendPhoto = new SendPhoto();
                 sendPhoto.setPhoto(photo);
                 bot.sendPhoto(sendPhoto.setChatId(getAdminChatId()));
             }
+            discountType           = null;
+            name                   = null;
+            textAbout              = null;
+            photo                  = null;
+            address                = null;
+            page                   = null;
+            discount               = null;
+            memberId               = null;
+            expectedMessageElement = null;
             bot.sendMessage(sendMessageToAdmin);
             bot.sendMessage(sendMessageToMember);
         return true;

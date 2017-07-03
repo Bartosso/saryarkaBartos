@@ -3,6 +3,7 @@ package com.turlygazhy.service;
 import com.turlygazhy.command.Command;
 import com.turlygazhy.command.CommandFactory;
 //import com.turlygazhy.command.impl.AddToGoogleSheetsCommand;
+import com.turlygazhy.command.impl.AddToGoogleSheetsCommand;
 import com.turlygazhy.command.impl.DeclineRequestToGoogleSheetsCommand;
 import com.turlygazhy.command.impl.HelpFoundCommand;
 import com.turlygazhy.command.impl.WaitHelpInGroupCommand;
@@ -18,9 +19,9 @@ public class CommandService extends Service {
 
     public Command getCommand(String text) throws SQLException, CommandNotFoundException {
         if (text != null) {
-            String[] split = text.split(":");
+            String[] split = text.split("/");
             if (split[0].equals(buttonDao.getButtonText(52))) {
-//                return new AddToGoogleSheetsCommand(split[1]);
+                return new AddToGoogleSheetsCommand(split[1]);
             }
             if (split[0].equals(buttonDao.getButtonText(53))) {
                 return new DeclineRequestToGoogleSheetsCommand(split[1]);

@@ -3,6 +3,7 @@ package com.turlygazhy.command.impl;
 import com.turlygazhy.Bot;
 import com.turlygazhy.command.Command;
 import com.turlygazhy.entity.Member;
+import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
@@ -31,8 +32,9 @@ public class SearchMemberIterationCommand extends Command {
             ReplyKeyboard inlineKeyboardMarkup = getKeyBoardForSearch(dataForNextButton, dataForWriteButton);
             String pattern = messageDao.getMessage(37).getSendMessage().getText()
                     .replaceAll("fio", member.getFIO()).replaceAll("companyName", member.getCompanyName())
-                    .replaceAll("contact", member.getContact()).replaceAll("nisha", member.getNisha()).replaceAll("naviki", member.getNaviki());
-            SendMessage sendMessage = new SendMessage().setChatId(chatId).setText(pattern).setReplyMarkup(inlineKeyboardMarkup);
+                    .replaceAll("contact", member.getContact()).replaceAll("nisha", member.getNisha());
+            SendMessage sendMessage = new SendMessage().setChatId(chatId).setText(pattern).setReplyMarkup(inlineKeyboardMarkup)
+                    .setParseMode(ParseMode.HTML);
             bot.sendMessage(sendMessage);
 
             return true;

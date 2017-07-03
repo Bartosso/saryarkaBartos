@@ -7,7 +7,7 @@ public class Member {
     private int id;
     private Integer userId;
     private long chatId;
-    private String naviki;
+//    private String naviki;
     private String nisha;
     private String userName;
     private String companyName;
@@ -40,14 +40,14 @@ public class Member {
     public void setChatId(long chatId) {
         this.chatId = chatId;
     }
-
-    public String getNaviki() {
-        return naviki;
-    }
-
-    public void setNaviki(String naviki) {
-        this.naviki = naviki;
-    }
+//
+//    public String getNaviki() {
+//        return naviki;
+//    }
+//
+//    public void setNaviki(String naviki) {
+//        this.naviki = naviki;
+//    }
 
     public String getNisha() {
         return nisha;
@@ -114,12 +114,12 @@ public class Member {
     }
 
     public Member(int id,
-            Integer userId, long chatId,String naviki,String nisha,String userName,String companyName,String contact,String FIO,
+            Integer userId, long chatId,String nisha,String userName,String companyName,String contact,String FIO,
                   String firstName,String lastName,String phoneNumber){
         this.id = id;
         this.userId=userId;
         this.chatId=chatId;
-        this.naviki=naviki;
+//        this.naviki=naviki;
         this.nisha = nisha;
         this.userName = userName;
         this.companyName = companyName;

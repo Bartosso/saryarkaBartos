@@ -1,20 +1,12 @@
 package com.turlygazhy.dao.impl;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import com.turlygazhy.entity.Discount;
-import com.turlygazhy.entity.Event;
-import com.turlygazhy.entity.ListData;
-import com.turlygazhy.entity.Message;
+import com.turlygazhy.entity.*;
 import org.h2.jdbc.JdbcSQLException;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,27 +28,33 @@ public class ListDao {
         ps.execute();
     }
 
-    public void insertIntoLists(String photo, String text, String member_id, String date_post) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO PUBLIC." + listName + "( MEMBER_ID, PHOTO, TEXT, date_post) VALUES ( ?,?,?,? )");
-        ps.setString(1, member_id);
-        ps.setString(2, photo);
-        ps.setString(3, text);
-        ps.setString(4, date_post);
+    public int insertIntoLists( String text, String member_id, String date_post, boolean ADMIN_ACKNOWLEDGE) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO PUBLIC." + listName + "( MEMBER_ID, TEXT, date_post, ADMIN_ACKNOWLEDGE) VALUES ( ?,?,?,? )");
+        ps.setString( 1, member_id);
+//        ps.setString(2, photo);
+        ps.setString( 2, text);
+        ps.setString( 3, date_post);
+        ps.setBoolean(4, ADMIN_ACKNOWLEDGE);
         ps.execute();
+        ResultSet rs = ps.getGeneratedKeys();
+        rs.next();
+        return rs.getInt(1);
     }
-    public ArrayList<ListData> getAllFromList() throws  SQLException{
+
+    public ArrayList<ListData> getAllFromList(boolean ADMIN_ACKNOWLEDGE) throws  SQLException{
         ArrayList<ListData> listDataArrayList = new ArrayList<>();
         ListData listData;
-        PreparedStatement ps = connection.prepareStatement("SELECT * FROM PUBLIC." + listName);
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM PUBLIC." + listName +
+                " WHERE ADMIN_ACKNOWLEDGE="+ADMIN_ACKNOWLEDGE);
         ps.execute();
         ResultSet resultSet = ps.getResultSet();
         while (resultSet.next()) {
             listData = new ListData();
             listData.setId(resultSet.getLong(     1));
             listData.setMemberId(resultSet.getInt(2));
-            listData.setPhoto(resultSet.getString(3));
-            listData.setText(resultSet.getString( 4));
-            listData.setDate(resultSet.getString( 5));
+//            listData.setPhoto(resultSet.getString(3));
+            listData.setText(resultSet.getString( 3));
+            listData.setDate(resultSet.getString( 4));
             listDataArrayList.add(listData);
         }
         return listDataArrayList;
@@ -73,9 +71,9 @@ public class ListDao {
             ListData listData = new ListData();
             listData.setId(resultSet.getLong(     1));
             listData.setMemberId(resultSet.getInt(2));
-            listData.setPhoto(resultSet.getString(3));
-            listData.setText(resultSet.getString( 4));
-            listData.setDate(resultSet.getString( 5));
+//            listData.setPhoto(resultSet.getString(3));
+            listData.setText(resultSet.getString( 3));
+            listData.setDate(resultSet.getString( 4));
             listDataArrayList.add(listData);
         }
         return listDataArrayList;
@@ -83,16 +81,21 @@ public class ListDao {
 
     public ListData getListDataById(String listDataId) throws SQLException{
         ListData listData = new ListData();
-        PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + listName + " where id="+ listDataId );
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM public." + listName + " where id="+ listDataId );
         ps.execute();
         ResultSet resultSet = ps.getResultSet();
         resultSet.next();
         listData.setId(resultSet.getLong(     1));
         listData.setMemberId(resultSet.getInt(2));
-        listData.setPhoto(resultSet.getString(3));
-        listData.setText(resultSet.getString( 4));
-        listData.setDate(resultSet.getString( 5));
+//        listData.setPhoto(resultSet.getString(3));
+        listData.setText(resultSet.getString( 3));
+        listData.setDate(resultSet.getString( 4));
     return listData;
+    }
+
+    public void deleteListById(long listDataId) throws SQLException{
+        PreparedStatement ps = connection.prepareStatement("DELETE FROM PUBLIC."+ listName + " WHERE ID="+ listDataId);
+        ps.execute();
     }
 
     public ArrayList<Event> getAllEvents(boolean ADMIN_ACKNOWLEDGE) throws SQLException{
@@ -108,30 +111,50 @@ public class ListDao {
             event.setEVENT_NAME(resultSet.getString(         2));
             event.setPLACE(resultSet.getString(              3));
             event.setWHEN(resultSet.getString(               4));
-            event.setRULES(resultSet.getString(              5));
-            event.setCONTACT_INFORMATION(resultSet.getString(6));
-            event.setPHOTO(resultSet.getString(              7));
-            event.setVIDEO(resultSet.getString(              8));
+            event.setCONTACT_INFORMATION(resultSet.getString(5));
+            event.setPHOTO(resultSet.getString(              6));
+            event.setRULES(resultSet.getString(              11));
+            event.setDRESS_CODE(resultSet.getString(         12));
+            event.setPROGRAM(resultSet.getString(            13));
+            event.setPAGE(resultSet.getString(               14));
+            event.setBY_ADMIN(resultSet.getBoolean(          15));
+            event.setDOCUMENT(resultSet.getString(           16));
             events.add(event);
         }
         return events;
     }
 
-    public void createNewEvent(String eventName, String where, String date, String rules, String photo, String video, String contactInformatin, boolean ADMIN_ACKNOWLEDGE) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO PUBLIC." + listName + "(EVENT_NAME, PLACE, WHEN, RULES,CONTACT_INFORMATION, PHOTO, VIDEO, ADMIN_ACKNOWLEDGE) VALUES ( ?,?,?,?,?,?,?,?)");
-        ps.setString( 1, eventName);
-        ps.setString( 2, where);
-        ps.setString( 3,   date);
-        ps.setString( 4, rules);
-        ps.setString( 5, contactInformatin);
-        ps.setString( 6, photo);
-        ps.setString( 7, video);
-        ps.setBoolean(8, ADMIN_ACKNOWLEDGE);
+    public void createNewEvent(String eventName, String where, String date, String photo,String contactInformation,String rules, String dressCode, String program, String page, String DOCUMENT , boolean ADMIN_ACKNOWLEDGE, boolean BY_ADMIN) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO PUBLIC." + listName + "(EVENT_NAME, PLACE, WHEN, CONTACT_INFORMATION, PHOTO,  ADMIN_ACKNOWLEDGE, RULES, DRESS_CODE, PROGRAM, PAGE, BY_ADMIN, DOCUMENT) VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?)");
+        ps.setString(  1, eventName);
+        ps.setString(  2, where);
+        ps.setString(  3, date);
+        ps.setString(  4, contactInformation);
+        ps.setString(  5, photo);
+        ps.setBoolean( 6, ADMIN_ACKNOWLEDGE);
+        ps.setString(  7, rules);
+        ps.setString(  8, dressCode);
+        ps.setString(  9, program);
+        ps.setString( 10, page);
+        ps.setBoolean(11, BY_ADMIN);
+        ps.setString( 12, DOCUMENT);
         ps.execute();
     }
     public void voteEvent(String eventId, String userId, String chose) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("UPDATE " + listName + " set "+ chose +" = CONCAT("+ chose +", '"+ userId +"', '/') WHERE ID= '"+ eventId +"' ");
+        PreparedStatement ps = connection.prepareStatement("UPDATE public." + listName + " set "+ chose +" = CONCAT("+ chose +", '"+ userId +"', '/') WHERE ID= '"+ eventId +"' ");
             ps.execute();
+    }
+
+    public boolean checkEventStatus(String eventId) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT ADMIN_ACKNOWLEDGE FROM PUBLIC."+listName + " WHERE ID="+eventId);
+        ps.execute();
+        ResultSet resultSet  = ps.getResultSet();
+        resultSet.next();
+        try{
+        return resultSet.getBoolean(1);}
+        catch (Exception e){
+            return false;
+        }
     }
 
     public List<String> getEvents(String eventsTableName) throws SQLException {
@@ -148,15 +171,14 @@ public class ListDao {
         return stringList;
     }
 
-    public long getEventId(String eventName,String where, String date, String rules, boolean adminSaysYes) throws SQLException {
+    public long getEventId(String eventName,String where, String date, boolean adminSaysYes) throws SQLException {
         long eventId = 0;
         PreparedStatement ps = connection.prepareStatement("SELECT id from public."+ listName +" where EVENT_NAME=? and " +
-                "PLACE=? and WHEN=? and RULES=? and ADMIN_ACKNOWLEDGE=?"  );
+                "PLACE=? and WHEN=? and ADMIN_ACKNOWLEDGE=?"  );
         ps.setString( 1,eventName);
         ps.setString( 2,where);
         ps.setString( 3,date);
-        ps.setString( 4,rules);
-        ps.setBoolean(5,adminSaysYes);
+        ps.setBoolean(4,adminSaysYes);
         ps.execute();
         ResultSet resultSet = ps.getResultSet();
         if(resultSet.next()){
@@ -175,27 +197,49 @@ public class ListDao {
             event.setEVENT_NAME(resultSet.getString(         2));
             event.setPLACE(resultSet.getString(              3));
             event.setWHEN(resultSet.getString(               4));
-            event.setRULES(resultSet.getString(              5));
-            event.setCONTACT_INFORMATION(resultSet.getString(6));
-            event.setPHOTO(resultSet.getString(              7));
-            event.setVIDEO(resultSet.getString(              8));
+            event.setCONTACT_INFORMATION(resultSet.getString(5));
+            event.setPHOTO(resultSet.getString(              6));
+            event.setRULES(resultSet.getString(              11));
+            event.setDRESS_CODE(resultSet.getString(         12));
+            event.setPROGRAM(resultSet.getString(            13));
+            event.setPAGE(resultSet.getString(               14));
+            event.setBY_ADMIN(resultSet.getBoolean(          15));
+            event.setDOCUMENT(resultSet.getString(           16));
         } catch (JdbcSQLException e){
             return null;
         }
     return event;
     }
 
-    public void makeEventBe(String eventId) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("UPDATE "+ listName +" SET ADMIN_ACKNOWLEDGE=TRUE WHERE ID="+eventId);
+    public void makeStuffBe(String stuffId) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("UPDATE public."+ listName +" SET ADMIN_ACKNOWLEDGE=TRUE WHERE ID="+stuffId);
         ps.execute();
     }
     public void declineEvent(String eventId)throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("DELETE FROM "+ listName +" WHERE ID="+ eventId);
+        PreparedStatement ps = connection.prepareStatement("DELETE FROM public."+ listName +" WHERE ID="+ eventId);
         ps.execute();
     }
+
+    public void addEndedEvent(Event event) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO PUBLIC."+ listName + " (EVENT_NAME, PLACE, WHEN, CONTACT_INFORMATION, PHOTO, RULES, DRESS_CODE, PROGRAM, PAGE, ADMIN_ACKNOWLEDGE, BY_ADMIN, DOCUMENT) " +
+                "VALUES (?,?,?,?,?,?,?,?,?, true,?,?)");
+        ps.setString(  1, event.getEVENT_NAME());
+        ps.setString(  2, event.getPLACE());
+        ps.setString(  3, event.getWHEN());
+        ps.setString(  4, event.getCONTACT_INFORMATION());
+        ps.setString(  5, event.getPHOTO());
+        ps.setString(  6, event.getRULES());
+        ps.setString(  7, event.getDRESS_CODE());
+        ps.setString(  8, event.getPROGRAM());
+        ps.setString(  9, event.getPAGE());
+        ps.setBoolean(10, event.isBY_ADMIN());
+        ps.setString( 11, event.getDOCUMENT());
+        ps.execute();
+    }
+
     public String getVotes(String eventId,String voteSelection)throws SQLException {
         String votes;
-        PreparedStatement ps = connection.prepareStatement("SELECT " + voteSelection + " FROM "+ listName + " WHERE ID="+ eventId);
+        PreparedStatement ps = connection.prepareStatement("SELECT " + voteSelection + " FROM public."+ listName + " WHERE ID="+ eventId);
         ps.execute();
         ResultSet resultSet  = ps.getResultSet();
         resultSet.next();
@@ -221,11 +265,10 @@ public class ListDao {
         return messages;
     }
 
-    public boolean delete(long id) {
+    public boolean delete(String id) {
         try {
-            read(id);
             PreparedStatement ps = connection.prepareStatement("DELETE FROM PUBLIC." + listName + " WHERE ID=?");
-            ps.setLong(1, id);
+            ps.setString(1, id);
             ps.execute();
             return true;
         } catch (SQLException e) {
@@ -233,28 +276,48 @@ public class ListDao {
         }
     }
 
-    public ArrayList<Discount> getDiscounts(String discountType, boolean ADMIN_ACKNOWLEDGE) throws  SQLException {
-        PreparedStatement ps = connection.prepareStatement("SELECT * FROM PUBLIC."+ listName + " WHERE DISCOUNT_TYPE=? AND ADMIN_ACKNOWLEDGE=?");
+
+
+    public ArrayList<Discount> getDiscounts(String discountType) throws  SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM PUBLIC."+ listName + " WHERE TYPE=?");
         ps.setString( 1, discountType);
-        ps.setBoolean(2, ADMIN_ACKNOWLEDGE);
         ps.execute();
         ArrayList<Discount> arrayList = new ArrayList<>();
         ResultSet resultSet = ps.getResultSet();
         while(resultSet.next()){
-           arrayList.add(new Discount(
-                   resultSet.getInt(1),
-                   resultSet.getString(2),
-                   resultSet.getString(3),
-                   resultSet.getString(4),
-                   resultSet.getString(5),
-                   resultSet.getString(6),
-                   resultSet.getString(7),
-                   resultSet.getString(8),
-                   resultSet.getString(9)
-           ));
+            arrayList.add(new Discount(
+                    resultSet.getInt(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5)
+            ));
         }
         return arrayList;
     }
+
+//    public ArrayList<Discount> getDiscounts(String discountType, boolean ADMIN_ACKNOWLEDGE) throws  SQLException {
+//        PreparedStatement ps = connection.prepareStatement("SELECT * FROM PUBLIC."+ listName + " WHERE DISCOUNT_TYPE=? AND ADMIN_ACKNOWLEDGE=?");
+//        ps.setString( 1, discountType);
+//        ps.setBoolean(2, ADMIN_ACKNOWLEDGE);
+//        ps.execute();
+//        ArrayList<Discount> arrayList = new ArrayList<>();
+//        ResultSet resultSet = ps.getResultSet();
+//        while(resultSet.next()){
+//           arrayList.add(new Discount(
+//                   resultSet.getInt(1),
+//                   resultSet.getString(2),
+//                   resultSet.getString(3),
+//                   resultSet.getString(4),
+//                   resultSet.getString(5),
+//                   resultSet.getString(6),
+//                   resultSet.getString(7),
+//                   resultSet.getString(8),
+//                   resultSet.getString(9)
+//           ));
+//        }
+//        return arrayList;
+//    }
 
     public void createDiscount(Discount discount, boolean ADMIN_ACKNOWLEDGE) throws SQLException {
         PreparedStatement ps = connection.prepareStatement("INSERT INTO PUBLIC." + listName +
@@ -287,11 +350,6 @@ public class ListDao {
         ResultSet resultSet = ps.getResultSet();
         resultSet.next();
         return resultSet.getInt(1);
-    }
-
-    public void makeDiscountBe(String discountId) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("UPDATE PUBLIC." + listName + " SET ADMIN_ACKNOWLEDGE=TRUE WHERE ID="+discountId);
-        ps.execute();
     }
 
     public Discount getDiscountById(String discountId) throws SQLException {
@@ -362,9 +420,208 @@ public class ListDao {
 
     public void updateDiscountType(String discountId, String newValue) throws  SQLException{
         PreparedStatement ps = connection.prepareStatement("UPDATE PUBLIC."+ listName + " SET DISCOUNT_TYPE=? WHERE ID=?");
-        ps.setString(1,newValue);
-        ps.setString(2,discountId);
+        ps.setString(1, newValue);
+        ps.setString(2, discountId);
         ps.execute();
+    }
+
+    public void createDiscountVersion2(String discountType, String discountName, String discountAmount, String discountPage) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO PUBLIC."+ listName + " (TYPE, TEXT, AMOUNT, URL) VALUES (?,?,?,?)");
+        ps.setString(1, discountType);
+        ps.setString(2, discountName);
+        ps.setString(3, discountAmount);
+        ps.setString(4, discountPage);
+        ps.execute();
+    }
+
+    public int addNewVacancy(String companyName, String sfera, String experience,
+                              String place, String workingConditions, String salary, String contact,
+                              String memberId, boolean ADMIN_ACKNOWLEDGE) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO PUBLIC."+ listName + " (COMPANY_NAME, SFERA, EXPERIENCE, PLACE" +
+                ", WORKING_CONDITIONS, SALARY, CONTACT, MEMBER_ID, ADMIN_ACKNOWLEDGE) VALUES (?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+        ps.setString( 1, companyName);
+        ps.setString( 2, sfera);
+        ps.setString( 3, experience);
+        ps.setString( 4, place);
+        ps.setString( 5, workingConditions);
+        ps.setString( 6, salary);
+        ps.setString( 7, contact);
+        ps.setString( 8, memberId);
+        ps.setBoolean(9, ADMIN_ACKNOWLEDGE);
+        ps.execute();
+        ResultSet rs = ps.getGeneratedKeys();
+        rs.next();
+
+       return rs.getInt(1);
+    }
+
+    public boolean isStuffActive(String stuffId) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT ADMIN_ACKNOWLEDGE FROM PUBLIC."+ listName + " WHERE ID="+ stuffId);
+        ps.execute();
+        ResultSet resultSet  = ps.getResultSet();
+        resultSet.next();
+        try{
+        return resultSet.getBoolean(1);}
+        catch (JdbcSQLException e){
+            return true;
+        }
+    }
+
+    public ArrayList<Vacancy> getAllVacancyById(String memberId, boolean ADMIN_ACKNOWLEDGE) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM PUBLIC."+ listName + " WHERE MEMBER_ID="+ memberId +
+                " AND ADMIN_ACKNOWLEDGE="+ ADMIN_ACKNOWLEDGE);
+        ps.execute();
+        ResultSet resultSet = ps.getResultSet();
+        ArrayList<Vacancy> vacancyArrayList = new ArrayList<>();
+        while (resultSet.next()){
+            vacancyArrayList.add(new Vacancy(
+                    resultSet.getLong(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5),
+                    resultSet.getString(6),
+                    resultSet.getString(7),
+                    resultSet.getString(8),
+                    resultSet.getString(9),
+                    resultSet.getString(10)));
+        }
+        return vacancyArrayList;
+    }
+
+    public ArrayList<Vacancy> getAllVacancyBySfera(String sfera, boolean ADMIN_ACKNOWLEDGE) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM PUBLIC."+ listName +" WHERE SFERA='"+sfera+"'"
+                +" AND ADMIN_ACKNOWLEDGE=" + ADMIN_ACKNOWLEDGE);
+        ps.execute();
+        ResultSet resultSet = ps.getResultSet();
+        ArrayList<Vacancy> vacancyArrayList = new ArrayList<>();
+        while (resultSet.next()){
+            vacancyArrayList.add(new Vacancy(
+                    resultSet.getLong(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5),
+                    resultSet.getString(6),
+                    resultSet.getString(7),
+                    resultSet.getString(8),
+                    resultSet.getString(9),
+                    resultSet.getString(10)));
+        }
+        return vacancyArrayList;
+    }
+
+    public ArrayList<Vacancy> getAllVacancy(boolean ADMIN_ACKNOWLEDGE) throws SQLException   {
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM PUBLIC."+ listName + " WHERE ADMIN_ACKNOWLEDGE="+ ADMIN_ACKNOWLEDGE);
+        ps.execute();
+        ResultSet resultSet = ps.getResultSet();
+        ArrayList<Vacancy> vacancyArrayList = new ArrayList<>();
+        while (resultSet.next()){
+            vacancyArrayList.add(new Vacancy(
+                    resultSet.getLong(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5),
+                    resultSet.getString(6),
+                    resultSet.getString(7),
+                    resultSet.getString(8),
+                    resultSet.getString(9),
+                    resultSet.getString(10)));
+        }
+        return vacancyArrayList;
+    }
+
+    public Vacancy getVacancy(String vacancyId) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM PUBLIC."+ listName + " WHERE ID="+ vacancyId);
+        ps.execute();
+        ResultSet resultSet  = ps.getResultSet();
+        resultSet.next();
+        return new Vacancy(
+                resultSet.getLong(1),
+                resultSet.getString(2),
+                resultSet.getString(3),
+                resultSet.getString(4),
+                resultSet.getString(5),
+                resultSet.getString(6),
+                resultSet.getString(7),
+                resultSet.getString(8),
+                resultSet.getString(9),
+                resultSet.getString(10));
+    }
+
+    public void deleteVacancy(String vacancyId) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("DELETE FROM PUBLIC."+ listName + " WHERE ID="+ vacancyId);
+        ps.execute();
+    }
+
+
+
+    public void addNewBook(String bookName, String book) throws SQLException{
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO PUBLIC."+ listName + " (NAME, FILE) values (?,?)");
+        ps.setString(1,bookName);
+        ps.setString(2,book);
+        ps.execute();
+    }
+
+    public ArrayList<Book> getAllBooks() throws SQLException{
+        ArrayList<Book> bookArrayList = new ArrayList<>();
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM PUBLIC."+ listName);
+        ps.execute();
+        ResultSet resultSet  = ps.getResultSet();
+        while (resultSet.next()){
+            bookArrayList.add(new Book(
+                    resultSet.getInt(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3)));
+        }
+        return bookArrayList;
+    }
+
+    public Book getBookById(String bookId) throws SQLException{
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM PUBLIC."+ listName + " WHERE ID=?");
+        ps.setString(1, bookId);
+        ps.execute();
+        ResultSet resultSet  = ps.getResultSet();
+        resultSet.next();
+        return new Book(resultSet.getInt(1),
+                resultSet.getString(2),
+                resultSet.getString(3));
+    }
+
+    public void deleteBook(String bookId) throws SQLException{
+        PreparedStatement ps = connection.prepareStatement("DELETE FROM PUBLIC." + listName + " WHERE ID=?");
+        ps.setString(1, bookId);
+        ps.execute();
+    }
+
+    public void fakeVote(String section) throws SQLException{
+        PreparedStatement ps = connection.prepareStatement("UPDATE PUBLIC."+ listName + " SET " + section +"= "+ section +"+1");
+        ps.execute();
+    }
+    public int[] getFakeVote() throws SQLException{
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM PUBLIC."+ listName);
+        ps.execute();
+        int result[] = new int[2];
+        ResultSet resultSet  = ps.getResultSet();
+        resultSet.next();
+        try{
+        result[0] = resultSet.getInt(1);
+        result[1] = resultSet.getInt(2);}
+        catch (JdbcSQLException e){
+            result[0] = 0;
+            result[1] = 0;
+            return result;
+        }
+        return result;
+    }
+
+    public String daiKostil() throws SQLException{
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM PUBLIC."+ listName);
+        ps.execute();
+        ResultSet rs         = ps.getResultSet();
+        rs.next();
+        return rs.getString(1);
     }
 
 

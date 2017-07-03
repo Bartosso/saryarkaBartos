@@ -4,6 +4,7 @@ import com.turlygazhy.Bot;
 import com.turlygazhy.command.Command;
 import com.turlygazhy.entity.Button;
 import com.turlygazhy.entity.WaitingType;
+import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Contact;
 import org.telegram.telegrambots.api.objects.Update;
@@ -45,42 +46,54 @@ public class CollectInfoCommand extends Command {
             switch (waitingType) {
                 case FIO:
                     fio = text;
-                    sendMessage(47, chatId, bot);
+//                    sendMessage(47, chatId, bot);
+                    bot.sendMessage(new SendMessage(chatId,messageDao.getMessage(47)
+                            .getSendMessage().getText()).setParseMode(ParseMode.HTML));
                     waitingType = WaitingType.COMPANY_NAME;
                     return false;
                 case COMPANY_NAME:
                     companyName = text;
-                    sendMessage(48, chatId, bot);
+                    bot.sendMessage(new SendMessage(chatId,messageDao.getMessage(48)
+                            .getSendMessage().getText()).setParseMode(ParseMode.HTML));
+//                    sendMessage(48, chatId, bot);
                     waitingType = WaitingType.NISHA;
                     return false;
                 case NISHA:
                     nisha = text;
-                    sendMessage(49, chatId, bot);
+                    bot.sendMessage(new SendMessage(chatId,messageDao.getMessage(49)
+                            .getSendMessage().getText()).setParseMode(ParseMode.HTML));
+//                    sendMessage(49, chatId, bot);
                     waitingType = WaitingType.CONTACT;
                     return false;
                 case CONTACT:
                     contact = text;
-                    sendMessage(50, chatId, bot);
-                    waitingType = WaitingType.NAVIKI;
-                    return false;
-                case NAVIKI:
-                    naviki = text;
-                    sendMessage(51, chatId, bot);
+                    bot.sendMessage(new SendMessage(chatId,messageDao.getMessage(51)
+                    .getSendMessage().getText()).setParseMode(ParseMode.HTML)
+                    .setReplyMarkup(keyboardMarkUpDao.select(messageDao.getMessage(51).getKeyboardMarkUpId())));
+//                    sendMessage(51, chatId, bot);
                     waitingType = WaitingType.PHONE_NUMBER;
                     return false;
+//                case NAVIKI:
+//                    naviki = text;
+//                    sendMessage(51, chatId, bot);
+//                    waitingType = WaitingType.PHONE_NUMBER;
+//                    return false;
                 case PHONE_NUMBER:
                     Contact contact = updateMessage.getContact();
                     User user = updateMessage.getFrom();
-                    memberDao.insert(nisha, naviki, chatId, user.getUserName(), user.getId(), companyName, this.contact, fio, contact);
+                    memberDao.insert(nisha,  chatId, user.getUserName(), user.getId(), companyName, this.contact, fio, contact);
 
-//                    String textToAdmin = messageDao.getMessage(42).getSendMessage().getText();
-//                    textToAdmin = textToAdmin.replaceAll("fio", fio).replaceAll("companyName", companyName)
-//                            .replaceAll("contact", this.contact).replaceAll("nisha", nisha).replaceAll("naviki", naviki);
-//
-//                    SendMessage sendMessage = new SendMessage().setText(textToAdmin + "\nphone: " + contact.getPhoneNumber())
-//                            .setChatId(userDao.getAdminChatId())
-//                            .setReplyMarkup(getAddToSheetKeyboard(user.getId(), chatId));
-//                   bot.sendMessage(sendMessage);
+                    String textToAdmin = messageDao.getMessage(42).getSendMessage().getText();
+                    textToAdmin = textToAdmin.replaceAll("fio", fio).replaceAll("companyName", companyName)
+                            .replaceAll("contact", this.contact).replaceAll("nisha", nisha)
+                    .replaceAll("phoneNumber", contact.getPhoneNumber());
+
+                    SendMessage sendMessage = new SendMessage().setText(textToAdmin
+//                            "\nphone: " + contact.getPhoneNumber()
+                    )
+                            .setChatId(userDao.getAdminChatId())
+                            .setReplyMarkup(getAddToSheetKeyboard(user.getId(), chatId));
+                   bot.sendMessage(sendMessage);
 
                     sendMessage(43, chatId, bot);
                     return true;

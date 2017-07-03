@@ -9,6 +9,8 @@ import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.api.methods.send.SendVideo;
+import org.telegram.telegrambots.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
@@ -30,13 +32,13 @@ public class GetEventCommand extends Command {
                 update.getCallbackQuery().getData().indexOf("/"));
         String eventType = update.getCallbackQuery().getData().substring(update.getCallbackQuery().getData().indexOf("/")+1);
         long chatId      = update.getCallbackQuery().getFrom().getId();
-        showEvent(bot,eventId,eventType,chatId);
+        showEvent(update, bot,eventId,eventType,chatId);
         return true;
     }
 
 
 
-    private void showEvent(Bot bot, String eventId, String eventType, long chatId) throws SQLException, TelegramApiException {
+    private void showEvent(Update update, Bot bot, String eventId, String eventType, long chatId) throws SQLException, TelegramApiException {
         String daoListName  = "";
         String eventTypeToVote = "";
         switch (eventType){
@@ -61,7 +63,6 @@ public class GetEventCommand extends Command {
                 .replaceAll("event_name"         , event.getEVENT_NAME())
                 .replaceAll("where"              , event.getPLACE())
                 .replaceAll("when"               , event.getWHEN())
-                .replaceAll("rules"              , event.getRULES())
                 .replaceAll("contact_information", event.getCONTACT_INFORMATION());
         SendPhoto sendPhoto = new SendPhoto().setPhoto(event.getPHOTO());
         if(event.getPHOTO() != null){
@@ -69,14 +70,20 @@ public class GetEventCommand extends Command {
             bot.sendPhoto(sendPhoto.setChatId(chatId));
         }
 
-        SendVideo sendVideo = new SendVideo().setVideo(event.getVIDEO());
-        if(event.getVIDEO() != null){
-            sendVideo.setVideo(event.getVIDEO());
-            bot.sendVideo(sendVideo.setChatId(chatId));
-        }
+//        SendVideo sendVideo = new SendVideo().setVideo(event.getVIDEO());
+//        if(event.getVIDEO() != null){
+//            sendVideo.setVideo(event.getVIDEO());
+//            bot.sendVideo(sendVideo.setChatId(chatId));
+//        }
 
         try {
             ReplyKeyboard replyKeyboard = getKeyBoardForVote(String.valueOf(event.getId()),eventTypeToVote,listDao);
+//            bot.sendMessage(new SendMessage()
+//                    .setChatId(chatId)
+//                    .setText(text).setReplyMarkup(replyKeyboard).setParseMode(ParseMode.HTML));
+           bot.deleteMessage(new DeleteMessage().setChatId(String.valueOf(chatId)).setMessageId(update
+           .getCallbackQuery().getMessage().getMessageId()));
+
             bot.sendMessage(new SendMessage()
                     .setChatId(chatId)
                     .setText(text).setReplyMarkup(replyKeyboard).setParseMode(ParseMode.HTML));
@@ -85,4 +92,5 @@ public class GetEventCommand extends Command {
             throw new RuntimeException(e);
         }}
     }
+
 }

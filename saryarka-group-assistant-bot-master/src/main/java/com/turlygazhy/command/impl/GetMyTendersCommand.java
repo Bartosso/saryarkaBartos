@@ -30,9 +30,17 @@ public class GetMyTendersCommand extends Command {
                     .setText("Ваши запросы").setChatId(chatId);
             bot.sendMessage(sendMessage);
         }
+        if(arrayDataRequest.isEmpty()){
+            SendMessage sendMessage = new SendMessage().setChatId(chatId).setText("К сожалению у вас нет запросов");
+            bot.sendMessage(sendMessage);
+        }
         if(!arrayDataOffer.isEmpty()){
             SendMessage sendMessage = new SendMessage().setReplyMarkup(getTendersViaButtons(arrayDataOffer,"предлагает"))
                     .setText("Ваши предложения").setChatId(chatId);
+            bot.sendMessage(sendMessage);
+        }
+        if(arrayDataOffer.isEmpty()){
+            SendMessage sendMessage = new SendMessage().setChatId(chatId).setText("К сожалению у вас нет предложений");
             bot.sendMessage(sendMessage);
         }
         return true;

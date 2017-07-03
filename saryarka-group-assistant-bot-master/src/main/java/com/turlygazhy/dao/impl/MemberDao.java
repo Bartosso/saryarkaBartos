@@ -19,56 +19,56 @@ import java.util.Set;
 public class MemberDao {
     public static final int ID_COLUMN_INDEX = 1;
     public static final int CHAT_ID_COLUMN_INDEX = 3;
-    public static final int NAVIKI_COLUMN_INDEX = 4;
-    public static final int NISHA_COLUMN_INDEX = 5;
-    public static final int USERNAME_COLUMN_INDEX = 6;
-    public static final int COMPANY_NAME_COLUMN_INDEX = 7;
-    public static final int CONTACT_COLUMN_INDEX = 8;
-    public static final int FIO_COLUMN_INDEX = 9;
+//    public static final int NAVIKI_COLUMN_INDEX = 4;
+    public static final int NISHA_COLUMN_INDEX = 4;
+    public static final int USERNAME_COLUMN_INDEX = 5;
+    public static final int COMPANY_NAME_COLUMN_INDEX = 6;
+    public static final int CONTACT_COLUMN_INDEX = 7;
+    public static final int FIO_COLUMN_INDEX = 8;
     public static final int USER_ID_COLUMN_INDEX = 2;
-    public static final int FIRST_NAME_COLUMN_INDEX = 10;
-    public static final int LAST_NAME_COLUMN_INDEX = 11;
-    public static final int PHONE_NUMBER_COLUMN_INDEX = 12;
+    public static final int FIRST_NAME_COLUMN_INDEX = 9;
+    public static final int LAST_NAME_COLUMN_INDEX = 10;
+    public static final int PHONE_NUMBER_COLUMN_INDEX = 11;
     private final Connection connection;
 
     public MemberDao(Connection connection) {
         this.connection = connection;
     }
 
-    public void insert(String nisha, String naviki, Long chatId, String userName, Integer userId, String companyName, String contact, String fio, Contact phoneNumber) throws SQLException {
+    public void insert(String nisha,Long chatId, String userName, Integer userId, String companyName, String contact, String fio, Contact phoneNumber) throws SQLException {
         boolean userRegistered = isUserRegistered(userId);
         if (userRegistered) {
             PreparedStatement updatePS = connection.prepareStatement(
-                    "UPDATE member SET CHAT_ID=?, NAVIKI=?, NISHA=?, USER_NAME=?, COMPANY_NAME=?, CONTACT=?, FIO=?, FIRST_NAME=?, LAST_NAME=?, PHONE_NUMBER=? WHERE user_ID=?");
+                    "UPDATE member SET CHAT_ID=?, NISHA=?, USER_NAME=?, COMPANY_NAME=?, CONTACT=?, FIO=?, FIRST_NAME=?, LAST_NAME=?, PHONE_NUMBER=? WHERE user_ID=?");
             updatePS.setLong(1, chatId);
-            updatePS.setString(2, naviki);
-            updatePS.setString(3, nisha);
-            updatePS.setString(4, userName);
-            updatePS.setString(5, companyName);
-            updatePS.setString(6, contact);
-            updatePS.setString(7, fio);
-            updatePS.setString(8, phoneNumber.getFirstName());
-            updatePS.setString(9, phoneNumber.getLastName());
-            updatePS.setString(10, phoneNumber.getPhoneNumber());
-            updatePS.setLong(11, userId);
+//            updatePS.setString(2, naviki);
+            updatePS.setString(2, nisha);
+            updatePS.setString(3, userName);
+            updatePS.setString(4, companyName);
+            updatePS.setString(5, contact);
+            updatePS.setString(6, fio);
+            updatePS.setString(7, phoneNumber.getFirstName());
+            updatePS.setString(8, phoneNumber.getLastName());
+            updatePS.setString(9, phoneNumber.getPhoneNumber());
+            updatePS.setLong(10, userId);
 
             updatePS.execute();
             return;
         }
 
         PreparedStatement ps = connection.prepareStatement(
-                "INSERT INTO member(ID, USER_ID, CHAT_ID, NAVIKI, NISHA, USER_NAME, COMPANY_NAME, CONTACT, FIO, FIRST_NAME, LAST_NAME, PHONE_NUMBER) VALUES (DEFAULT, ?,?,?,?, ?, ?, ?, ?, ?, ?, ?)");
+                "INSERT INTO member(ID, USER_ID, CHAT_ID,  NISHA, USER_NAME, COMPANY_NAME, CONTACT, FIO, FIRST_NAME, LAST_NAME, PHONE_NUMBER) VALUES (DEFAULT, ?,?,?,?, ?,?, ?, ?, ?, ?)");
         ps.setLong(1, userId);
         ps.setLong(2, chatId);
-        ps.setString(3, naviki);
-        ps.setString(4, nisha);
-        ps.setString(5, userName);
-        ps.setString(6, companyName);
-        ps.setString(7, contact);
-        ps.setString(8, fio);
-        ps.setString(9, phoneNumber.getFirstName());
-        ps.setString(10, phoneNumber.getLastName());
-        ps.setString(11, phoneNumber.getPhoneNumber());
+//        ps.setString(3, naviki);
+        ps.setString(3, nisha);
+        ps.setString(4, userName);
+        ps.setString(5, companyName);
+        ps.setString(6, contact);
+        ps.setString(7, fio);
+        ps.setString(8, phoneNumber.getFirstName());
+        ps.setString(9, phoneNumber.getLastName());
+        ps.setString(10, phoneNumber.getPhoneNumber());
         ps.execute();
     }
 
@@ -110,7 +110,7 @@ public class MemberDao {
         member.setId(rs.getInt(ID_COLUMN_INDEX));
         member.setUserId(userId);
         member.setChatId(rs.getLong(CHAT_ID_COLUMN_INDEX));
-        member.setNaviki(rs.getString(NAVIKI_COLUMN_INDEX));
+//        member.setNaviki(rs.getString(NAVIKI_COLUMN_INDEX));
         member.setNisha(rs.getString(NISHA_COLUMN_INDEX));
         member.setUserName(rs.getString(USERNAME_COLUMN_INDEX));
         member.setCompanyName(rs.getString(COMPANY_NAME_COLUMN_INDEX));
@@ -129,31 +129,37 @@ public class MemberDao {
         ps.execute();
     }
 
-    public void updateNavikiByUserId(Integer userId, String naviki) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("update member set naviki = ? where user_id=?");
-        ps.setString(1, naviki);
-        ps.setInt(2, userId);
-        ps.execute();
-    }
+//    public void updateNavikiByUserId(Integer userId, String naviki) throws SQLException {
+//        PreparedStatement ps = connection.prepareStatement("update member set naviki = ? where user_id=?");
+//        ps.setString(1, naviki);
+//        ps.setInt(2, userId);
+//        ps.execute();
+//    }
 
-    public void addNewPartner(String userId, String partnerId) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("UPDATE MEMBER SET PARTNERS = CONCAT(PARTNERS, ? ) WHERE ID=?");
-        ps.setString(1, partnerId +"//");
-        ps.setString(2,    userId );
-        ps.execute();
-    }
+//    public void addNewPartner(String userId, String partnerId) throws SQLException {
+//        PreparedStatement ps = connection.prepareStatement("UPDATE MEMBER SET PARTNERS = CONCAT(PARTNERS, ? ) WHERE ID=?");
+//        ps.setString(1, partnerId +"//");
+//        ps.setString(2,    userId );
+//        ps.execute();
+//    }
+//
+//    public String[] getPartnersId(String memberId) throws  SQLException {
+//        String[] result;
+//        PreparedStatement ps = connection.prepareStatement("SELECT PARTNERS FROM MEMBER WHERE ID=?");
+//        ps.setString(1,memberId);
+//        ps.execute();
+//
+//        ResultSet resultSet = ps.getResultSet();
+//        try{
+//        resultSet.next();
+//        return resultSet.getString(1).split("//");}
+//        catch (NullPointerException e){
+//            return null;
+//        }
+//    }
 
-    public String[] getPartnersId(String memberId) throws  SQLException {
-        PreparedStatement ps = connection.prepareStatement("SELECT PARTNERS FROM MEMBER WHERE ID=?");
-        ps.setString(1,memberId);
-        ps.execute();
-        ResultSet resultSet = ps.getResultSet();
-        resultSet.next();
-        return resultSet.getString(1).split("//");
-    }
-
-    public String getEventsWhereVoted(String memberId) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("SELECT EVENTS_WHERE_VOTED FROM MEMBER WHERE id=?");
+    public String getEventsWhereVoted(String memberId, String EVENT_TYPE) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT "+ EVENT_TYPE +" FROM MEMBER WHERE id=?");
         ps.setString(1,memberId);
         ps.execute();
         ResultSet resultSet = ps.getResultSet();
@@ -161,8 +167,8 @@ public class MemberDao {
         return resultSet.getString(1);
     }
 
-    public void addEventsWhereVoted(String memberId, String eventId) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("UPDATE MEMBER SET EVENTS_WHERE_VOTED = CONCAT(EVENTS_WHERE_VOTED, '"+eventId+"', '/' ) WHERE ID="+memberId);
+    public void addEventsWhereVoted(String memberId, String eventId, String EVENT_TYPE) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("UPDATE MEMBER SET "+ EVENT_TYPE +" = CONCAT("+ EVENT_TYPE +", '"+eventId+"', '/' ) WHERE ID="+memberId);
         ps.execute();
     }
 
@@ -177,13 +183,14 @@ public class MemberDao {
             member.setId(rs.getInt(ID_COLUMN_INDEX));
             member.setUserId(rs.getInt(USER_ID_COLUMN_INDEX));
             member.setChatId(rs.getLong(CHAT_ID_COLUMN_INDEX));
-            member.setNaviki(rs.getString(NAVIKI_COLUMN_INDEX));
             member.setNisha(rs.getString(NISHA_COLUMN_INDEX));
             member.setUserName(rs.getString(USERNAME_COLUMN_INDEX));
             member.setCompanyName(rs.getString(COMPANY_NAME_COLUMN_INDEX));
             member.setContact(rs.getString(CONTACT_COLUMN_INDEX));
             member.setFIO(rs.getString(FIO_COLUMN_INDEX));
             member.setPhoneNumber(rs.getString(PHONE_NUMBER_COLUMN_INDEX));
+            member.setFirstName(rs.getString(FIRST_NAME_COLUMN_INDEX));
+            member.setLastName(rs.getString(LAST_NAME_COLUMN_INDEX));
         }
         return member;
     }
@@ -218,7 +225,7 @@ public class MemberDao {
             member.setId(rs.getInt(ID_COLUMN_INDEX));
             member.setUserId(rs.getInt(USER_ID_COLUMN_INDEX));
             member.setChatId(rs.getLong(CHAT_ID_COLUMN_INDEX));
-            member.setNaviki(rs.getString(NAVIKI_COLUMN_INDEX));
+//            member.setNaviki(rs.getString(NAVIKI_COLUMN_INDEX));
             member.setNisha(rs.getString(NISHA_COLUMN_INDEX));
             member.setUserName(rs.getString(USERNAME_COLUMN_INDEX));
             member.setCompanyName(rs.getString(COMPANY_NAME_COLUMN_INDEX));
@@ -274,7 +281,7 @@ public class MemberDao {
             ps.execute();
             ResultSet rs = ps.getResultSet();
             rs.next();
-            return rs.getBoolean(13);
+            return rs.getBoolean(12);
         } catch (JdbcSQLException e) {
             return false;
         }
@@ -297,6 +304,7 @@ public class MemberDao {
         return new Member(
                 resultSet.getInt(1),
                 resultSet.getInt(2),
+//                resultSet.getLong(3),
                 resultSet.getLong(3),
                 resultSet.getString(4),
                 resultSet.getString(5),
@@ -305,8 +313,43 @@ public class MemberDao {
                 resultSet.getString(8),
                 resultSet.getString(9),
                 resultSet.getString(10),
-                resultSet.getString(11),
-                resultSet.getString(12));
+                resultSet.getString(11));
     }
+
+    public void addDownloadedBook(String bookId, int memberId) throws SQLException{
+        PreparedStatement ps = connection.prepareStatement("UPDATE MEMBER SET DOWNLOADED_BOOKS= CONCAT('DOWNLOADED_BOOKS', '?', '/' ) WHERE ID="+memberId);
+        ps.setString(1, bookId);
+    }
+
+    public String[] getMemberBooks(String memberId) throws SQLException{
+        PreparedStatement ps = connection.prepareStatement("SELECT DOWNLOADED_BOOKS FROM MEMBER WHERE ID="+ memberId);
+        ps.execute();
+        ResultSet resultSet  = ps.getResultSet();
+        resultSet.next();
+
+            String result = resultSet.getString(1);
+            if(result==null){
+                return null;
+            }
+            return result.split("/");
+
+    }
+
+    public void makeMemberAgreeRules(String memberId) throws SQLException{
+        PreparedStatement ps = connection.prepareStatement("UPDATE MEMBER SET ACCEPT_RULES=? WHERE ID=?");
+        ps.setBoolean(1,true);
+        ps.setString( 2, memberId);
+        ps.execute();
+    }
+
+    public boolean checkMemberAgreeToRules(String memberId) throws SQLException{
+        PreparedStatement ps = connection.prepareStatement("SELECT ACCEPT_RULES FROM MEMBER WHERE ID=?");
+        ps.setString(1,memberId);
+        ps.execute();
+        ResultSet resultSet  = ps.getResultSet();
+        resultSet.next();
+        return resultSet.getBoolean(1);
+    }
+
 }
 

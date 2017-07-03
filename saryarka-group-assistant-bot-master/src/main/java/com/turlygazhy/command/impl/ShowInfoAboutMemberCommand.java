@@ -4,6 +4,7 @@ import com.turlygazhy.Bot;
 import com.turlygazhy.command.Command;
 import com.turlygazhy.entity.Member;
 import com.turlygazhy.entity.Message;
+import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
@@ -27,25 +28,29 @@ public class ShowInfoAboutMemberCommand extends Command {
         String text = message.getSendMessage().getText()
                 .replaceAll("fio", member.getFIO()).replaceAll("companyName", member.getCompanyName())
                 .replaceAll("contact", member.getContact()).replaceAll("nisha", member.getNisha())
-                .replaceAll("naviki", member.getNaviki()).replaceAll("phoneNumber", member.getPhoneNumber());
+                .replaceAll("phoneNumber", member.getPhoneNumber());
 
         ReplyKeyboardMarkup keyboard = (ReplyKeyboardMarkup) keyboardMarkUpDao.select(message.getKeyboardMarkUpId());
 
         boolean memberAdded = memberDao.isMemberAdded(userId);
         if (!memberAdded) {
-            List<KeyboardRow> keyboardRows = keyboard.getKeyboard();
-            KeyboardRow keyboardButtons = new KeyboardRow();
-            KeyboardButton keyboardButton = new KeyboardButton();
-            keyboardButton.setText(buttonDao.getButtonText(63));
-            keyboardButtons.add(keyboardButton);
-            keyboardRows.add(keyboardRows.size() - 1, keyboardButtons);
+//            List<KeyboardRow> keyboardRows = keyboard.getKeyboard();
+//            KeyboardRow keyboardButtons = new KeyboardRow();
+//            KeyboardButton keyboardButton = new KeyboardButton();
+//            keyboardButton.setText(buttonDao.getButtonText(63));
+//            keyboardButtons.add(keyboardButton);
+//            keyboardRows.add(keyboardRows.size() - 1, keyboardButtons);
+            SendMessage sendMessage = new SendMessage().setChatId(getAdminChatId()).setText("Пользаватель изменил данные о себе\n" + text);
+            bot.sendMessage(sendMessage);
         }
 
         bot.sendMessage(new SendMessage()
                 .setChatId(update.getMessage().getChatId())
                 .setText(text)
                 .setReplyMarkup(keyboard)
+                .setParseMode(ParseMode.HTML)
         );
+
         return true;
     }
 }

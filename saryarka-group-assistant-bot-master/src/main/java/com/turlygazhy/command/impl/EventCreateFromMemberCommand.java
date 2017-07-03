@@ -6,6 +6,7 @@ import com.turlygazhy.dao.impl.ListDao;
 import com.turlygazhy.entity.Message;
 import com.turlygazhy.entity.MessageElement;
 import org.telegram.telegrambots.api.methods.ParseMode;
+import org.telegram.telegrambots.api.methods.send.SendDocument;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.api.methods.send.SendVideo;
@@ -27,15 +28,20 @@ public class EventCreateFromMemberCommand extends Command {
     private String             event;
     private String             where;
     private String             when;
-    private String             rules;
     private String             video;
     private String             contactInformation;
+    private String             program;
+    private String             dresscode;
+    private String             rules;
+    private String             page;
+    private String             document;
     private MessageElement     expectedMessageElement;
     private boolean            needPhoto     = true;
     private boolean            needVideo     = true;
     private ListDao            listDao       = factory.getListDao("EVENTS_LIST");
     private int                step          = 1;
-    private Date date;
+    private Date               date;
+
 
 
     @Override
@@ -58,7 +64,7 @@ public class EventCreateFromMemberCommand extends Command {
                 case 3:
                     when  = updateMessage.getText();
                     SimpleDateFormat format = new SimpleDateFormat();
-                    format.applyPattern("hh:mm dd/MM/yyyy");
+                    format.applyPattern("dd.MM.yy, hh:mm");
                     try {
                         date = format.parse(when);
                         step = 4;
@@ -69,11 +75,11 @@ public class EventCreateFromMemberCommand extends Command {
                     }
 
                     break;
+//                case 4:
+//                    rules = updateMessage.getText();
+//                    step = 5;
+//                    break;
                 case 4:
-                    rules = updateMessage.getText();
-                    step = 5;
-                    break;
-                case 5:
                     try {
                         photo = updateMessage.getPhoto().get(updateMessage.getPhoto().size() - 1).getFileId();
                     } catch (Exception e) {
@@ -81,20 +87,52 @@ public class EventCreateFromMemberCommand extends Command {
                             needPhoto = false;
                         }
                     }
+                    step = 5;
+                    break;
+//                case 5:
+//                    try {
+//                        video = updateMessage.getVideo().getFileId();
+//                    } catch (Exception e){
+//                        if (update.getCallbackQuery().getData().equals(buttonDao.getButtonText(89)))
+//                            needVideo = false;
+//                    }
+//                    step = 6;
+//                    break;
+                case 5:
+                    contactInformation = updateMessage.getText();
                     step = 6;
                     break;
                 case 6:
-                    try {
-                        video = updateMessage.getVideo().getFileId();
-                    } catch (Exception e){
-                        if (update.getCallbackQuery().getData().equals(buttonDao.getButtonText(89)))
-                            needVideo = false;
-                    }
+                    program            = update.getMessage().getText();
                     step = 7;
                     break;
                 case 7:
-                    contactInformation = updateMessage.getText();
+                    dresscode          = update.getMessage().getText();
                     step = 8;
+                    break;
+                case 8:
+                    rules              = update.getMessage().getText();
+                    step = 9;
+                    break;
+                case 9:
+                    try {
+                        page = update.getMessage().getText();
+                    } catch (Exception e) {
+                        if (update.getCallbackQuery().getData().equals(buttonDao.getButtonText(134))) {
+                            page = null;
+                        }
+                    }
+                    step = 10;
+                    break;
+                case 10:
+                    try {
+                        document = update.getMessage().getDocument().getFileId();
+                    } catch (Exception e) {
+                        if (update.getCallbackQuery().getData().equals(buttonDao.getButtonText(135))) {
+                            document = null;
+                        }
+                    }
+                    step = 11;
             }
         }
         if (step == 1 && event == null) {
@@ -124,16 +162,16 @@ public class EventCreateFromMemberCommand extends Command {
             expectedMessageElement = MessageElement.TEXT;
             return false;
         }
-        if ( step == 4 && rules == null) {
-            Message message = messageDao.getMessage(91);
-            SendMessage sendMessage = message.getSendMessage()
-                    .setChatId(chatId).setParseMode(ParseMode.HTML);
-
-            bot.sendMessage(sendMessage);
-            expectedMessageElement = MessageElement.TEXT;
-            return false;
-        }
-        if (step == 5 && photo == null && needPhoto) {
+//        if ( step == 4 && rules == null) {
+//            Message message = messageDao.getMessage(91);
+//            SendMessage sendMessage = message.getSendMessage()
+//                    .setChatId(chatId).setParseMode(ParseMode.HTML);
+//
+//            bot.sendMessage(sendMessage);
+//            expectedMessageElement = MessageElement.TEXT;
+//            return false;
+//        }
+        if (step == 4 && photo == null && needPhoto) {
             Message message = messageDao.getMessage(28);
             SendMessage sendMessage = message.getSendMessage()
                     .setChatId(chatId)
@@ -143,59 +181,105 @@ public class EventCreateFromMemberCommand extends Command {
             expectedMessageElement = MessageElement.PHOTO;
             return false;
         }
-        if (step == 6 & video == null && needVideo) {
-            Message message = messageDao.getMessage(94);
-            SendMessage sendMessage = message.getSendMessage()
-                    .setChatId(chatId)
-                    .setReplyMarkup(keyboardMarkUpDao.select(message.getKeyboardMarkUpId()));
-            bot.sendMessage(sendMessage);
-            return false;
-        }
-        if (step == 7 & contactInformation == null){
+//        if (step == 5 & video == null && needVideo) {
+//            Message message = messageDao.getMessage(94);
+//            SendMessage sendMessage = message.getSendMessage()
+//                    .setChatId(chatId)
+//                    .setReplyMarkup(keyboardMarkUpDao.select(message.getKeyboardMarkUpId()));
+//            bot.sendMessage(sendMessage);
+//            return false;
+//        }
+        if (step == 5 & contactInformation == null){
             Message message = messageDao.getMessage(98);
             SendMessage sendMessage = message.getSendMessage()
                     .setChatId(chatId).setParseMode(ParseMode.HTML);
             bot.sendMessage(sendMessage);
             return false;
         }
+        if(step == 6){
+            Message message = messageDao.getMessage(91);
+            SendMessage sendMessage = message.getSendMessage()
+                    .setChatId(chatId).setParseMode(ParseMode.HTML);
+            bot.sendMessage(sendMessage);
+            return false;
+        }
+        if(step == 7){
+            Message message = messageDao.getMessage(120);
+            SendMessage sendMessage = message.getSendMessage()
+                    .setChatId(chatId).setParseMode(ParseMode.HTML);
+            bot.sendMessage(sendMessage);
+            return false;
+        }
+        if(step == 8){
+            Message message = messageDao.getMessage(121);
+            SendMessage sendMessage = message.getSendMessage()
+                    .setChatId(chatId).setParseMode(ParseMode.HTML);
+            bot.sendMessage(sendMessage);
+            return false;
+        }
+        if(step == 9){
+            Message message = messageDao.getMessage(122);
+            SendMessage sendMessage = message.getSendMessage()
+                    .setChatId(chatId).setParseMode(ParseMode.HTML)
+                    .setReplyMarkup(keyboardMarkUpDao.select(message.getKeyboardMarkUpId()));
+            bot.sendMessage(sendMessage);
+            return false;
+        }
+        if(step == 10){
+            Message message = messageDao.getMessage(138);
+            SendMessage sendMessage = message.getSendMessage()
+                    .setChatId(chatId).setParseMode(ParseMode.HTML)
+                    .setReplyMarkup(keyboardMarkUpDao.select(message.getKeyboardMarkUpId()));
+            bot.sendMessage(sendMessage);
+            return false;
+        }
 
-        if(step == 8) {
+        if(step == 11) {
             long adminChatId = userDao.getAdminChatId();
             //Сообщение "Ваше предложение отправлено администратору"
             Message message = messageDao.getMessage(95);
             SendMessage sendMessage = message.getSendMessage().setChatId(chatId);
             bot.sendMessage(sendMessage);
             //Новый ивент создаем
-            listDao.createNewEvent(event, where, when, rules, photo, video,contactInformation, false);
+            listDao.createNewEvent(event, where, when, photo,contactInformation,rules, dresscode, program, page, document, false,false);
             //Предупреждаем админа о новом предложении
             Message notifyAdmin = messageDao.getMessage(96);
-            long eventId = listDao.getEventId(event,where,when,rules,false);
+            long eventId = listDao.getEventId(event,where,when,false);
 
-
+            String date = when.substring(0,2) + " " + getMonthInRussian(Integer.parseInt(when.substring(3, 5)))
+                    +" "+when.substring(when.indexOf(" "));
             Message patternPoolInfo = messageDao.getMessage(97);
             String text = patternPoolInfo.getSendMessage().getText()
-                    .replaceAll("contact_information", contactInformation)
-                    .replaceAll("event_name"         , event)
-                    .replaceAll("where"              , where)
-                    .replaceAll("when"               , when)
-                    .replaceAll("rules"              , rules);
+                    .replaceAll("event_text"         , event)
+                    .replaceAll("event_address"      , where)
+                    .replaceAll("event_time"         , date)
+                    .replaceAll("event_contact"      , contactInformation)
+                    .replaceAll("event_program"      , program)
+                    .replaceAll("event_dress_code"   , dresscode)
+                    .replaceAll("event_rules"        , rules);
+            if(page!= null){
+                text = text+"\n\n<b>Страница мероприятия/регистрация</b>:"+page;
+            }
 
             SendMessage sendToAdmin = patternPoolInfo.getSendMessage().setChatId(userDao.getAdminChatId()).setParseMode(ParseMode.HTML);
-//                    .setReplyMarkup(keyboardMarkUpDao.select(patternPoolInfo.getKeyboardMarkUpId()));
             sendToAdmin.setText(text).setReplyMarkup(getAdditionalInfoToKeyboard(Integer.valueOf(memberDao.getMemberId(chatId)), String.valueOf(eventId),null, 90,91));
-//            sendToAdmin.setText(text);
             if (photo != null) {
                 SendPhoto sendPhoto = new SendPhoto();
                 sendPhoto.setPhoto(photo);
                 bot.sendPhoto(sendPhoto.setChatId(adminChatId));
             }
-            if (video !=null)  {
-                SendVideo sendVideo = new SendVideo();
-                sendVideo.setVideo(video);
-                bot.sendVideo(sendVideo.setChatId(adminChatId));
-            }
+//            if (video !=null)  {
+//                SendVideo sendVideo = new SendVideo();
+//                sendVideo.setVideo(video);
+//                bot.sendVideo(sendVideo.setChatId(adminChatId));
+//            }
             bot.sendMessage(notifyAdmin.getSendMessage().setChatId(adminChatId));
             bot.sendMessage(sendToAdmin);
+            if(document != null){
+                SendDocument sendDocument = new SendDocument();
+                sendDocument.setDocument(document);
+                bot.sendDocument(sendDocument.setChatId(adminChatId));
+            }
 
 
             contactInformation     = null;
@@ -204,9 +288,13 @@ public class EventCreateFromMemberCommand extends Command {
             event                  = null;
             when                   = null;
             where                  = null;
-            rules                  = null;
             step                   = 0;
             expectedMessageElement = null;
+            program                = null;
+            dresscode              = null;
+            rules                  = null;
+            page                   = null;
+            document               = null;
             return true;
         }
         return true;

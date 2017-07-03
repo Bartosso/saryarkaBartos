@@ -41,7 +41,7 @@ public class RequestToAddPartnerCommand extends Command {
         if(step == 0){
         chatId = String.valueOf(update.getCallbackQuery().getFrom().getId());
         SendMessage sendMessage = new SendMessage().setChatId(chatId).setText(
-                "Введите сообщение которое вы хотите отправить с запросом на добавление в партнеры");
+                "Введите сообщение которое вы хотите отправить");
         bot.sendMessage(sendMessage);
         expectedMessageElement = MessageElement.TEXT;
         idPartner = update.getCallbackQuery().getData().substring(update.getCallbackQuery().getData().indexOf(":") + 1);
@@ -56,9 +56,8 @@ public class RequestToAddPartnerCommand extends Command {
                     .replaceAll("fio"        , wannaBePartner.getFIO())
                     .replaceAll("companyName", wannaBePartner.getCompanyName())
                     .replaceAll("contact"    , wannaBePartner.getContact())
-                    .replaceAll("nisha"      , wannaBePartner.getNisha())
-                    .replaceAll("naviki"     , wannaBePartner.getNaviki());
-            SendMessage sendNotificationToPartner = new SendMessage().setText("<b>Запрос на добавление в партнеры:</b>\n"+ message + "\n" +pattern).setChatId(chatPartner)
+                    .replaceAll("nisha"      , wannaBePartner.getNisha());
+            SendMessage sendNotificationToPartner = new SendMessage().setText("<b>Вам написали:</b>\n"+ message + "\n" +pattern).setChatId(chatPartner)
                     .setReplyMarkup(inlineKeyboardMarkup).setParseMode(ParseMode.HTML);
             SendMessage sendMessageToWannaBe = new SendMessage().setText("Ваше сообщение отправленно").setChatId(wannaBePartner.getChatId());
             bot.sendMessage(sendNotificationToPartner);
@@ -78,7 +77,7 @@ public class RequestToAddPartnerCommand extends Command {
         List<InlineKeyboardButton> row            = new ArrayList<>();
 
         InlineKeyboardButton      yesAddPartner   = new InlineKeyboardButton();
-        yesAddPartner.setText("Ответить и добавить в партнеры");
+        yesAddPartner.setText("Ответить");
         yesAddPartner.setCallbackData("add_to_partner:"+idWannaBePartner);
         row.add(yesAddPartner);
         rows.add(row);

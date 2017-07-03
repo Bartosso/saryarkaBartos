@@ -19,6 +19,9 @@ public class ShowCabinetCommand extends Command {
         long chatId = update.getMessage().getChatId();
         SendMessage sendMessage = message.getSendMessage().setChatId(chatId).setReplyMarkup(keyboardMarkUpDao.select(message.getKeyboardMarkUpId()));
         bot.sendMessage(sendMessage);
+        ShowInfoAboutMemberCommand showInfoAboutMemberCommand = new ShowInfoAboutMemberCommand();
+        showInfoAboutMemberCommand.setMessageId(8);
+        showInfoAboutMemberCommand.execute(update, bot);
         return true;
     }
 }

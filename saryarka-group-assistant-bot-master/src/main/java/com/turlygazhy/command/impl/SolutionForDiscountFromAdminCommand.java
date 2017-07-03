@@ -21,23 +21,23 @@ public class SolutionForDiscountFromAdminCommand extends Command {
         String chose      = update.getCallbackQuery().getData().substring(update.getCallbackQuery().getData().indexOf("/")+1);
         String discountId = update.getCallbackQuery().getData().substring(update.getCallbackQuery().getData().indexOf(":")+1,
                 update.getCallbackQuery().getData().indexOf("/"));
-        SendMessage sendOk = new SendMessage().setChatId(chatId).setText("Ваше решение принято");
-        switch (chose){
-            case "accept" :
-                listDao.makeDiscountBe(discountId);
-                bot.sendMessage(sendOk);
-                break;
-            case "decline":
-                listDao.killDiscount(discountId);
-                bot.sendMessage(sendOk);
-                break;
-            case "edit"   :
-                ReplyKeyboard keyboard      = getEditDiscountKeys(discountId);
-                SendMessage sendMessageToAdmin = new SendMessage().setText("Выберите что хотите изменить").setChatId(chatId)
-                        .setReplyMarkup(keyboard);
-                bot.sendMessage(sendMessageToAdmin);
-
-        }
+//        SendMessage sendOk = new SendMessage().setChatId(chatId).setText("Ваше решение принято");
+//        switch (chose){
+//            case "accept" :
+//                listDao.makeDiscountBe(discountId);
+//                bot.sendMessage(sendOk);
+//                break;
+//            case "decline":
+//                listDao.killDiscount(discountId);
+//                bot.sendMessage(sendOk);
+//                break;
+//            case "edit"   :
+////                ReplyKeyboard keyboard      = getEditDiscountKeys(discountId);
+////                SendMessage sendMessageToAdmin = new SendMessage().setText("Выберите что хотите изменить").setChatId(chatId)
+////                        .setReplyMarkup(keyboard);
+////                bot.sendMessage(sendMessageToAdmin);
+//
+//        }
         return true;
     }
 

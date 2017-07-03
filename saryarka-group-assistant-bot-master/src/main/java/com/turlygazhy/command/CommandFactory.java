@@ -50,8 +50,8 @@ public class CommandFactory {
                 return new ShowInfoAboutMemberCommand();
             case CHANGE_NISHA:
                 return new ChangeNishaCommand();
-            case CHANGE_NAVIKI:
-                return new ChangeNavikiCommand();
+//            case CHANGE_NAVIKI:
+//                return new ChangeNavikiCommand();
             case KEY_WORDS:
                 return new KeyWordsCommand();
             case SEARCH:
@@ -86,16 +86,16 @@ public class CommandFactory {
                 return new EventCreateFromMemberCommand();
             case SOLUTION_FOR_EVENT_FROM_ADMIN:
                 return new SolutionForEventFromAdminCommand();
-            case SHOW_MY_TENDERS:
-                return new ShowMyTendersCommand();
+            case CREATE_A_NEW_VACANCY:
+                return new CreateANewVacancyCommand();
             case GET_EVENT:
                 return new GetEventCommand();
             case SEARCH_MEMBER_ITERATION:
                 return new SearchMemberIterationCommand();
             case SOLUTION_FOR_PARTNER:
                 return new SolutionForPartnerCommand();
-            case SHOW_MY_PARTNERS:
-                return new ShowMyPartnersCommand();
+//            case SHOW_MY_PARTNERS:
+//                return new ShowMyPartnersCommand();
             case GET_PARTNER:
                 return new GetPartnerCommand();
             case GET_TENDER:
@@ -114,6 +114,56 @@ public class CommandFactory {
                 return new ChangeDiscountCategoryCommand();
             case GET_DISCOUNT:
                 return new GetDiscountCommand();
+            case COMMUNITY_MENU:
+                return new CommunityMenuCommand();
+            case HR_MENU:
+                return new HrMenuCommand();
+            case SHOW_EVENTS_WITH_ITERATOR:
+                return new ShowEventsLikeIteratorCommand();
+            case GET_MY_VACANCIES:
+                return new GetMyVacanciesCommand();
+            case GET_VACANCY:
+                return new GetVacancyCommand();
+            case DELETE_VACANCY:
+                return new DeleteVacancyCommand();
+            case SHOW_ALL_VACANCIES:
+                return new ShowAllVacanciesCommand();
+            case SHOW_VACANCIES_BY_SFERA:
+                return new ShowVacanciesBySferaCommand();
+            case CREATE_DISCOUNT_VERSION2:
+                return new CreateDiscountViaLinkCommand();
+            case SHOW_DISCOUNT_FOR_ADMIN:
+                return new ShowDiscountForAdminAndDeleteMenuCommand();
+            case DELETE_DISCOUNT:
+                return new DeleteDiscountCommand();
+            case LIBRARY_MENU:
+                return new LibraryMenuCommand();
+            case ADD_NEW_BOOK:
+                return new AddBookAdminCommand();
+            case ADMIN_BOOK_VIEW:
+                return new AdminBookViewCommand();
+            case GET_BOOK:
+                return new GetBookCommand();
+            case DELETE_BOOK:
+                return new DeleteBookCommand();
+            case SHOW_BOOKS_TO_MEMBER:
+                return new ShowBooksToMemberCommand();
+            case SHOW_DOWNLOADED_BOOKS:
+                return new ShowDownloadedBooksCommand();
+            case DONATE_BOOK:
+                return new DonateAbookCommand();
+            case INFO_VOTE:
+                return new InfoVoteCommand();
+            case SHOW_INFO_WITH_VOTE:
+                return new ShowInfoWithVoteCommand();
+            case GET_LINK_TO_GROUP:
+                return new GetLinkToGroupCommand();
+            case MAKE_VACANCY_BE:
+                return new MakeVacancyBe();
+            case SOLUTION_FOR_REQUEST_TENDER:
+                return new SolutionForRequestTenderCommand();
+            case SOLUTION_FOR_OFFER_TENDER:
+                return new SolutionForOfferTenderCommand();
             default:
                 throw new NotRealizedMethodException("Not realized for type: " + type);
         }

@@ -24,9 +24,9 @@ public class GetPartnerCommand extends Command {
                 .replaceAll("companyName", member.getCompanyName())
                 .replaceAll("contact ", member.getContact())
                 .replaceAll("nisha", member.getNisha())
-                .replaceAll("naviki", member.getNaviki()) + "\n<b>Номер телефона</b>: "+ member.getPhoneNumber();
+                 + "\nНомер телефона: "+ member.getPhoneNumber();
         if (member.getUserName()!=null){
-            text = text.concat("\n<b>Telegram:</b>@"+member.getUserName());
+            text = text.concat("\nTelegram:@"+member.getUserName());
         }
         SendMessage sendMessage = new SendMessage().setText(text).setParseMode(ParseMode.HTML).setChatId(chatId);
         bot.sendMessage(sendMessage);

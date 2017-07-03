@@ -45,7 +45,7 @@ public class ChangeDiscountCategoryCommand extends Command {
         discountId              = update.getCallbackQuery().getData().substring(update.getCallbackQuery().getData().indexOf(":")+1);
         chatId                  = update.getCallbackQuery().getFrom().getId();
         ReplyKeyboard keyboard  = keyboardMarkUpDao.select(28);
-        SendMessage sendMessage = new SendMessage().setChatId(chatId).setText("Выберите категорию в которой хотите переместить discount")
+        SendMessage sendMessage = new SendMessage().setChatId(chatId).setText("Выберите категорию в которую хотите переместить discount")
                 .setReplyMarkup(keyboard);
         bot.sendMessage(sendMessage);
         waitingAnswer = true;

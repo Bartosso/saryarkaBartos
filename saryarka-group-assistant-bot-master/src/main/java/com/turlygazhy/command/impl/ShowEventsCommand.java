@@ -25,17 +25,34 @@ public class ShowEventsCommand extends Command {
     private String targetList;
     @Override
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
-        if(update.getCallbackQuery()== null){return false;}
-        long chatId = update.getCallbackQuery().getFrom().getId();
-        String eventType = "";
-        switch (update.getCallbackQuery().getData()){
-            case "Было"       :
-                targetList = "ENDED_EVENTS_LIST";
-                eventType = "было";
-                break;
-            case "Будет"      :
-                targetList = "EVENTS_LIST";
-                eventType = "будет";
+        org.telegram.telegrambots.api.objects.Message updateMessage = update.getMessage();
+        if (updateMessage == null) {
+            updateMessage = update.getCallbackQuery().getMessage();
+        }
+        long chatId          = updateMessage.getChatId();
+        String eventType     = "";
+        String textInMessage = "";
+//        switch (updateMessage.getText()){
+//            case "Было"       :
+//                targetList = "ENDED_EVENTS_LIST";
+//                eventType = "было";
+//                textInMessage = "Прошедшие ивенты";
+//                break;
+//            case "Будет"      :
+//                targetList = "EVENTS_LIST";
+//                eventType = "будет";
+//                textInMessage = "Запланированные ивенты";
+//                break;
+//        }
+        if(updateMessage.getText().equals(buttonDao.getButtonText(83))){
+            targetList = "ENDED_EVENTS_LIST";
+            eventType = "было";
+            textInMessage = "Прошедшие ивенты";
+        }
+        if(updateMessage.getText().equals(buttonDao.getButtonText(84))){
+            targetList = "EVENTS_LIST";
+            eventType = "будет";
+            textInMessage = "Запланированные ивенты";
         }
         ListDao listDao = factory.getListDao(targetList);
         ArrayList<Event> events = listDao.getAllEvents(true);
@@ -44,7 +61,7 @@ public class ShowEventsCommand extends Command {
             bot.sendMessage(message.getSendMessage().setChatId(chatId));
             return true;
         }
-        SendMessage sendMessage = new SendMessage().setReplyMarkup(getEventsViaButtons(events,eventType)).setChatId(chatId).setText("Запланированные ивенты");
+        SendMessage sendMessage = new SendMessage().setReplyMarkup(getEventsViaButtons(events,eventType)).setChatId(chatId).setText(textInMessage);
         bot.sendMessage(sendMessage);
 
         return true;
@@ -66,6 +83,7 @@ public class ShowEventsCommand extends Command {
         }
         keyboard.setKeyboard(rows);
         return keyboard;
-
     }
+
+
 }

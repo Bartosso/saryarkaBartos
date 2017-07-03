@@ -6,7 +6,7 @@ package com.turlygazhy.entity;
 public class ListData {
     private int MemberId;
     private long id;
-    private String photo;
+//    private String photo;
     private String text;
     private String date;
 
@@ -14,7 +14,7 @@ public class ListData {
 
     public String getDate() {return date;}
 
-    public String getPhoto() {return photo;}
+//    public String getPhoto() {return photo;}
 
     public String getText() {return text;}
 
@@ -24,7 +24,7 @@ public class ListData {
 
     public void setMemberId(int memberId) {MemberId = memberId;}
 
-    public void setPhoto(String photo) {this.photo = photo;}
+//    public void setPhoto(String photo) {this.photo = photo;}
 
     public void setText(String text) {this.text = text;}
 

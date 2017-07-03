@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class MakeBIdCommand extends Command {
     @Override
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
-        long chatID = update.getCallbackQuery().getFrom().getId();
+        long chatID = update.getMessage().getChatId();
        com.turlygazhy.entity.Message message = messageDao.getMessage(82);
        SendMessage sendMessage = message.getSendMessage().setChatId(chatID).setReplyMarkup(keyboardMarkUpDao.
        select(message.getKeyboardMarkUpId()));

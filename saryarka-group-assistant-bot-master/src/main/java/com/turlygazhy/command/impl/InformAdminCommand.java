@@ -4,6 +4,7 @@ import com.turlygazhy.Bot;
 import com.turlygazhy.command.Command;
 import com.turlygazhy.entity.Message;
 import com.turlygazhy.entity.MessageElement;
+import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
@@ -61,7 +62,8 @@ public class InformAdminCommand extends Command {
                     Message message = messageDao.getMessage(14);
                     SendMessage sendMessage = message.getSendMessage()
                             .setChatId(chatId)
-                            .setReplyMarkup(keyboardMarkUpDao.select(message.getKeyboardMarkUpId()));
+                            .setReplyMarkup(keyboardMarkUpDao.select(message.getKeyboardMarkUpId()))
+                            .setParseMode(ParseMode.HTML);
 
                     bot.sendMessage(sendMessage);
                     expectedMessageElement = MessageElement.PHOTO;

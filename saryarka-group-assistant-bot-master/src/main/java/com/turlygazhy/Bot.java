@@ -28,13 +28,19 @@ import java.util.Map;
  */
 public class Bot extends TelegramLongPollingBot {
     private Map<Long, Conversation> conversations = new HashMap<>();
-    private static final Logger logger = LoggerFactory.getLogger(Bot.class);
-    private DaoFactory factory = DaoFactory.getFactory();
-    private KeyWordDao keyWordDao = factory.getKeyWordDao();
-    private UserDao userDao = factory.getUserDao();
-    private ListDao listDao = factory.getListDao("EVENTS_LIST");
-    private String EVENTS_TABLE_NAME = "EVENTS_LIST";
-    private   String GROUP_FOR_VOTE    = "-224196565";
+    private static final Logger logger            = LoggerFactory.getLogger(Bot.class);
+    private DaoFactory factory                    = DaoFactory.getFactory();
+    private KeyWordDao keyWordDao                 = factory.getKeyWordDao();
+    private UserDao userDao                       = factory.getUserDao();
+    private ListDao listDao                       = factory.getListDao("EVENTS_LIST");
+    private String EVENTS_TABLE_NAME              = "EVENTS_LIST";
+    private final String GROUP_FOR_VOTE           = factory.getListDao("KOSTIL").daiKostil();
+
+    // убрать на продакшене
+    public Bot() throws SQLException {
+    }
+//            "-224196565";
+
 
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();

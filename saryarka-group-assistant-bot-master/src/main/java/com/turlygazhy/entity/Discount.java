@@ -71,4 +71,12 @@ public class Discount {
         this.discount     = discount;
         this.memberId     = memberId;
     }
+    //That all for version 2 discount
+    public Discount(int id,String discountType, String name, String discount, String page){
+        this.id           = id;
+        this.page         = page;
+        this.discountType = discountType;
+        this.discount     = discount;
+        this.name         = name;
+    }
 }
