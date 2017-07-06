@@ -6,6 +6,7 @@ import com.turlygazhy.entity.Event;
 import com.turlygazhy.entity.Message;
 import com.turlygazhy.reminder.Reminder;
 import com.turlygazhy.tool.DateUtil;
+import com.turlygazhy.tool.EventAnonceUtil;
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendDocument;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -39,41 +40,14 @@ public class RemindEventStartOneDayTask extends AbstractTask {
         if (memberIds != null){
             Event    event     = listDao.getEvent(String.valueOf(eventId));
             String text;
-            String date = event.getWHEN().substring(0,2) + " " + DateUtil.getMonthInRussian(Integer.parseInt(event
-                    .getWHEN().substring(3, 5)))
-                    +event.getWHEN().substring(event.getWHEN().indexOf(" "));
-            if(!event.isBY_ADMIN()){
-                Message message = messageDao.getMessage(92);
 
-                text    = messageDao.getMessage(151).getSendMessage().getText()
-                        + "\n" + message.getSendMessage().getText()
-                        .replaceAll("event_text"         , event.getEVENT_NAME())
-                        .replaceAll("event_address"      , event.getPLACE())
-                        .replaceAll("event_time"         , date)
-                        .replaceAll("event_contact"      , event.getCONTACT_INFORMATION())
-                        .replaceAll("event_program"      , event.getPROGRAM())
-                        .replaceAll("event_dress_code"   , event.getDRESS_CODE())
-                        .replaceAll("event_rules"        , event.getRULES());
-                if(event.getPAGE()!= null){
-                    text = text+"\n\n<b>Страница мероприятия/регистрация</b>:"+event.getPAGE();
-                }
+            if(!event.isBY_ADMIN()){
+                text    = EventAnonceUtil.getEventWithPatternNoByAdmin(event, messageDao);
             }
             else
             {
-                Message message = messageDao.getMessage(139);
+                text    = EventAnonceUtil.getEventWithPatternByAdmin(event, messageDao);
 
-                text    = messageDao.getMessage(151).getSendMessage().getText()
-                + "\n" + message.getSendMessage().getText()
-                        .replaceAll("event_text"         , event.getEVENT_NAME())
-                        .replaceAll("event_address"      , event.getPLACE())
-                        .replaceAll("event_time"         , date)
-                        .replaceAll("event_contact"      , event.getCONTACT_INFORMATION())
-                        .replaceAll("event_program"      , event.getPROGRAM())
-                        .replaceAll("event_dress_code"   , event.getDRESS_CODE())
-                        .replaceAll("event_rules"        , event.getRULES());
-                if(event.getPAGE()!= null){
-                    text = text+"\n\n<b>Регистрация</b>:"+event.getPAGE();
-                }
             }
             boolean gotPhoto    = false;
             boolean gotDocument = false;
@@ -94,6 +68,7 @@ public class RemindEventStartOneDayTask extends AbstractTask {
 
             for(String string : memberIds){
                 long chatId = memberDao.getMemberChatId(string);
+                try{
                 if(gotPhoto){
                     sendPhoto.setChatId(chatId);
                     bot.sendPhoto(sendPhoto);
@@ -102,6 +77,9 @@ public class RemindEventStartOneDayTask extends AbstractTask {
                 if(gotDocument){
                     sendDocument.setChatId(chatId);
                     bot.sendDocument(sendDocument);
+                }}
+                catch (TelegramApiException ignored){
+
                 }
 
             }

@@ -8,6 +8,7 @@ import com.turlygazhy.entity.Event;
 import com.turlygazhy.entity.Member;
 import com.turlygazhy.entity.Message;
 import com.turlygazhy.tool.DateUtil;
+import com.turlygazhy.tool.EventAnonceUtil;
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendDocument;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -128,29 +129,14 @@ public class ShowEventsLikeIteratorCommand extends Command {
         }
         else{
         event     = events.get(0);
-//            String date = event.getWHEN().substring(0,2) + " " + DateUtil.getMonthInRussian(Integer.parseInt(event
-//                    .getWHEN().substring(3, 5)))
-//                    +" "+event.getWHEN().substring(event.getWHEN().indexOf(" "));
             String text = "";
             if(!event.isBY_ADMIN()){
 
-                text   = getEventWithPatternNoByAdmin(event);
-
+                text   = EventAnonceUtil.getEventWithPatternNoByAdmin(event, messageDao);
             }
             else
             {
-                Message message = messageDao.getMessage(139);
-
-                text   = getEventWithPatternByAdmin(event);
-//                        = message.getSendMessage().getText()
-//                        .replaceAll("event_text"         , event.getEVENT_NAME())
-//                        .replaceAll("event_address"      , event.getPLACE())
-//                        .replaceAll("event_time"         , date)
-//                        .replaceAll("event_contact"      , event.getCONTACT_INFORMATION())
-//                        .replaceAll("event_program"      , event.getPROGRAM())
-//                        .replaceAll("event_dress_code"   , event.getDRESS_CODE())
-//                        .replaceAll("event_rules"        , event.getRULES())
-//                        .replaceAll("event_page"         , event.getPAGE());
+                text   = EventAnonceUtil.getEventWithPatternByAdmin(event, messageDao);
             }
 
         SendPhoto sendPhoto = new SendPhoto().setPhoto(event.getPHOTO());
@@ -223,31 +209,14 @@ public class ShowEventsLikeIteratorCommand extends Command {
             }
             bot.deleteMessage(new DeleteMessage().setChatId(String.valueOf(chatId)).setMessageId(update.getCallbackQuery().getMessage().getMessageId()));
             event = events.get(0);
-//            String date = event.getWHEN().substring(0,2) + " " + DateUtil.getMonthInRussian(Integer.parseInt(event
-//                    .getWHEN().substring(3, 5)))
-//                    +" "+event.getWHEN().substring(event.getWHEN().indexOf(" "));
             String text = "";
             if(!event.isBY_ADMIN()){
-                Message message = messageDao.getMessage(92);
-
-                text      = getEventWithPatternNoByAdmin(event);
+                text      = EventAnonceUtil.getEventWithPatternNoByAdmin(event,messageDao);
             }
             else
             {
-                Message message = messageDao.getMessage(139);
 
-                text  = getEventWithPatternByAdmin(event);
-//                        = message.getSendMessage().getText()
-//                        .replaceAll("event_text"         , event.getEVENT_NAME())
-//                        .replaceAll("event_address"      , event.getPLACE())
-//                        .replaceAll("event_time"         , date)
-//                        .replaceAll("event_contact"      , event.getCONTACT_INFORMATION())
-//                        .replaceAll("event_program"      , event.getPROGRAM())
-//                        .replaceAll("event_dress_code"   , event.getDRESS_CODE())
-//                        .replaceAll("event_rules"        , event.getRULES());
-                if(event.getPAGE()!= null){
-                    text = text+"\n\n<b>Регистрация</b>:"+event.getPAGE();
-                }
+                text  = EventAnonceUtil.getEventWithPatternByAdmin(event, messageDao);
             }
             SendPhoto sendPhoto = new SendPhoto().setPhoto(event.getPHOTO());
             if (event.getPHOTO() != null) {

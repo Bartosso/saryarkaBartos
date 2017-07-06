@@ -5,6 +5,7 @@ import com.turlygazhy.command.Command;
 import com.turlygazhy.dao.impl.ListDao;
 import com.turlygazhy.entity.Event;
 import com.turlygazhy.tool.DateUtil;
+import com.turlygazhy.tool.EventAnonceUtil;
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendDocument;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -62,7 +63,7 @@ public class SolutionForEventFromAdminCommand extends Command {
         if(event != null){
         com.turlygazhy.entity.Message poolMesage = messageDao.getMessage(92);
 
-        String text = getEventWithPatternNoByAdmin(event);
+        String text = EventAnonceUtil.getEventWithPatternNoByAdmin(event, messageDao);
 
         ReplyKeyboard replyKeyboard = getKeyBoardForVote(Long.parseLong(eventId),"будет",listDao);
         SendMessage sendPool = poolMesage.getSendMessage().setText(text).setReplyMarkup(replyKeyboard).setChatId(GROUP_FOR_VOTE)

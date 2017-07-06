@@ -8,6 +8,7 @@ import com.turlygazhy.entity.Event;
 import com.turlygazhy.entity.Message;
 import com.turlygazhy.entity.MessageElement;
 import com.turlygazhy.tool.DateUtil;
+import com.turlygazhy.tool.EventAnonceUtil;
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendDocument;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -235,33 +236,13 @@ public class CreateEventVoteCommand extends Command {
             Message poolNotificationMessage = messageDao.getMessage(92);
             SendMessage sendPool = poolNotificationMessage.getSendMessage().setChatId(GROUP_FOR_VOTE)
                     .setReplyMarkup(replyKeyboard);
-//            Message patternPoolInfo = messageDao.getMessage(92);
-//            String date = when.substring(0,2) + " " + DateUtil.getMonthInRussian(Integer.parseInt(when.substring(3, 5)))
-//                    +when.substring(when.indexOf(" "));
-            String text   = getEventWithPatternByAdmin(listDao.getEvent(String.valueOf(eventId)));
-//                    = patternPoolInfo.getSendMessage().getText()
-//                    .replaceAll("event_text"         , event)
-//                    .replaceAll("event_address"      , where)
-//                    .replaceAll("event_time "        , date)
-//                    .replaceAll("event_contact"      , contactInformation)
-//                    .replaceAll("event_program"      , program)
-//                    .replaceAll("event_dress_code"   , dresscode)
-//                    .replaceAll("event_rules"        , rules);
-
-//            if(page!= null){
-//                text = text+"\n\n<b>Регистрация</b>:"+page;
-//            }
+            String text   = EventAnonceUtil.getEventWithPatternByAdmin(listDao.getEvent(String.valueOf(eventId)), messageDao);
 
             if (photo != null) {
                 SendPhoto sendPhoto = new SendPhoto();
                 sendPhoto.setPhoto(photo);
                 bot.sendPhoto(sendPhoto.setChatId(GROUP_FOR_VOTE));
             }
-//            if (video !=null)  {
-//                SendVideo sendVideo = new SendVideo();
-//                sendVideo.setVideo(video);
-//                bot.sendVideo(sendVideo.setChatId(GROUP_FOR_VOTE));
-//            }
 
             sendPool.setText(text).setParseMode(ParseMode.HTML);
             bot.sendMessage(sendPool);
@@ -271,7 +252,6 @@ public class CreateEventVoteCommand extends Command {
                 sendDocument.setDocument(document);
                 bot.sendDocument(sendDocument.setChatId(GROUP_FOR_VOTE));
             }
-//            video                  = null;
             photo                  = null;
             event                  = null;
             when                   = null;
@@ -287,25 +267,4 @@ public class CreateEventVoteCommand extends Command {
         }
         return true;
     }
-//    private void createRemind(Bot bot, Update update, long eventId) throws ParseException, SQLException, TelegramApiException {
-//        Date now                 = new Date();
-//        SimpleDateFormat format  = new SimpleDateFormat();
-//        format.applyPattern("dd.MM.yy, hh:mm");
-//        Date eventDate           = format.parse(when);
-//        LocalDateTime eventLocal = LocalDateTime.ofInstant(eventDate.toInstant(), ZoneId.systemDefault());
-//        Date dateEventMinusDay   = Date.from(eventLocal.minusDays(1).atZone(ZoneId.systemDefault()).toInstant());
-//        Date dateEventMinusHour  = Date.from(eventLocal.minusHours(1).atZone(ZoneId.systemDefault()).toInstant());
-//        if (now.before(dateEventMinusDay)) {
-//            Main.getReminder().setRemindEventStartOneDay(dateEventMinusDay, eventId);
-//            Main.getReminder().setRemindEventsStartOneHour(dateEventMinusHour, eventId);
-//        } else {
-//            if (now.before(dateEventMinusHour)){
-//                Main.getReminder().setRemindEventsStartOneHour(dateEventMinusHour, eventId);
-//            }
-//            else {
-//                bot.sendMessage(messageDao.getMessage(149).getSendMessage().setChatId(chatId));
-//            }
-//
-//        }
-//    }
 }

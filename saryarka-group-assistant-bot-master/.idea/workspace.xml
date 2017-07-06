@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="975d932e-c7fc-45d4-bacd-3aec45a414ea" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/turlygazhy/Bot.class" afterPath="$PROJECT_DIR$/target/classes/com/turlygazhy/Bot.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/Command.class" afterPath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/Command.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/impl/CreateEventVoteCommand.class" afterPath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/impl/CreateEventVoteCommand.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/impl/EventCreateFromMemberCommand.class" afterPath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/impl/EventCreateFromMemberCommand.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/impl/ShowEventsLikeIteratorCommand.class" afterPath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/impl/ShowEventsLikeIteratorCommand.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/impl/SolutionForEventFromAdminCommand.class" afterPath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/impl/SolutionForEventFromAdminCommand.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/turlygazhy/Bot.java" afterPath="$PROJECT_DIR$/src/main/java/com/turlygazhy/Bot.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,54 +29,54 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Command.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Command.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/Command.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3943">
-              <caret line="336" column="52" lean-forward="true" selection-start-line="336" selection-start-column="52" selection-end-line="336" selection-end-column="52" />
+            <state relative-caret-position="-87">
+              <caret line="435" column="0" lean-forward="true" selection-start-line="435" selection-start-column="0" selection-end-line="435" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Bot.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/Bot.java">
+      <file leaf-file-name="RemindEventStartOneHourTask.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/reminder/timer_task/RemindEventStartOneHourTask.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+            <state relative-caret-position="510">
+              <caret line="44" column="16" lean-forward="false" selection-start-line="44" selection-start-column="16" selection-end-line="44" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RemindEventStartOneDayTask.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/reminder/timer_task/RemindEventStartOneDayTask.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-22">
+              <caret line="20" column="13" lean-forward="false" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CheckEveryNightDbTask.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/reminder/timer_task/CheckEveryNightDbTask.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="54" column="17" lean-forward="false" selection-start-line="54" selection-start-column="17" selection-end-line="54" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EventAnonceUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/tool/EventAnonceUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="675">
+              <caret line="45" column="17" lean-forward="false" selection-start-line="45" selection-start-column="17" selection-end-line="45" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AddToGoogleSheetsCommand.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/AddToGoogleSheetsCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
-              <caret line="40" column="23" lean-forward="false" selection-start-line="40" selection-start-column="23" selection-end-line="40" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AddToListCommand.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/AddToListCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1309">
-              <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SheetsAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/google_sheets/SheetsAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="29">
-              <caret line="49" column="16" lean-forward="false" selection-start-line="49" selection-start-column="16" selection-end-line="49" selection-end-column="16" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -81,46 +86,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="119">
               <caret line="16" column="13" lean-forward="false" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ShowEventsLikeIteratorCommand.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowEventsLikeIteratorCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="151">
-              <caret line="238" column="22" lean-forward="false" selection-start-line="238" selection-start-column="22" selection-end-line="238" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CreateEventVoteCommand.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/CreateEventVoteCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="318">
-              <caret line="250" column="13" lean-forward="true" selection-start-line="250" selection-start-column="13" selection-end-line="252" selection-end-column="15" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SolutionForEventFromAdminCommand.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/SolutionForEventFromAdminCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="63" column="0" lean-forward="false" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EventCreateFromMemberCommand.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/EventCreateFromMemberCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="327">
-              <caret line="249" column="75" lean-forward="false" selection-start-line="249" selection-start-column="75" selection-end-line="249" selection-end-column="75" />
               <folding />
             </state>
           </provider>
@@ -163,7 +128,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/DonateAbookCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowInfoVoteCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowInfoCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/InfoVoteCommand.java" />
@@ -191,8 +155,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/tool/DateUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/dao/impl/MemberDao.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/reminder/Reminder.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/reminder/timer_task/RemindEventStartOneDayTask.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/reminder/timer_task/RemindEventStartOneHourTask.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/CreateReminderWithVoteInGroupCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/EventVoteCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/AddToRequestsListCommand.java" />
@@ -208,12 +170,15 @@
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/CommandType.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/CommandFactory.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/VacancyPreEditMenuCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/EventCreateFromMemberCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/SolutionForEventFromAdminCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowEventsLikeIteratorCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/CreateEventVoteCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/Command.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/Bot.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/tool/EventAnonceUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/reminder/timer_task/RemindEventStartOneDayTask.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/reminder/timer_task/RemindEventStartOneHourTask.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/CreateEventVoteCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/SolutionForEventFromAdminCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/EventCreateFromMemberCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowEventsLikeIteratorCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/Command.java" />
       </list>
     </option>
   </component>
@@ -972,7 +937,14 @@
       <option name="project" value="LOCAL" />
       <updated>1499336902807</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="new Event announce util and some things for reminder">
+      <created>1499345753734</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1499345753734</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1091,7 +1063,8 @@
     <MESSAGE value="Now Admin can change anything in vacancy when premoderate" />
     <MESSAGE value="added new pattern" />
     <MESSAGE value="hotfix" />
-    <option name="LAST_COMMIT_MESSAGE" value="hotfix" />
+    <MESSAGE value="new Event announce util and some things for reminder" />
+    <option name="LAST_COMMIT_MESSAGE" value="new Event announce util and some things for reminder" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1112,13 +1085,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/GetTenderCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="21" column="26" lean-forward="false" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/DeleteDiscountCommand.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
@@ -1162,13 +1128,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/reminder/timer_task/CheckEveryNightDbTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="41" column="32" lean-forward="false" selection-start-line="41" selection-start-column="32" selection-end-line="41" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/reminder/timer_task/AbstractTask.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -1180,13 +1139,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="400">
           <caret line="79" column="74" lean-forward="false" selection-start-line="79" selection-start-column="74" selection-end-line="79" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/tool/DateUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="186" column="17" lean-forward="false" selection-start-line="186" selection-start-column="17" selection-end-line="186" selection-end-column="17" />
         </state>
       </provider>
     </entry>
@@ -1257,23 +1209,6 @@
           <folding>
             <element signature="e#1630#1631#0" expanded="false" />
             <element signature="e#1659#1660#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/reminder/timer_task/RemindEventStartOneHourTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1870">
-          <caret line="110" column="9" lean-forward="false" selection-start-line="110" selection-start-column="9" selection-end-line="110" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/reminder/timer_task/RemindEventStartOneDayTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="638">
-          <caret line="110" column="9" lean-forward="false" selection-start-line="110" selection-start-column="9" selection-end-line="110" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1440,7 +1375,7 @@
         <state relative-caret-position="293">
           <caret line="117" column="0" lean-forward="true" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1450,40 +1385,8 @@
         <state relative-caret-position="454">
           <caret line="43" column="36" lean-forward="false" selection-start-line="43" selection-start-column="36" selection-end-line="43" selection-end-column="36" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/EventCreateFromMemberCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="249" column="75" lean-forward="false" selection-start-line="249" selection-start-column="75" selection-end-line="249" selection-end-column="75" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/SolutionForEventFromAdminCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="63" column="0" lean-forward="false" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowEventsLikeIteratorCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="238" column="22" lean-forward="false" selection-start-line="238" selection-start-column="22" selection-end-line="238" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/CreateEventVoteCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="250" column="13" lean-forward="true" selection-start-line="250" selection-start-column="13" selection-end-line="252" selection-end-column="15" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1492,24 +1395,6 @@
         <state relative-caret-position="119">
           <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/Command.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3943">
-          <caret line="336" column="52" lean-forward="true" selection-start-line="336" selection-start-column="52" selection-end-line="336" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/Bot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1529,6 +1414,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/AddToListCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="27" column="0" lean-forward="true" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/tool/DateUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3009">
+          <caret line="186" column="17" lean-forward="false" selection-start-line="186" selection-start-column="17" selection-end-line="186" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/tool/EventAnonceUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="675">
+          <caret line="45" column="17" lean-forward="false" selection-start-line="45" selection-start-column="17" selection-end-line="45" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/AddToGoogleSheetsCommand.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="281">
@@ -1537,10 +1448,76 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/AddToListCommand.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/Bot.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1309">
-          <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+        <state relative-caret-position="238">
+          <caret line="32" column="31" lean-forward="false" selection-start-line="32" selection-start-column="31" selection-end-line="32" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/reminder/timer_task/CheckEveryNightDbTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="54" column="17" lean-forward="false" selection-start-line="54" selection-start-column="17" selection-end-line="54" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/reminder/timer_task/RemindEventStartOneHourTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="44" column="16" lean-forward="false" selection-start-line="44" selection-start-column="16" selection-end-line="44" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/reminder/timer_task/RemindEventStartOneDayTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-22">
+          <caret line="20" column="13" lean-forward="false" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/CreateEventVoteCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3553">
+          <caret line="237" column="51" lean-forward="false" selection-start-line="237" selection-start-column="51" selection-end-line="237" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/SolutionForEventFromAdminCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="833">
+          <caret line="65" column="86" lean-forward="false" selection-start-line="65" selection-start-column="86" selection-end-line="65" selection-end-column="86" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/EventCreateFromMemberCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2603">
+          <caret line="75" column="26" lean-forward="false" selection-start-line="75" selection-start-column="26" selection-end-line="75" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowEventsLikeIteratorCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3572">
+          <caret line="218" column="86" lean-forward="false" selection-start-line="218" selection-start-column="86" selection-end-line="218" selection-end-column="86" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/Command.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-87">
+          <caret line="435" column="0" lean-forward="true" selection-start-line="435" selection-start-column="0" selection-end-line="435" selection-end-column="0" />
           <folding />
         </state>
       </provider>
