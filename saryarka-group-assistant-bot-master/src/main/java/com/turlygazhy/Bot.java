@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
 
 /**
  * Created by Yerassyl_Turlygazhy on 11/24/2016.
@@ -34,12 +35,9 @@ public class Bot extends TelegramLongPollingBot {
     private UserDao userDao                       = factory.getUserDao();
     private ListDao listDao                       = factory.getListDao("EVENTS_LIST");
     private String EVENTS_TABLE_NAME              = "EVENTS_LIST";
-    private final String GROUP_FOR_VOTE           = factory.getListDao("KOSTIL").daiKostil();
+    private final String GROUP_FOR_VOTE           = "-224196565";
+    private Timer timer                           = new Timer(true);
 
-    // убрать на продакшене
-    public Bot() throws SQLException {
-    }
-//            "-224196565";
 
 
     public void onUpdateReceived(Update update) {

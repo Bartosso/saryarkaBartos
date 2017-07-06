@@ -16,6 +16,7 @@ import java.util.Date;
  * Created by Yerassyl_Turlygazhy on 11/24/2016.
  */
 public class Main {
+    private static Reminder reminder;
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     public static void main(String[] args)  {
 
@@ -25,17 +26,18 @@ public class Main {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
 
         try {
-            Bot bot = new Bot();
-            new Reminder(bot);
+            Bot bot           = new Bot();
+            reminder = new Reminder(bot);
             telegramBotsApi.registerBot(bot);
             logger.info("Bot was registered");
 
         } catch (TelegramApiRequestException e) {
             throw new RuntimeException(e);
-            //Тоже убрать на продакшене
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
+        }
+    }
+
+    public static Reminder getReminder() {
+        return reminder;
     }
 }

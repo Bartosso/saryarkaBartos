@@ -93,6 +93,27 @@ public class ListDao {
     return listData;
     }
 
+    public void updateTenderText(String listDataID, String newValue) throws SQLException{
+        PreparedStatement ps = connection.prepareStatement("UPDATE PUBLIC."+ listName + " SET TEXT=? WHERE ID=?");
+        ps.setString(1, newValue);
+        ps.setString(2, listDataID);
+        ps.execute();
+    }
+
+    public String moveTenderInAnotherType(String listDataId, String anotherListName) throws SQLException{
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO "+ anotherListName +
+                "(MEMBER_ID, TEXT, DATE_POST, ADMIN_ACKNOWLEDGE) select MEMBER_ID, TEXT, DATE_POST, ADMIN_ACKNOWLEDGE from "
+                + listName +" where id ="+ listDataId , Statement.RETURN_GENERATED_KEYS);
+        ps.execute();
+        ResultSet rs = ps.getGeneratedKeys();
+        rs.next();
+        try{
+        return rs.getString(1);}
+        catch (JdbcSQLException e){
+            return null;
+        }
+    }
+
     public void deleteListById(long listDataId) throws SQLException{
         PreparedStatement ps = connection.prepareStatement("DELETE FROM PUBLIC."+ listName + " WHERE ID="+ listDataId);
         ps.execute();
@@ -124,8 +145,8 @@ public class ListDao {
         return events;
     }
 
-    public void createNewEvent(String eventName, String where, String date, String photo,String contactInformation,String rules, String dressCode, String program, String page, String DOCUMENT , boolean ADMIN_ACKNOWLEDGE, boolean BY_ADMIN) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO PUBLIC." + listName + "(EVENT_NAME, PLACE, WHEN, CONTACT_INFORMATION, PHOTO,  ADMIN_ACKNOWLEDGE, RULES, DRESS_CODE, PROGRAM, PAGE, BY_ADMIN, DOCUMENT) VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?)");
+    public long createNewEvent(String eventName, String where, String date, String photo,String contactInformation,String rules, String dressCode, String program, String page, String DOCUMENT , boolean ADMIN_ACKNOWLEDGE, boolean BY_ADMIN) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO PUBLIC." + listName + "(EVENT_NAME, PLACE, WHEN, CONTACT_INFORMATION, PHOTO,  ADMIN_ACKNOWLEDGE, RULES, DRESS_CODE, PROGRAM, PAGE, BY_ADMIN, DOCUMENT) VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         ps.setString(  1, eventName);
         ps.setString(  2, where);
         ps.setString(  3, date);
@@ -139,6 +160,10 @@ public class ListDao {
         ps.setBoolean(11, BY_ADMIN);
         ps.setString( 12, DOCUMENT);
         ps.execute();
+        ResultSet rs = ps.getGeneratedKeys();
+        rs.next();
+
+        return rs.getInt(1);
     }
     public void voteEvent(String eventId, String userId, String chose) throws SQLException {
         PreparedStatement ps = connection.prepareStatement("UPDATE public." + listName + " set "+ chose +" = CONCAT("+ chose +", '"+ userId +"', '/') WHERE ID= '"+ eventId +"' ");
@@ -246,6 +271,26 @@ public class ListDao {
         votes                = resultSet.getString(1);
 
         return votes;
+    }
+
+    public String getMembersWhoNeedReminder(String eventId) throws  SQLException {
+        String   result;
+        PreparedStatement ps = connection.prepareStatement("SELECT MEMBERS_WHO_NEED_REMINDER FROM PUBLIC."+ listName + " WHERE ID="+ eventId);
+        ps.execute();
+        ResultSet resultSet  = ps.getResultSet();
+        resultSet.next();
+        try{
+        return resultSet.getString(1);
+        }catch (JdbcSQLException e){
+            return null;
+        }
+    }
+
+    public void addMemberWhoNeedReminder(String eventId, String memberId) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("UPDATE PUBLIC."+ listName
+                + " SET MEMBERS_WHO_NEED_REMINDER = CONCAT (MEMBERS_WHO_NEED_REMINDER, ?, '`') WHERE ID ="+eventId);
+        ps.setString(1, memberId);
+        ps.execute();
     }
 
     public List<Message> readAll() throws SQLException {
@@ -623,6 +668,20 @@ public class ListDao {
         rs.next();
         return rs.getString(1);
     }
+
+    //Секция редактирования ивентов перед публикацией
+
+    public void changeStuff(String newValue, String stuffId, String whatToChange) throws SQLException{
+        PreparedStatement ps = connection.prepareStatement("UPDATE PUBLIC."+ listName +" SET "+whatToChange+"='"+newValue+"' WHERE ID="+stuffId);
+        ps.execute();
+    }
+
+    public void deleteStuff(String stuffId, String whatToDelete) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("UPDATE PUBLIC."+listName+" SET "+whatToDelete+" = NULL WHERE ID="+stuffId);
+        ps.execute();
+    }
+
+
 
 
 

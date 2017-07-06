@@ -77,7 +77,7 @@ public class GetEventCommand extends Command {
 //        }
 
         try {
-            ReplyKeyboard replyKeyboard = getKeyBoardForVote(String.valueOf(event.getId()),eventTypeToVote,listDao);
+            ReplyKeyboard replyKeyboard = getKeyBoardForVote(event.getId(),eventTypeToVote,listDao);
 //            bot.sendMessage(new SendMessage()
 //                    .setChatId(chatId)
 //                    .setText(text).setReplyMarkup(replyKeyboard).setParseMode(ParseMode.HTML));

@@ -60,6 +60,7 @@ public class SheetsAdapter {
             dataRow.add(data.getFIO());
             dataRow.add(data.getCompanyName());
             dataRow.add(data.getNisha());
+
 //            dataRow.add(data.getNaviki());
             dataRow.add(data.getContact());
 //            dataRow.add(data.getPhoneNumber());
@@ -67,8 +68,12 @@ public class SheetsAdapter {
         }
 
         ValueRange vr = new ValueRange().setValues(writeData).setMajorDimension("ROWS");
+//        service.spreadsheets().values()
+//                .update(spreadsheetId, writeRange, vr)
+//                .setValueInputOption("RAW")
+//                .execute();
         service.spreadsheets().values()
-                .update(spreadsheetId, writeRange, vr)
+                .append(spreadsheetId, writeRange, vr)
                 .setValueInputOption("RAW")
                 .execute();
     }

@@ -30,4 +30,21 @@ public class Reminder {
         CheckEveryNightDbTask checkEveryNightDbTask = new CheckEveryNightDbTask(bot, this);
         timer.schedule(checkEveryNightDbTask, date);
     }
+
+    public void setRemindEventStartOneDay(Date eventDateStartMinusDay, long eventId){
+        logger.info("New event remind before day at " + eventDateStartMinusDay);
+
+        RemindEventStartOneDayTask remindEventStartOneDayTask = new RemindEventStartOneDayTask(bot,this,eventId);
+        timer.schedule(remindEventStartOneDayTask, eventDateStartMinusDay);
+    }
+
+    public void setRemindEventsStartOneHour(Date eventsStartOneHour, long eventId){
+        logger.info("New event remind before hour at " + eventsStartOneHour);
+
+        RemindEventStartOneHourTask remindEventStartOneHourTask = new RemindEventStartOneHourTask(bot,this, eventId);
+        timer.schedule(remindEventStartOneHourTask, eventsStartOneHour);
+    }
+    public Logger getLogger(){
+        return logger;
+    }
 }

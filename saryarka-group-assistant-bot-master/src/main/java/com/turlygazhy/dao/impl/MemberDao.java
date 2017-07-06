@@ -97,6 +97,15 @@ public class MemberDao {
         }
     }
 
+    public long getMemberChatId(String memberId) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT USER_ID FROM MEMBER WHERE ID=?");
+        ps.setString(1, memberId);
+        ps.execute();
+        ResultSet resultSet  = ps.getResultSet();
+        resultSet.next();
+        return resultSet.getLong(1);
+    }
+
 //    public String getMemberChatId(long chat)
 
     public Member selectByUserId(Integer userId) throws SQLException {

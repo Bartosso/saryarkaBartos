@@ -1,16 +1,19 @@
 package com.turlygazhy.command.impl;
 
 import com.turlygazhy.Bot;
+import com.turlygazhy.Main;
 import com.turlygazhy.command.Command;
 import com.turlygazhy.dao.impl.ListDao;
 import com.turlygazhy.entity.Event;
 import com.turlygazhy.entity.Message;
 import com.turlygazhy.entity.MessageElement;
+import com.turlygazhy.tool.DateUtil;
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendDocument;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.api.methods.send.SendVideo;
+import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
@@ -20,6 +23,8 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,6 +49,7 @@ public class CreateEventVoteCommand extends Command {
     private boolean            needVideo      = true;
     private ListDao            listDao        = factory.getListDao("EVENTS_LIST");
     private int                step           = 1;
+    private long               chatId;
     private Date date;
 
 
@@ -54,7 +60,7 @@ public class CreateEventVoteCommand extends Command {
         if (updateMessage == null) {
             updateMessage = update.getCallbackQuery().getMessage();
         }
-        Long chatId = updateMessage.getChatId();
+        chatId = updateMessage.getChatId();
         if (expectedMessageElement != null) {
             switch (step){
                 case 1:
@@ -214,32 +220,37 @@ public class CreateEventVoteCommand extends Command {
         }
 
         if(step == 11) {
-            listDao.createNewEvent(event, where, when,photo,  contactInformation,rules, dresscode,program, page,document, true, true);
+            long eventId = listDao.createNewEvent(event, where, when,photo,  contactInformation,rules, dresscode,program, page,document, true, true);
             Message message = messageDao.getMessage(30);
             SendMessage sendMessage = message.getSendMessage().setChatId(chatId);
             bot.sendMessage(sendMessage);
-            String eventId = String.valueOf(listDao.getEventId(event,where,when,true));
+            try {
+                createRemind(bot,eventId,when, chatId);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
             ReplyKeyboard replyKeyboard = getKeyBoardForVote(eventId, "будет", listDao);
 
             Message poolNotificationMessage = messageDao.getMessage(92);
             SendMessage sendPool = poolNotificationMessage.getSendMessage().setChatId(GROUP_FOR_VOTE)
                     .setReplyMarkup(replyKeyboard);
-            Message patternPoolInfo = messageDao.getMessage(92);
-            String date = when.substring(0,2) + " " + getMonthInRussian(Integer.parseInt(when.substring(3, 5)))
-                    +" "+when.substring(when.indexOf(" "));
-            String text = patternPoolInfo.getSendMessage().getText()
-                    .replaceAll("event_text"         , event)
-                    .replaceAll("event_address"      , where)
-                    .replaceAll("event_time "        , date)
-                    .replaceAll("event_contact"      , contactInformation)
-                    .replaceAll("event_program"      , program)
-                    .replaceAll("event_dress_code"   , dresscode)
-                    .replaceAll("event_rules"        , rules);
+//            Message patternPoolInfo = messageDao.getMessage(92);
+//            String date = when.substring(0,2) + " " + DateUtil.getMonthInRussian(Integer.parseInt(when.substring(3, 5)))
+//                    +when.substring(when.indexOf(" "));
+            String text   = getEventWithPatternByAdmin(listDao.getEvent(String.valueOf(eventId)));
+//                    = patternPoolInfo.getSendMessage().getText()
+//                    .replaceAll("event_text"         , event)
+//                    .replaceAll("event_address"      , where)
+//                    .replaceAll("event_time "        , date)
+//                    .replaceAll("event_contact"      , contactInformation)
+//                    .replaceAll("event_program"      , program)
+//                    .replaceAll("event_dress_code"   , dresscode)
+//                    .replaceAll("event_rules"        , rules);
 
-            if(page!= null){
-                text = text+"\n\n<b>Регистрация</b>:"+page;
-            }
+//            if(page!= null){
+//                text = text+"\n\n<b>Регистрация</b>:"+page;
+//            }
 
             if (photo != null) {
                 SendPhoto sendPhoto = new SendPhoto();
@@ -276,4 +287,25 @@ public class CreateEventVoteCommand extends Command {
         }
         return true;
     }
+//    private void createRemind(Bot bot, Update update, long eventId) throws ParseException, SQLException, TelegramApiException {
+//        Date now                 = new Date();
+//        SimpleDateFormat format  = new SimpleDateFormat();
+//        format.applyPattern("dd.MM.yy, hh:mm");
+//        Date eventDate           = format.parse(when);
+//        LocalDateTime eventLocal = LocalDateTime.ofInstant(eventDate.toInstant(), ZoneId.systemDefault());
+//        Date dateEventMinusDay   = Date.from(eventLocal.minusDays(1).atZone(ZoneId.systemDefault()).toInstant());
+//        Date dateEventMinusHour  = Date.from(eventLocal.minusHours(1).atZone(ZoneId.systemDefault()).toInstant());
+//        if (now.before(dateEventMinusDay)) {
+//            Main.getReminder().setRemindEventStartOneDay(dateEventMinusDay, eventId);
+//            Main.getReminder().setRemindEventsStartOneHour(dateEventMinusHour, eventId);
+//        } else {
+//            if (now.before(dateEventMinusHour)){
+//                Main.getReminder().setRemindEventsStartOneHour(dateEventMinusHour, eventId);
+//            }
+//            else {
+//                bot.sendMessage(messageDao.getMessage(149).getSendMessage().setChatId(chatId));
+//            }
+//
+//        }
+//    }
 }

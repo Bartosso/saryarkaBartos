@@ -5,6 +5,7 @@ import com.turlygazhy.command.Command;
 import com.turlygazhy.dao.impl.ListDao;
 import com.turlygazhy.entity.Message;
 import com.turlygazhy.entity.MessageElement;
+import com.turlygazhy.tool.DateUtil;
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
@@ -88,7 +89,7 @@ public class AddToRequestsListCommand extends Command {
         SendMessage sendMessage = new SendMessage().setChatId(chatId)
                 .setReplyMarkup(keyboardMarkUpDao.select(message.getKeyboardMarkUpId()))
                 .setText(message.getSendMessage().getText().replaceAll("day_and_month",
-                        localDateTime.getDayOfMonth() +" " +getMonthInRussian(localDateTime.getMonthValue())));
+                        localDateTime.getDayOfMonth() +" " + DateUtil.getMonthInRussian(localDateTime.getMonthValue())));
         bot.sendMessage(getTextToAdmin(tenderId,update,text).setChatId(chatId));
         bot.sendMessage(sendMessage);
 
@@ -115,13 +116,21 @@ public class AddToRequestsListCommand extends Command {
 
         InlineKeyboardButton makeBe = new InlineKeyboardButton();
         makeBe.setText(buttonDao.getButtonText(139));
-        makeBe.setCallbackData(buttonDao.getButtonText(139) + ":" + tenderId);
+        makeBe.setCallbackData("acceptRequestTender" + ":" + tenderId);
         row.add(makeBe);
 
         InlineKeyboardButton deleteTender = new InlineKeyboardButton();
         deleteTender.setText(buttonDao.getButtonText(140));
-        deleteTender.setCallbackData(buttonDao.getButtonText(140) + ":" + tenderId);
+        deleteTender.setCallbackData("rejectRequestTender" + ":" + tenderId);
         row.add(deleteTender);
+
+        rows.add(row);
+        row = new ArrayList<>();
+
+        InlineKeyboardButton editTender = new InlineKeyboardButton();
+        editTender.setText(buttonDao.getButtonText(148));
+        editTender.setCallbackData("editRequestTender" + ":" + tenderId);
+        row.add(editTender);
 
         rows.add(row);
         keyboard.setKeyboard(rows);

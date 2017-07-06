@@ -169,15 +169,21 @@ public class CreateANewVacancyCommand extends Command {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         List<InlineKeyboardButton> row = new ArrayList<>();
 
-        InlineKeyboardButton buttonNext = new InlineKeyboardButton();
-        buttonNext.setText(buttonDao.getButtonText(138));
-        buttonNext.setCallbackData(buttonDao.getButtonText(138) + ":" + vacancyId);
-        row.add(buttonNext);
+        InlineKeyboardButton acceptVacancy = new InlineKeyboardButton();
+        acceptVacancy.setText(buttonDao.getButtonText(138));
+        acceptVacancy.setCallbackData(buttonDao.getButtonText(138) + ":" + vacancyId);
+        row.add(acceptVacancy);
 
-        InlineKeyboardButton buttonWrite = new InlineKeyboardButton();
-        buttonWrite.setText(buttonDao.getButtonText(137));
-        buttonWrite.setCallbackData("delete_vacancy:" + vacancyId);
-        row.add(buttonWrite);
+        InlineKeyboardButton deleteVacancy = new InlineKeyboardButton();
+        deleteVacancy.setText(buttonDao.getButtonText(137));
+        deleteVacancy.setCallbackData("delete_vacancy:" + vacancyId);
+        row.add(deleteVacancy);
+
+        InlineKeyboardButton editVacancy = new InlineKeyboardButton();
+        editVacancy.setText(buttonDao.getButtonText(187));
+        editVacancy.setCallbackData("edit_vacancy:" + vacancyId);
+        row.add(editVacancy);
+
 
         rows.add(row);
         keyboard.setKeyboard(rows);

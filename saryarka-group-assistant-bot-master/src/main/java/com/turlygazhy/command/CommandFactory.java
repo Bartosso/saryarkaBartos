@@ -164,6 +164,16 @@ public class CommandFactory {
                 return new SolutionForRequestTenderCommand();
             case SOLUTION_FOR_OFFER_TENDER:
                 return new SolutionForOfferTenderCommand();
+            case CREATE_REMINDER_WITH_VOTE_IN_GROUP:
+                return new CreateReminderWithVoteInGroupCommand();
+            case EDIT_OFFER_TENDER_BY_ADMIN:
+                return new EditOfferTenderByAdminCommand();
+            case EDIT_REQUEST_TENDER_BY_ADMIN:
+                return new EditRequestTenderByAdminCommand();
+            case EDIT_EVENT_COMMAND:
+                return new EditEventCommand();
+            case VACANCY_EDIT_COMMAND:
+                return new VacancyPreEditMenuCommand();
             default:
                 throw new NotRealizedMethodException("Not realized for type: " + type);
         }

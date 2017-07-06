@@ -1,13 +1,15 @@
 package com.turlygazhy.command;
 
 import com.turlygazhy.Bot;
+import com.turlygazhy.Main;
 import com.turlygazhy.dao.DaoFactory;
 import com.turlygazhy.dao.impl.*;
-import com.turlygazhy.entity.Discount;
-import com.turlygazhy.entity.Message;
-import com.turlygazhy.entity.Vacancy;
+import com.turlygazhy.entity.*;
+import com.turlygazhy.tool.DateUtil;
+import javafx.scene.chart.Chart;
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendContact;
+import org.telegram.telegrambots.api.methods.send.SendDocument;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.api.objects.Contact;
@@ -19,7 +21,12 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -99,7 +106,7 @@ public abstract class Command {
         }
     }
 
-    public void sendMessageToAdmin(long messageId, TelegramLongPollingBot bot) throws SQLException, TelegramApiException {
+    protected void sendMessageToAdmin(long messageId, TelegramLongPollingBot bot) throws SQLException, TelegramApiException {
         long adminChatId = getAdminChatId();
         sendMessage(messageId, adminChatId, bot);
     }
@@ -113,7 +120,7 @@ public abstract class Command {
         sendMessage(messageId, adminChatId, bot, contact);
     }
 
-    public void sendMessageToAdmin(String text, TelegramLongPollingBot bot) throws SQLException, TelegramApiException {
+    protected void sendMessageToAdmin(String text, TelegramLongPollingBot bot) throws SQLException, TelegramApiException {
         long adminChatId = getAdminChatId();
         sendMessage(text, adminChatId, bot);
     }
@@ -128,7 +135,7 @@ public abstract class Command {
         );
     }
 
-    public void sendPhotoToAdmin(String photo, Bot bot) throws TelegramApiException {
+    protected void sendPhotoToAdmin(String photo, Bot bot) throws TelegramApiException {
         long adminChatId = getAdminChatId();
         bot.sendPhoto(new SendPhoto()
                 .setChatId(adminChatId)
@@ -136,7 +143,7 @@ public abstract class Command {
         );
     }
 
-    public ReplyKeyboard getAddToSheetKeyboard(Integer id, Long chatId) throws SQLException {
+    protected ReplyKeyboard getAddToSheetKeyboard(Integer id, Long chatId) throws SQLException {
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
@@ -160,23 +167,30 @@ public abstract class Command {
         return keyboard;
     }
 
-    public ReplyKeyboard getAdditionalInfoToKeyboard(Integer memberId, String info1, String info2, int button1, int button2) throws SQLException {
+    protected ReplyKeyboard getAdminKeyboardForEvent(String eventId) throws SQLException {
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
         List<InlineKeyboardButton> row = new ArrayList<>();
-        InlineKeyboardButton firstButton = new InlineKeyboardButton();
-        InlineKeyboardButton secondButton = new InlineKeyboardButton();
+        InlineKeyboardButton acceptEventButton = new InlineKeyboardButton();
+        InlineKeyboardButton rejectEventButton = new InlineKeyboardButton();
+        InlineKeyboardButton editEventButton   = new InlineKeyboardButton();
 
-        String buttonText = buttonDao.getButtonText(button1);
-        firstButton.setText(buttonText);
-        firstButton.setCallbackData(buttonText + ":" + info1);
-        row.add(firstButton);
+        acceptEventButton.setText(buttonDao.getButtonText(90));
+        acceptEventButton.setCallbackData("acceptEvent" + ":" + eventId);
+        row.add(acceptEventButton);
 
-        String declineButtonText = buttonDao.getButtonText(button2);
-        secondButton.setText(declineButtonText);
-        secondButton.setCallbackData(declineButtonText + ":" + info1);
-        row.add(secondButton);
+        rejectEventButton.setText(buttonDao.getButtonText(91));
+        rejectEventButton.setCallbackData("declineEvent" + ":" + eventId);
+        row.add(rejectEventButton);
+        rows.add(row);
+
+        row = new ArrayList<>();
+        editEventButton.setText(buttonDao.getButtonText(163));
+        editEventButton.setCallbackData("editEvent"+ ":" + eventId);
+        row.add(editEventButton);
+
+
 
         rows.add(row);
 
@@ -185,7 +199,7 @@ public abstract class Command {
     }
 
     //Клавиатура для голосований по участию в ивентах с счетчиком
-    public ReplyKeyboard getKeyBoardForVote(String eventId, String eventTypeToVote, ListDao listDao) throws SQLException {
+    protected ReplyKeyboard getKeyBoardForVote(long eventId, String eventTypeToVote, ListDao listDao) throws SQLException {
         InlineKeyboardMarkup keyboard         = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         List<InlineKeyboardButton> row        = new ArrayList<>();
@@ -195,52 +209,41 @@ public abstract class Command {
             case "было":
 
                 InlineKeyboardButton like = new InlineKeyboardButton();
-                String likeVotes = listDao.getVotes(eventId, "WILL_GO_USERS_ID");
+                String likeVotes = listDao.getVotes(String.valueOf(eventId), "WILL_GO_USERS_ID");
                 like.setText("Лайк \uD83D\uDC4D " + getVoteCount(likeVotes));
                 like.setCallbackData("Пойду" + ":" + eventId + "/" + eventTypeToVote);
                 row.add(like);
                 rows.add(row);
 
                 row = new ArrayList<>();
-                String supirVotes = listDao.getVotes(eventId, "MAYBE_USERS_ID");
+                String supirVotes = listDao.getVotes(String.valueOf(eventId), "MAYBE_USERS_ID");
                 InlineKeyboardButton supir = new InlineKeyboardButton();
                 supir.setText("Супер! \uD83D\uDE03 " + getVoteCount(supirVotes));
                 supir.setCallbackData("Планирую" + ":" + eventId + "/" + eventTypeToVote);
                 row.add(supir);
                 rows.add(row);
 
-//                row = new ArrayList<>();
-//                String hahaVotes = listDao.getVotes(eventId, "NOT_GO_USERS_ID");
-//                InlineKeyboardButton haha = new InlineKeyboardButton();
-//                haha.setText("Ха ха! \uD83D\uDE02 " + getVoteCount(hahaVotes));
-//                haha.setCallbackData("Пропустить" + ":" + eventId + "/" + eventTypeToVote);
-//                row.add(haha);
-//                rows.add(row);
+
                 break;
 
             case "будет":
                 InlineKeyboardButton will_go = new InlineKeyboardButton();
-                String will_go_votes = listDao.getVotes(eventId, "WILL_GO_USERS_ID");
+                String will_go_votes = listDao.getVotes(String.valueOf(eventId), "WILL_GO_USERS_ID");
                 will_go.setText("Пойду " + getVoteCount(will_go_votes));
                 will_go.setCallbackData("Пойду" + ":" + eventId + "/" + eventTypeToVote);
                 row.add(will_go);
                 rows.add(row);
 
                 row = new ArrayList<>();
-                String maybe_go_votes = listDao.getVotes(eventId, "MAYBE_USERS_ID");
+                String maybe_go_votes = listDao.getVotes(String.valueOf(eventId), "MAYBE_USERS_ID");
                 InlineKeyboardButton maybe_go = new InlineKeyboardButton();
                 maybe_go.setText("Планирую " + getVoteCount(maybe_go_votes));
                 maybe_go.setCallbackData("Планирую" + ":" + eventId + "/" + eventTypeToVote);
                 row.add(maybe_go);
                 rows.add(row);
 
-//                row = new ArrayList<>();
-//                String not_go_votes = listDao.getVotes(eventId, "NOT_GO_USERS_ID");
-//                InlineKeyboardButton not_go = new InlineKeyboardButton();
-//                not_go.setText("Пропустить " + getVoteCount(not_go_votes));
-//                not_go.setCallbackData("Пропустить" + ":" + eventId + "/" + eventTypeToVote);
-//                row.add(not_go);
-//                rows.add(row);
+
+
 
 
         }
@@ -261,96 +264,8 @@ public abstract class Command {
         return count;
     }
 
-//    public ReplyKeyboard getKeyBoardForVoteWithSomeThings(String eventId, String eventTypeToVote, ListDao listDao) throws SQLException {
-//        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
-//        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
-//        List<InlineKeyboardButton> row = new ArrayList<>();
-//
-//        switch (eventTypeToVote) {
-//
-//            case "было":
-//
-//                InlineKeyboardButton like = new InlineKeyboardButton();
-//                String likeVotes = listDao.getVotes(eventId, "WILL_GO_USERS_ID");
-//                like.setText("Лайк \uD83D\uDC4D \n" + getVoteCount(likeVotes));
-//                like.setCallbackData("Пойду" + ":" + eventId + "/" + eventTypeToVote);
-//                row.add(like);
-//                rows.add(row);
-//
-//                row = new ArrayList<>();
-//                String supirVotes = listDao.getVotes(eventId, "MAYBE_USERS_ID");
-//                InlineKeyboardButton supir = new InlineKeyboardButton();
-//                supir.setText("Супер! \uD83D\uDE03 \n" + getVoteCount(supirVotes));
-//                supir.setCallbackData("Планирую" + ":" + eventId + "/" + eventTypeToVote);
-//                row.add(supir);
-//                rows.add(row);
-//
-//                row = new ArrayList<>();
-//                String hahaVotes = listDao.getVotes(eventId, "NOT_GO_USERS_ID");
-//                InlineKeyboardButton haha = new InlineKeyboardButton();
-//                haha.setText("Ха ха! \uD83D\uDE02 \n" + getVoteCount(hahaVotes));
-//                haha.setCallbackData("Пропустить" + ":" + eventId + "/" + eventTypeToVote);
-//                row.add(haha);
-//                rows.add(row);
-//
-//                row = new ArrayList<>();
-//                InlineKeyboardButton next = new InlineKeyboardButton();
-//                next.setText(buttonDao.getButtonText(116));
-//                next.setCallbackData(buttonDao.getButtonText(116));
-//                row.add(next);
-//                rows.add(row);
-//                break;
-////                break;
-//
-//            case "будет":
-//                InlineKeyboardButton will_go = new InlineKeyboardButton();
-//                String will_go_votes = listDao.getVotes(eventId, "WILL_GO_USERS_ID");
-//                will_go.setText("Пойду \n" + getVoteCount(will_go_votes));
-//                will_go.setCallbackData("Пойду" + ":" + eventId + "/" + eventTypeToVote);
-//                row.add(will_go);
-//                rows.add(row);
-//
-//                row = new ArrayList<>();
-//                String maybe_go_votes = listDao.getVotes(eventId, "MAYBE_USERS_ID");
-//                InlineKeyboardButton maybe_go = new InlineKeyboardButton();
-//                maybe_go.setText("Планирую \n" + getVoteCount(maybe_go_votes));
-//                maybe_go.setCallbackData("Планирую" + ":" + eventId + "/" + eventTypeToVote);
-//                row.add(maybe_go);
-//                rows.add(row);
-//
-//                row = new ArrayList<>();
-//                String not_go_votes = listDao.getVotes(eventId, "NOT_GO_USERS_ID");
-//                InlineKeyboardButton not_go = new InlineKeyboardButton();
-//                not_go.setText("Пропустить \n" + getVoteCount(not_go_votes));
-//                not_go.setCallbackData("Пропустить" + ":" + eventId + "/" + eventTypeToVote);
-//                row.add(not_go);
-//                rows.add(row);
-//
-//                row = new ArrayList<>();
-//                InlineKeyboardButton nextInFuture = new InlineKeyboardButton();
-//                nextInFuture.setText(buttonDao.getButtonText(116));
-//                nextInFuture.setCallbackData(buttonDao.getButtonText(116));
-//                row.add(nextInFuture);
-//                rows.add(row);
-//        }
-//        keyboard.setKeyboard(rows);
-//        return keyboard;
-//
-//    }
-//
-//    private long getVoteCount(String votes) {
-//        long count = 0;
-//        if (votes == null) {
-//            return count;
-//        } else {
-//            for (char element : votes.toCharArray()) {
-//                if (element == '/') count++;
-//            }
-//        }
-//        return count;
-//    }
 
-    public ReplyKeyboard getKeyBoardForSearch(String forNextButton, String forButtonWrite) {
+    protected ReplyKeyboard getKeyBoardForSearch(String forNextButton, String forButtonWrite) {
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         List<InlineKeyboardButton> row = new ArrayList<>();
@@ -371,7 +286,7 @@ public abstract class Command {
         return keyboard;
     }
 
-    public ReplyKeyboard getEditDiscountKeys(String discountId) throws SQLException {
+    private ReplyKeyboard getEditDiscountKeys(String discountId) throws SQLException {
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         List<InlineKeyboardButton> row = new ArrayList<>();
@@ -434,7 +349,7 @@ public abstract class Command {
         return keyboard.setKeyboard(rows);
     }
 
-    public void makeNewMessageDiscountForAdminEdit(Bot bot, String discountId, ListDao listDao, long chatId) throws SQLException, TelegramApiException {
+    protected void makeNewMessageDiscountForAdminEdit(Bot bot, String discountId, ListDao listDao, long chatId) throws SQLException, TelegramApiException {
         Discount discount = listDao.getDiscountById(discountId);
         ReplyKeyboard keyboard = getEditDiscountKeys(discountId);
         SendMessage sendMessageToAdmin = new SendMessage().setText(messageDao.getMessage(106).getSendMessage()
@@ -456,52 +371,7 @@ public abstract class Command {
         bot.sendMessage(sendMessageSuccess);
     }
 
-    public String getMonthInRussian(int month) {
-        String string = null;
-
-        switch (month){
-            case 1:
-                string = "января";
-                break;
-            case 2:
-                string = "февраля";
-                break;
-            case 3:
-                string = "марта";
-                break;
-            case 4:
-                string = "апреля";
-                break;
-            case 5:
-                string = "мая";
-                break;
-            case 6:
-                string = "июня";
-                break;
-            case 7:
-                string = "июля";
-                break;
-            case 8:
-                string = "августа";
-                break;
-            case 9:
-                string = "сентября";
-                break;
-            case 10:
-                string = "октября";
-                break;
-            case 11:
-                string = "ноября";
-                break;
-            case 12:
-                string = "декабря";
-                break;
-        }
-
-        return string;
-    }
-
-    public ReplyKeyboard getVacancyViaButtons(ArrayList<Vacancy> arrayList){
+    protected ReplyKeyboard getVacancyViaButtons(ArrayList<Vacancy> arrayList){
         InlineKeyboardMarkup keyboard         = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         List<InlineKeyboardButton> row;
@@ -519,4 +389,313 @@ public abstract class Command {
         keyboard.setKeyboard(rows);
         return keyboard;
     }
+
+    protected void createRemind(Bot bot, long eventId, String when, long chatId) throws ParseException, SQLException, TelegramApiException {
+        Date now                 = new Date();
+        SimpleDateFormat format  = new SimpleDateFormat();
+        format.applyPattern("dd.MM.yy, hh:mm");
+        Date eventDate           = format.parse(when);
+        LocalDateTime eventLocal = LocalDateTime.ofInstant(eventDate.toInstant(), ZoneId.systemDefault());
+        Date dateEventMinusDay   = Date.from(eventLocal.minusDays(1).atZone(ZoneId.systemDefault()).toInstant());
+        Date dateEventMinusHour  = Date.from(eventLocal.minusHours(1).atZone(ZoneId.systemDefault()).toInstant());
+        if (now.before(dateEventMinusDay)) {
+            Main.getReminder().setRemindEventStartOneDay(dateEventMinusDay, eventId);
+            Main.getReminder().setRemindEventsStartOneHour(dateEventMinusHour, eventId);
+        } else {
+            if (now.before(dateEventMinusHour)){
+                Main.getReminder().setRemindEventsStartOneHour(dateEventMinusHour, eventId);
+            }
+            else {
+                bot.sendMessage(messageDao.getMessage(149).getSendMessage().setChatId(chatId));
+            }
+
+        }
+    }
+
+    protected void sendNewMessageForEditOfferTender(Bot bot, String tenderId, ListDao listDao, long chatId) throws TelegramApiException, SQLException {
+        ListData offer = listDao.getListDataById(tenderId);
+        ReplyKeyboard keyboard = getKeyboardForEditOfferTender(Integer.parseInt(tenderId));
+        SendMessage sendMessageToAdmin = new SendMessage().setText(messageDao.getMessage(154).getSendMessage()
+                .getText()
+                .replaceAll("tender_type_name", "Список предложений")
+                .replaceAll("tender_type_word", "предлагает")
+                .replaceAll("tender_text"     , offer.getText())
+                .replaceAll("tender_member", "@"+memberDao.getMemberById(offer.getMemberId()).getUserName()))
+                .setReplyMarkup(keyboard)
+                .setChatId(chatId);
+        SendMessage sendMessageSuccess = new SendMessage().setChatId(chatId).setText("Изменения сохранены");
+        bot.sendMessage(sendMessageToAdmin);
+        bot.sendMessage(sendMessageSuccess);
+    }
+
+    protected ReplyKeyboard getKeyboardForEditOfferTender(int tenderId) throws SQLException {
+        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        List<InlineKeyboardButton> row = new ArrayList<>();
+
+        InlineKeyboardButton changeTenderType = new InlineKeyboardButton();
+        changeTenderType.setText(buttonDao.getButtonText(150));
+        changeTenderType.setCallbackData("moveOfferToRequest" + ":" + tenderId);
+        row.add(changeTenderType);
+        rows.add(row);
+        row = new ArrayList<>();
+
+        InlineKeyboardButton changeTenderText = new InlineKeyboardButton();
+        changeTenderText.setText(buttonDao.getButtonText(149));
+        changeTenderText.setCallbackData("changeOfferText" + ":" + tenderId);
+        row.add(changeTenderText);
+        rows.add(row);
+        row = new ArrayList<>();
+
+        InlineKeyboardButton makeOfferTenderBe = new InlineKeyboardButton();
+        makeOfferTenderBe.setText(buttonDao.getButtonText(141));
+        makeOfferTenderBe.setCallbackData("acceptOfferTender" + ":" + tenderId);
+        row.add(makeOfferTenderBe);
+        rows.add(row);
+        row = new ArrayList<>();
+
+        InlineKeyboardButton rejectOfferTender = new InlineKeyboardButton();
+        rejectOfferTender.setText(buttonDao.getButtonText(142));
+        rejectOfferTender.setCallbackData("rejectOfferTender" + ":" + tenderId);
+        row.add(rejectOfferTender);
+
+        rows.add(row);
+        return keyboard.setKeyboard(rows);
+
+    }
+
+    protected void sendNewMessageForEditRequestTender(Bot bot, String tenderId, ListDao listDao, long chatId) throws TelegramApiException, SQLException {
+        ListData offer = listDao.getListDataById(tenderId);
+        ReplyKeyboard keyboard = getKeyboardForEditRequestTender(Integer.parseInt(tenderId));
+        SendMessage sendMessageToAdmin = new SendMessage().setText(messageDao.getMessage(154).getSendMessage()
+                .getText()
+                .replaceAll("tender_type_name", "Список запросов")
+                .replaceAll("tender_type_word", "ищет")
+                .replaceAll("tender_text"     , offer.getText())
+                .replaceAll("tender_member", "@"+memberDao.getMemberById(offer.getMemberId()).getUserName()))
+                .setReplyMarkup(keyboard)
+                .setChatId(chatId);
+        SendMessage sendMessageSuccess = new SendMessage().setChatId(chatId).setText("Изменения сохранены");
+        bot.sendMessage(sendMessageToAdmin);
+        bot.sendMessage(sendMessageSuccess);
+    }
+
+    protected ReplyKeyboard getKeyboardForEditRequestTender(int tenderId) throws SQLException {
+        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        List<InlineKeyboardButton> row = new ArrayList<>();
+
+        InlineKeyboardButton changeTenderType = new InlineKeyboardButton();
+        changeTenderType.setText(buttonDao.getButtonText(152));
+        changeTenderType.setCallbackData("moveRequestToOffer" + ":" + tenderId);
+        row.add(changeTenderType);
+        rows.add(row);
+        row = new ArrayList<>();
+
+        InlineKeyboardButton changeTenderText = new InlineKeyboardButton();
+        changeTenderText.setText(buttonDao.getButtonText(151));
+        changeTenderText.setCallbackData("changeRequestText" + ":" + tenderId);
+        row.add(changeTenderText);
+        rows.add(row);
+        row = new ArrayList<>();
+
+        InlineKeyboardButton makRequestTenderBe = new InlineKeyboardButton();
+        makRequestTenderBe.setText(buttonDao.getButtonText(139));
+        makRequestTenderBe.setCallbackData("acceptRequestTender" + ":" + tenderId);
+        row.add(makRequestTenderBe);
+        rows.add(row);
+        row = new ArrayList<>();
+
+        InlineKeyboardButton rejectRequestTender = new InlineKeyboardButton();
+        rejectRequestTender.setText(buttonDao.getButtonText(140));
+        rejectRequestTender.setCallbackData("rejectRequestTender" + ":" + tenderId);
+        row.add(rejectRequestTender);
+
+        rows.add(row);
+        return keyboard.setKeyboard(rows);
+
+    }
+
+    private ReplyKeyboard getKeyboardForEditEvent(String eventId) throws SQLException {
+        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        List<InlineKeyboardButton> row = new ArrayList<>();
+
+        InlineKeyboardButton editEventName     = new InlineKeyboardButton(buttonDao.getButtonText(167));
+        editEventName.setCallbackData("editEventName"+":" + eventId);
+        row.add(editEventName);
+        rows.add(row);
+
+        row = new ArrayList<>();
+        InlineKeyboardButton editEventPlace     = new InlineKeyboardButton(buttonDao.getButtonText(169));
+        editEventPlace.setCallbackData("editEventPlace"+ ":" + eventId);
+        row.add(editEventPlace);
+        rows.add(row);
+
+        row = new ArrayList<>();
+        InlineKeyboardButton editEventWhen      = new InlineKeyboardButton(buttonDao.getButtonText(171));
+        editEventWhen.setCallbackData("editEventWhen"+ ":" + eventId);
+        row.add(editEventWhen);
+        rows.add(row);
+
+        row = new ArrayList<>();
+        InlineKeyboardButton editEventContact   = new InlineKeyboardButton(buttonDao.getButtonText(173));
+        editEventContact.setCallbackData("editEventCont" + ":" + eventId);
+        row.add(editEventContact);
+        rows.add(row);
+
+        row = new ArrayList<>();
+        InlineKeyboardButton editEventPhoto     = new InlineKeyboardButton(buttonDao.getButtonText(175));
+        editEventPhoto.setCallbackData("editEventPhoto" + ":" + eventId);
+        row.add(editEventPhoto);
+        rows.add(row);
+
+        row = new ArrayList<>();
+        InlineKeyboardButton editEventRules     = new InlineKeyboardButton(buttonDao.getButtonText(177));
+        editEventRules.setCallbackData("editEventRules" + ":" + eventId);
+        row.add(editEventRules);
+        rows.add(row);
+
+        row = new ArrayList<>();
+        InlineKeyboardButton editEventDressCode = new InlineKeyboardButton(buttonDao.getButtonText(179));
+        editEventDressCode.setCallbackData("editEventDcode" + ":" + eventId);
+        row.add(editEventDressCode);
+        rows.add(row);
+
+        row = new ArrayList<>();
+        InlineKeyboardButton editEventProgram   = new InlineKeyboardButton(buttonDao.getButtonText(181));
+        editEventProgram.setCallbackData("editEventPrgm" + ":" + eventId);
+        row.add(editEventProgram);
+        rows.add(row);
+
+        row = new ArrayList<>();
+        InlineKeyboardButton editEventPage       = new InlineKeyboardButton(buttonDao.getButtonText(183));
+        editEventPage.setCallbackData("editEventPage" + ":" + eventId);
+        row.add(editEventPage);
+        rows.add(row);
+
+        row = new ArrayList<>();
+        InlineKeyboardButton editEventDocument   = new InlineKeyboardButton(buttonDao.getButtonText(185));
+        editEventDocument.setCallbackData("editEventDoc" + ":" + eventId);
+        row.add(editEventDocument);
+        rows.add(row);
+
+        row = new ArrayList<>();
+        InlineKeyboardButton acceptEventButton   = new InlineKeyboardButton(buttonDao.getButtonText(90));
+        acceptEventButton.setCallbackData("acceptEvent" + ":" + eventId);
+        row.add(acceptEventButton);
+
+        InlineKeyboardButton rejectEventButton   = new InlineKeyboardButton(buttonDao.getButtonText(91));
+        rejectEventButton.setCallbackData("declineEvent" + ":" + eventId);
+        row.add(rejectEventButton);
+        rows.add(row);
+
+
+
+        keyboard.setKeyboard(rows);
+return keyboard;
+    }
+
+    protected void sendMessageForEditEventToAdmin(Bot bot, String eventId, ListDao listDao, long chatId) throws SQLException, TelegramApiException {
+        Event event = listDao.getEvent(eventId);
+//        com.turlygazhy.entity.Message poolMesage = messageDao.getMessage(92);
+//        String date = event.getWHEN().substring(0,2) + " " + DateUtil.getMonthInRussian(Integer.parseInt(event
+//                .getWHEN().substring(3, 5)))
+//                +event.getWHEN().substring(event.getWHEN().indexOf(" "));
+//        String text = poolMesage.getSendMessage().getText()
+//                .replaceAll("event_text"         , event.getEVENT_NAME())
+//                .replaceAll("event_address"      , event.getPLACE())
+//                .replaceAll("event_time"        , date)
+//                .replaceAll("event_contact"      , event.getCONTACT_INFORMATION())
+//                .replaceAll("event_program"      , event.getPROGRAM())
+//                .replaceAll("event_dress_code"   , event.getDRESS_CODE())
+//                .replaceAll("event_rules"        , event.getRULES());
+//        if(event.getPAGE()!= null){
+//            text = text+"\n\n<b>Страница мероприятия/регистрация</b>:"+event.getPAGE();
+//        }
+        String photo = event.getPHOTO();
+        SendMessage sendEditMessage = new SendMessage(chatId,getEventWithPatternNoByAdmin(event)).setReplyMarkup(getKeyboardForEditEvent(eventId))
+                .setParseMode(ParseMode.HTML);
+
+        if (event.getPHOTO()!= null) {
+            SendPhoto sendPhoto = new SendPhoto();
+            sendPhoto.setPhoto(photo);
+            bot.sendPhoto(sendPhoto.setChatId(chatId));
+        }
+        bot.sendMessage(sendEditMessage);
+        if(event.getDOCUMENT() != null){
+            SendDocument sendDocument = new SendDocument();
+            sendDocument.setDocument(event.getDOCUMENT());
+            bot.sendDocument(sendDocument.setChatId(chatId));
+        }
+
+    }
+
+    protected String getEventWithPatternNoByAdmin(Event event) throws SQLException {
+        com.turlygazhy.entity.Message poolMesage = messageDao.getMessage(92);
+        String date = event.getWHEN().substring(0,2) + " " + DateUtil.getMonthInRussian(Integer.parseInt(event
+                .getWHEN().substring(3, 5)))
+                +event.getWHEN().substring(event.getWHEN().indexOf(" "));
+        String[] program   = event.getPROGRAM().split(";");
+        String programText;
+        StringBuilder sb = new StringBuilder();
+        for(String string : program){
+            int i;
+           for( i = 0; i<string.length(); i++ ){
+                if(Character.isLetter(string.charAt(i)))
+               {
+                   sb.append("<b>").append(string.substring(0, i)).append("</b> ").append(string.substring(i)).append("\n\n");
+                   break;
+               }
+           }
+        }
+        programText = sb.toString();
+        String text = poolMesage.getSendMessage().getText()
+                .replaceAll("event_text"         , event.getEVENT_NAME())
+                .replaceAll("event_address"      , event.getPLACE())
+                .replaceAll("event_time"         , date)
+                .replaceAll("event_contact"      , event.getCONTACT_INFORMATION())
+                .replaceAll("event_program"      , programText)
+                .replaceAll("event_dress_code"   , event.getDRESS_CODE())
+                .replaceAll("event_rules"        , event.getRULES());
+        if(event.getPAGE()!= null){
+            text = text+"\n\n<b>Страница мероприятия/регистрация</b>:"+event.getPAGE();
+        }
+        return text;
+    }
+
+    protected String getEventWithPatternByAdmin(Event event) throws SQLException {
+        com.turlygazhy.entity.Message poolMesage = messageDao.getMessage(139);
+        String date = event.getWHEN().substring(0,2) + " " + DateUtil.getMonthInRussian(Integer.parseInt(event
+                .getWHEN().substring(3, 5)))
+                +event.getWHEN().substring(event.getWHEN().indexOf(" "));
+        String[] program   = event.getPROGRAM().split(";");
+        String programText;
+        StringBuilder sb = new StringBuilder();
+        for(String string : program){
+            int i;
+            for( i = 0; i<string.length(); i++ ){
+                if(Character.isLetter(string.charAt(i)))
+                {
+                    sb.append("<b>").append(string.substring(0, i)).append("</b>").append(string.substring(i)).append("\n\n");
+                    break;
+                }
+            }
+        }
+        programText = sb.toString();
+        String text = poolMesage.getSendMessage().getText()
+                .replaceAll("event_text"         , event.getEVENT_NAME())
+                .replaceAll("event_address"      , event.getPLACE())
+                .replaceAll("event_time"         , date)
+                .replaceAll("event_contact"      , event.getCONTACT_INFORMATION())
+                .replaceAll("event_program"      , programText)
+                .replaceAll("event_dress_code"   , event.getDRESS_CODE())
+                .replaceAll("event_rules"        , event.getRULES())
+                .replaceAll("event_page"         , event.getPAGE());
+        if(event.getPAGE()!= null){
+                text = text+"\n\n<b>Регистрация</b>:"+event.getPAGE();
+            }
+        return text;
+    }
+
 }

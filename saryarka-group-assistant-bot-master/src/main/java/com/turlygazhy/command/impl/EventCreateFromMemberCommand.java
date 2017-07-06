@@ -5,19 +5,17 @@ import com.turlygazhy.command.Command;
 import com.turlygazhy.dao.impl.ListDao;
 import com.turlygazhy.entity.Message;
 import com.turlygazhy.entity.MessageElement;
+import com.turlygazhy.tool.DateUtil;
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendDocument;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.api.methods.send.SendVideo;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -241,28 +239,28 @@ public class EventCreateFromMemberCommand extends Command {
             SendMessage sendMessage = message.getSendMessage().setChatId(chatId);
             bot.sendMessage(sendMessage);
             //Новый ивент создаем
-            listDao.createNewEvent(event, where, when, photo,contactInformation,rules, dresscode, program, page, document, false,false);
+            long eventId        = listDao.createNewEvent(event, where, when, photo,contactInformation,rules, dresscode, program, page, document, false,false);
             //Предупреждаем админа о новом предложении
             Message notifyAdmin = messageDao.getMessage(96);
-            long eventId = listDao.getEventId(event,where,when,false);
+//            long eventId = listDao.getEventId(event,where,when,false);
 
-            String date = when.substring(0,2) + " " + getMonthInRussian(Integer.parseInt(when.substring(3, 5)))
-                    +" "+when.substring(when.indexOf(" "));
+            String date = when.substring(0,2) + " " + DateUtil.getMonthInRussian(Integer.parseInt(when.substring(3, 5)))
+                    +when.substring(when.indexOf(" "));
             Message patternPoolInfo = messageDao.getMessage(97);
-            String text = patternPoolInfo.getSendMessage().getText()
-                    .replaceAll("event_text"         , event)
-                    .replaceAll("event_address"      , where)
-                    .replaceAll("event_time"         , date)
-                    .replaceAll("event_contact"      , contactInformation)
-                    .replaceAll("event_program"      , program)
-                    .replaceAll("event_dress_code"   , dresscode)
-                    .replaceAll("event_rules"        , rules);
-            if(page!= null){
-                text = text+"\n\n<b>Страница мероприятия/регистрация</b>:"+page;
-            }
-
+            String text = getEventWithPatternNoByAdmin(listDao.getEvent(String.valueOf(eventId)));
+//                    patternPoolInfo.getSendMessage().getText()
+//                    .replaceAll("event_text"         , event)
+//                    .replaceAll("event_address"      , where)
+//                    .replaceAll("event_time"         , date)
+//                    .replaceAll("event_contact"      , contactInformation)
+//                    .replaceAll("event_program"      , program)
+//                    .replaceAll("event_dress_code"   , dresscode)
+//                    .replaceAll("event_rules"        , rules);
+//            if(page!= null){
+//                text = text+"\n\n<b>Страница мероприятия/регистрация</b>:"+page;
+//            }
             SendMessage sendToAdmin = patternPoolInfo.getSendMessage().setChatId(userDao.getAdminChatId()).setParseMode(ParseMode.HTML);
-            sendToAdmin.setText(text).setReplyMarkup(getAdditionalInfoToKeyboard(Integer.valueOf(memberDao.getMemberId(chatId)), String.valueOf(eventId),null, 90,91));
+            sendToAdmin.setText(text).setReplyMarkup(getAdminKeyboardForEvent(String.valueOf(eventId)));
             if (photo != null) {
                 SendPhoto sendPhoto = new SendPhoto();
                 sendPhoto.setPhoto(photo);

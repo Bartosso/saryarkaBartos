@@ -1,17 +1,20 @@
 package com.turlygazhy.command.impl;
 
 import com.turlygazhy.Bot;
+import com.turlygazhy.Main;
 import com.turlygazhy.command.Command;
 import com.turlygazhy.dao.impl.ListDao;
 import com.turlygazhy.entity.Event;
 import com.turlygazhy.entity.Member;
 import com.turlygazhy.entity.Message;
+import com.turlygazhy.tool.DateUtil;
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendDocument;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageReplyMarkup;
+import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
@@ -19,7 +22,12 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboar
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,6 +38,7 @@ public class ShowEventsLikeIteratorCommand extends Command {
     private int              messageId;
     private int              documentId;
     private int              whoGoId;
+    private int              wannaReminderId;
     private String           targetList;
     private long             chatId;
     private ArrayList<Event> events;
@@ -78,11 +87,26 @@ public class ShowEventsLikeIteratorCommand extends Command {
             voteInLs(bot, update,chose, listDao, String.valueOf(event.getId()),memberDao.getMemberId(update.getCallbackQuery().getFrom().getId()),eventType, eventTypeInMember);
             return false;
         }
+        if(chose.equals(buttonDao.getButtonText(143))){
+            try {
+                return addToReminderList(bot,update);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        if(chose.equals(buttonDao.getButtonText(144))){
+            bot.deleteMessage(new DeleteMessage().setChatId(String.valueOf(chatId)).setMessageId(update
+            .getCallbackQuery().getMessage().getMessageId()));
+            wannaReminderId = bot.sendMessage(new SendMessage(chatId,messageDao.getMessage(153).getSendMessage()
+                    .getText())).getMessageId();
+            return false;
+        }
 
         photoId           = 0;
         messageId         = 0;
         documentId        = 0;
         whoGoId           = 0;
+        wannaReminderId   = 0;
         targetList        = null;
         chatId            = 0;
         event             = null;
@@ -104,38 +128,29 @@ public class ShowEventsLikeIteratorCommand extends Command {
         }
         else{
         event     = events.get(0);
-            String date = event.getWHEN().substring(0,2) + " " + getMonthInRussian(Integer.parseInt(event
-                    .getWHEN().substring(3, 5)))
-                    +" "+event.getWHEN().substring(event.getWHEN().indexOf(" "));
+//            String date = event.getWHEN().substring(0,2) + " " + DateUtil.getMonthInRussian(Integer.parseInt(event
+//                    .getWHEN().substring(3, 5)))
+//                    +" "+event.getWHEN().substring(event.getWHEN().indexOf(" "));
             String text = "";
             if(!event.isBY_ADMIN()){
-                Message message = messageDao.getMessage(92);
 
-                text    = message.getSendMessage().getText()
-                        .replaceAll("event_text"         , event.getEVENT_NAME())
-                        .replaceAll("event_address"      , event.getPLACE())
-                        .replaceAll("event_time"         , date)
-                        .replaceAll("event_contact"      , event.getCONTACT_INFORMATION())
-                        .replaceAll("event_program"      , event.getPROGRAM())
-                        .replaceAll("event_dress_code"   , event.getDRESS_CODE())
-                        .replaceAll("event_rules"        , event.getRULES());
-                if(event.getPAGE()!= null){
-                    text = text+"\n<b>Страница мероприятия/регистрация</b>:"+event.getPAGE();
-                }
+                text   = getEventWithPatternNoByAdmin(event);
+
             }
             else
             {
                 Message message = messageDao.getMessage(139);
 
-                text    = message.getSendMessage().getText()
-                        .replaceAll("event_text"         , event.getEVENT_NAME())
-                        .replaceAll("event_address"      , event.getPLACE())
-                        .replaceAll("event_time"         , date)
-                        .replaceAll("event_contact"      , event.getCONTACT_INFORMATION())
-                        .replaceAll("event_program"      , event.getPROGRAM())
-                        .replaceAll("event_dress_code"   , event.getDRESS_CODE())
-                        .replaceAll("event_rules"        , event.getRULES())
-                        .replaceAll("event_page"         , event.getPAGE());
+                text   = getEventWithPatternByAdmin(event);
+//                        = message.getSendMessage().getText()
+//                        .replaceAll("event_text"         , event.getEVENT_NAME())
+//                        .replaceAll("event_address"      , event.getPLACE())
+//                        .replaceAll("event_time"         , date)
+//                        .replaceAll("event_contact"      , event.getCONTACT_INFORMATION())
+//                        .replaceAll("event_program"      , event.getPROGRAM())
+//                        .replaceAll("event_dress_code"   , event.getDRESS_CODE())
+//                        .replaceAll("event_rules"        , event.getRULES())
+//                        .replaceAll("event_page"         , event.getPAGE());
             }
 
         SendPhoto sendPhoto = new SendPhoto().setPhoto(event.getPHOTO());
@@ -184,6 +199,10 @@ public class ShowEventsLikeIteratorCommand extends Command {
                 bot.deleteMessage(new DeleteMessage(chatId, whoGoId));
                 whoGoId = 0;
             }
+            if(wannaReminderId !=0){
+                bot.deleteMessage(new DeleteMessage(chatId, wannaReminderId));
+                wannaReminderId = 0;
+            }
             bot.sendMessage(messageFoundNothing.getSendMessage().setChatId(chatId));
             return true;
         }
@@ -198,40 +217,34 @@ public class ShowEventsLikeIteratorCommand extends Command {
                 bot.deleteMessage(new DeleteMessage(chatId, whoGoId));
                 whoGoId = 0;
             }
+            if(wannaReminderId !=0){
+                bot.deleteMessage(new DeleteMessage(chatId, wannaReminderId));
+                wannaReminderId = 0;
+            }
             bot.deleteMessage(new DeleteMessage().setChatId(String.valueOf(chatId)).setMessageId(update.getCallbackQuery().getMessage().getMessageId()));
-//            Message message = messageDao.getMessage(92);
             event = events.get(0);
-            String date = event.getWHEN().substring(0,2) + " " + getMonthInRussian(Integer.parseInt(event
-                    .getWHEN().substring(3, 5)))
-                    +" "+event.getWHEN().substring(event.getWHEN().indexOf(" "));
+//            String date = event.getWHEN().substring(0,2) + " " + DateUtil.getMonthInRussian(Integer.parseInt(event
+//                    .getWHEN().substring(3, 5)))
+//                    +" "+event.getWHEN().substring(event.getWHEN().indexOf(" "));
             String text = "";
             if(!event.isBY_ADMIN()){
                 Message message = messageDao.getMessage(92);
 
-                text    = message.getSendMessage().getText()
-                        .replaceAll("event_text"         , event.getEVENT_NAME())
-                        .replaceAll("event_address"      , event.getPLACE())
-                        .replaceAll("event_time"         , date)
-                        .replaceAll("event_contact"      , event.getCONTACT_INFORMATION())
-                        .replaceAll("event_program"      , event.getPROGRAM())
-                        .replaceAll("event_dress_code"   , event.getDRESS_CODE())
-                        .replaceAll("event_rules"        , event.getRULES());
-                if(event.getPAGE()!= null){
-                    text = text+"\n\n<b>Страница мероприятия/регистрация</b>:"+event.getPAGE();
-                }
+                text      = getEventWithPatternNoByAdmin(event);
             }
             else
             {
                 Message message = messageDao.getMessage(139);
 
-                text    = message.getSendMessage().getText()
-                        .replaceAll("event_text"         , event.getEVENT_NAME())
-                        .replaceAll("event_address"      , event.getPLACE())
-                        .replaceAll("event_time"         , date)
-                        .replaceAll("event_contact"      , event.getCONTACT_INFORMATION())
-                        .replaceAll("event_program"      , event.getPROGRAM())
-                        .replaceAll("event_dress_code"   , event.getDRESS_CODE())
-                        .replaceAll("event_rules"        , event.getRULES());
+                text  = getEventWithPatternByAdmin(event);
+//                        = message.getSendMessage().getText()
+//                        .replaceAll("event_text"         , event.getEVENT_NAME())
+//                        .replaceAll("event_address"      , event.getPLACE())
+//                        .replaceAll("event_time"         , date)
+//                        .replaceAll("event_contact"      , event.getCONTACT_INFORMATION())
+//                        .replaceAll("event_program"      , event.getPROGRAM())
+//                        .replaceAll("event_dress_code"   , event.getDRESS_CODE())
+//                        .replaceAll("event_rules"        , event.getRULES());
                 if(event.getPAGE()!= null){
                     text = text+"\n\n<b>Регистрация</b>:"+event.getPAGE();
                 }
@@ -367,7 +380,11 @@ public class ShowEventsLikeIteratorCommand extends Command {
                         case "willGo":
                             listDao.voteEvent(eventID, idToDB, "WILL_GO_USERS_ID");
                             memberDao.addEventsWhereVoted(idToDB, eventID, eventTypeInMember);
-                            whoGoId = bot.sendMessage(new SendMessage(chatId, whoWillGo(listDao,eventID))).getMessageId();
+                            whoGoId         = bot.sendMessage(new SendMessage(chatId, whoWillGo(listDao,eventID)))
+                                    .getMessageId();
+                            wannaReminderId = bot.sendMessage(messageDao.getMessage(148).getSendMessage()
+                            .setChatId(chatId).setReplyMarkup(keyboardMarkUpDao.select(messageDao.getMessage(148)
+                                    .getKeyboardMarkUpId()))).getMessageId();
                             break;
                         case "maybeGo":
                             listDao.voteEvent(eventID, idToDB, "MAYBE_USERS_ID");
@@ -425,11 +442,42 @@ public class ShowEventsLikeIteratorCommand extends Command {
         for(String string: membersId){
             try{
                 member = memberDao.getMemberById(Long.parseLong(string));
-                sb.append(i).append(". ").append(member.getFIO()).append("\n");
+                sb.append(i).append(". ").append(member.getFIO()).append("\n ");
                 i++;
             }catch (Exception e){
                 member = null;
             }
         }
         return messageDao.getMessage(140).getSendMessage().getText() + "\n "+sb.toString();}
+
+    private boolean addToReminderList(Bot bot, Update update) throws ParseException, SQLException, TelegramApiException {
+        Date now                 = new Date();
+        SimpleDateFormat format  = new SimpleDateFormat();
+        format.applyPattern("dd.MM.yy, hh:mm");
+        Date eventDate           = format.parse(event.getWHEN());
+        LocalDateTime eventLocal = LocalDateTime.ofInstant(eventDate.toInstant(), ZoneId.systemDefault());
+        Date dateEventMinusDay   = Date.from(eventLocal.minusDays(1).atZone(ZoneId.systemDefault()).toInstant());
+        Date dateEventMinusHour  = Date.from(eventLocal.minusHours(1).atZone(ZoneId.systemDefault()).toInstant());
+        if (now.before(dateEventMinusDay)) {
+            listDao.addMemberWhoNeedReminder(String.valueOf(event.getId()),memberDao.getMemberId(chatId));
+            bot.editMessageText(new EditMessageText().setChatId(chatId).setMessageId(
+            update.getCallbackQuery().getMessage().getMessageId())
+            .setText(messageDao.getMessage(150).getSendMessage().getText()).setReplyMarkup(null));
+
+        } else {
+            if (now.before(dateEventMinusHour)){
+                listDao.addMemberWhoNeedReminder(String.valueOf(event.getId()),memberDao.getMemberId(chatId));
+                bot.editMessageText(new EditMessageText().setChatId(chatId).setMessageId(
+                        update.getCallbackQuery().getMessage().getMessageId())
+                        .setText(messageDao.getMessage(150).getSendMessage().getText()).setReplyMarkup(null));
+            }
+            else {
+                bot.sendMessage(messageDao.getMessage(149).getSendMessage().setChatId(chatId));
+            }
+
+        }
+    return false;
+    }
+
+
 }
