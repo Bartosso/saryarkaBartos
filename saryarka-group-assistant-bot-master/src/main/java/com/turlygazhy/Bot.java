@@ -1,28 +1,23 @@
 package com.turlygazhy;
 
-import com.turlygazhy.command.impl.EventVoteCommand;
 import com.turlygazhy.command.impl.SearchCommand;
 import com.turlygazhy.command.impl.SearchMembersCommand;
 import com.turlygazhy.dao.DaoFactory;
 import com.turlygazhy.dao.impl.KeyWordDao;
 import com.turlygazhy.dao.impl.ListDao;
-import com.turlygazhy.dao.impl.MemberDao;
 import com.turlygazhy.dao.impl.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.api.methods.ForwardMessage;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
-import javax.print.DocFlavor;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
+
 
 /**
  * Created by Yerassyl_Turlygazhy on 11/24/2016.
