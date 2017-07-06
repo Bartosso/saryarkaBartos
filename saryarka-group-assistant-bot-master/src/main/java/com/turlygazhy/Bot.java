@@ -36,7 +36,6 @@ public class Bot extends TelegramLongPollingBot {
     private ListDao listDao                       = factory.getListDao("EVENTS_LIST");
     private String EVENTS_TABLE_NAME              = "EVENTS_LIST";
     private final String GROUP_FOR_VOTE           = "-224196565";
-    private Timer timer                           = new Timer(true);
 
 
 
