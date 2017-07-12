@@ -1,0 +1,115 @@
+package com.turlygazhy.entity;
+
+/**
+ * Created by user on 1/22/17.
+ */
+public class Member {
+    private int id;
+    private Integer userId;
+    private long chatId;
+    private String naviki;
+    private String nisha;
+    private String userName;
+    private String companyName;
+    private String contact;
+    private String FIO;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public long getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(long chatId) {
+        this.chatId = chatId;
+    }
+
+    public String getNaviki() {
+        return naviki;
+    }
+
+    public void setNaviki(String naviki) {
+        this.naviki = naviki;
+    }
+
+    public String getNisha() {
+        return nisha;
+    }
+
+    public void setNisha(String nisha) {
+        this.nisha = nisha;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getFIO() {
+        return FIO;
+    }
+
+    public void setFIO(String FIO) {
+        this.FIO = FIO;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+}
