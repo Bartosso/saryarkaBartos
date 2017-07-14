@@ -30,7 +30,8 @@ public class Bot extends TelegramLongPollingBot {
     private UserDao userDao                       = factory.getUserDao();
     private ListDao listDao                       = factory.getListDao("EVENTS_LIST");
     private String EVENTS_TABLE_NAME              = "EVENTS_LIST";
-    private final String GROUP_FOR_VOTE           = "-224196565";
+    //todo put group for vote id here
+    private final String GROUP_FOR_VOTE           = "";
 
 
 
@@ -111,12 +112,14 @@ public class Bot extends TelegramLongPollingBot {
         return conversation;
     }
 
+    //todo put bot username here
     public String getBotUsername() {
-        return "Bartosso_bot";
+        return "";
     }
 
+    //todo put bot token here
     public String getBotToken() {
-        return "435288602:AAFd_H07sYWmB0LpGtWAfBrcQHC8PsmOkaQ";
+        return "";
     }
 
     public String getGROUP_FOR_VOTE(){ return  GROUP_FOR_VOTE; }

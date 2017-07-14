@@ -173,7 +173,9 @@ public class CreateDiscountFromMemberCommand extends Command {
                     .replaceAll("text_about"  , textAbout)
                     .replaceAll("address"     , address)
                     .replaceAll("page"        , page)
-                    .replaceAll("discount"    , discount)).setChatId(getAdminChatId()).setParseMode(ParseMode.HTML);
+                    .replaceAll("discount"    , discount)
+                    .replaceAll("memberCity" , memberDao.getMemberCityByChatId(chatId)))
+                    .setChatId(getAdminChatId()).setParseMode(ParseMode.HTML);
 //                    .setReplyMarkup(keyboard);
             SendMessage sendMessageToMember = messageDao.getMessage(147).getSendMessage().setChatId(chatId);
             if (photo != null) {

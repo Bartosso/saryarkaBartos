@@ -26,9 +26,12 @@ public class ShowInfoAboutMemberCommand extends Command {
         Member member = memberDao.selectByUserId(userId);
         Message message = messageDao.getMessage(messageId);
         String text = message.getSendMessage().getText()
-                .replaceAll("fio", member.getFIO()).replaceAll("companyName", member.getCompanyName())
-                .replaceAll("contact", member.getContact()).replaceAll("nisha", member.getNisha())
-                .replaceAll("phoneNumber", member.getPhoneNumber());
+                .replaceAll("fio"        , member.getFIO())
+                .replaceAll("companyName", member.getCompanyName())
+                .replaceAll("contact"    , member.getContact())
+                .replaceAll("nisha"      , member.getNisha())
+                .replaceAll("phoneNumber", member.getPhoneNumber())
+                .replaceAll("memberCity" , member.getCity());
 
         ReplyKeyboardMarkup keyboard = (ReplyKeyboardMarkup) keyboardMarkUpDao.select(message.getKeyboardMarkUpId());
 

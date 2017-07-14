@@ -6,16 +6,16 @@ package com.turlygazhy.entity;
 public class Member {
     private int id;
     private Integer userId;
-    private long chatId;
-//    private String naviki;
-    private String nisha;
-    private String userName;
-    private String companyName;
-    private String contact;
-    private String FIO;
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
+    private long    chatId;
+    private String  city;
+    private String  nisha;
+    private String  userName;
+    private String  companyName;
+    private String  contact;
+    private String  FIO;
+    private String  firstName;
+    private String  lastName;
+    private String  phoneNumber;
 
     public int getId() {
         return id;
@@ -40,14 +40,7 @@ public class Member {
     public void setChatId(long chatId) {
         this.chatId = chatId;
     }
-//
-//    public String getNaviki() {
-//        return naviki;
-//    }
-//
-//    public void setNaviki(String naviki) {
-//        this.naviki = naviki;
-//    }
+
 
     public String getNisha() {
         return nisha;
@@ -113,9 +106,17 @@ public class Member {
         return phoneNumber;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     public Member(int id,
-            Integer userId, long chatId,String nisha,String userName,String companyName,String contact,String FIO,
-                  String firstName,String lastName,String phoneNumber){
+                  Integer userId, long chatId, String nisha, String userName, String companyName, String contact, String FIO,
+                  String firstName, String lastName, String phoneNumber, String city){
         this.id = id;
         this.userId=userId;
         this.chatId=chatId;
@@ -128,6 +129,7 @@ public class Member {
         this.firstName   = firstName;
         this.lastName    = lastName;
         this.phoneNumber = phoneNumber;
+        this.city        = city;
     }
     public Member(){
 

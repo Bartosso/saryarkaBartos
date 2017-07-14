@@ -40,7 +40,8 @@ public class WantToGroupCommand extends Command {
             String text = messageDao.getMessage(42).getSendMessage().getText();
             text = text.replaceAll("fio", member.getFIO()).replaceAll("companyName", member.getCompanyName())
                     .replaceAll("contact", member.getContact()).replaceAll("nisha", member.getNisha())
-                    .replaceAll("phoneNumber", member.getPhoneNumber());
+                    .replaceAll("phoneNumber", member.getPhoneNumber())
+                    .replaceAll("memberCity", member.getCity());
 
             bot.sendMessage(new SendMessage()
                     .setChatId(getAdminChatId())

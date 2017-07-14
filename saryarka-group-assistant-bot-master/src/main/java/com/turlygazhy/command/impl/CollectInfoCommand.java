@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class CollectInfoCommand extends Command {
     private String nisha;
-    private String naviki;
+    private String city;
     private String contact;
     private WaitingType waitingType;
     private String companyName;
@@ -67,29 +67,34 @@ public class CollectInfoCommand extends Command {
                     return false;
                 case CONTACT:
                     contact = text;
-                    bot.sendMessage(new SendMessage(chatId,messageDao.getMessage(51)
-                    .getSendMessage().getText()).setParseMode(ParseMode.HTML)
-                    .setReplyMarkup(keyboardMarkUpDao.select(messageDao.getMessage(51).getKeyboardMarkUpId())));
+                    sendMessage(158, chatId, bot);
+//                    bot.sendMessage(new SendMessage(chatId,messageDao.getMessage(51)
+//                    .getSendMessage().getText()).setParseMode(ParseMode.HTML)
+//                    .setReplyMarkup(keyboardMarkUpDao.select(messageDao.getMessage(51).getKeyboardMarkUpId())));
 //                    sendMessage(51, chatId, bot);
+                    waitingType = WaitingType.CITY;
+                    return false;
+                case CITY:
+                    city = text;
+//                    sendMessage(51, chatId, bot);
+                    bot.sendMessage(new SendMessage(chatId,messageDao.getMessage(51)
+                            .getSendMessage().getText()).setParseMode(ParseMode.HTML)
+                            .setReplyMarkup(keyboardMarkUpDao.select(messageDao.
+                                    getMessage(51).getKeyboardMarkUpId())));
                     waitingType = WaitingType.PHONE_NUMBER;
                     return false;
-//                case NAVIKI:
-//                    naviki = text;
-//                    sendMessage(51, chatId, bot);
-//                    waitingType = WaitingType.PHONE_NUMBER;
-//                    return false;
                 case PHONE_NUMBER:
                     Contact contact = updateMessage.getContact();
                     User user = updateMessage.getFrom();
-                    memberDao.insert(nisha,  chatId, user.getUserName(), user.getId(), companyName, this.contact, fio, contact);
+                    memberDao.insert(nisha,  chatId, user.getUserName(), user.getId(), companyName, this.contact, fio, contact, city);
 
                     String textToAdmin = messageDao.getMessage(42).getSendMessage().getText();
                     textToAdmin = textToAdmin.replaceAll("fio", fio).replaceAll("companyName", companyName)
                             .replaceAll("contact", this.contact).replaceAll("nisha", nisha)
-                    .replaceAll("phoneNumber", contact.getPhoneNumber());
+                    .replaceAll("phoneNumber", contact.getPhoneNumber())
+                    .replaceAll("memberCity", city);
 
                     SendMessage sendMessage = new SendMessage().setText(textToAdmin
-//                            "\nphone: " + contact.getPhoneNumber()
                     )
                             .setChatId(userDao.getAdminChatId())
                             .setReplyMarkup(getAddToSheetKeyboard(user.getId(), chatId));

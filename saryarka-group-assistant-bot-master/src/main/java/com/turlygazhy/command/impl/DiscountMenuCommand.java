@@ -29,10 +29,6 @@ public class DiscountMenuCommand extends Command {
         String menuChose = null;
         if(update.getMessage()!= null){
             chatId             = update.getMessage().getChatId();
-//        Message message         = messageDao.getMessage(messageId);
-//        SendMessage sendMessage = message.getSendMessage().setReplyMarkup(keyboardMarkUpDao.select(message.getKeyboardMarkUpId())).setChatId(chatId)
-//                .setParseMode(ParseMode.HTML);
-//        bot.sendMessage(sendMessage);
             menuChose = update.getMessage().getText();
         }
         if(update.getCallbackQuery()!= null){
