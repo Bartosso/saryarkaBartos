@@ -60,7 +60,7 @@ public class SheetsAdapter {
             dataRow.add(data.getFIO());
             dataRow.add(data.getCompanyName());
             dataRow.add(data.getNisha());
-            dataRow.add(data.getContact());
+//            dataRow.add(data.getContact());
             dataRow.add("t.me/" +data.getUserName());
             writeData.add(dataRow);
         }

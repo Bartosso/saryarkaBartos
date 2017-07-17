@@ -146,25 +146,28 @@ public class ListDao {
     }
 
     public long createNewEvent(String eventName, String where, String date, String photo,String contactInformation,String rules, String dressCode, String program, String page, String DOCUMENT , boolean ADMIN_ACKNOWLEDGE, boolean BY_ADMIN) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO PUBLIC." + listName + "(EVENT_NAME, PLACE, WHEN, CONTACT_INFORMATION, PHOTO,  ADMIN_ACKNOWLEDGE, RULES, DRESS_CODE, PROGRAM, PAGE, BY_ADMIN, DOCUMENT) VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO PUBLIC." + listName + "(EVENT_NAME, PLACE, WHEN, ADMIN_ACKNOWLEDGE) VALUES ( ?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         ps.setString(  1, eventName);
         ps.setString(  2, where);
         ps.setString(  3, date);
-        ps.setString(  4, contactInformation);
-        ps.setString(  5, photo);
-        ps.setBoolean( 6, ADMIN_ACKNOWLEDGE);
-        ps.setString(  7, rules);
-        ps.setString(  8, dressCode);
-        ps.setString(  9, program);
-        ps.setString( 10, page);
-        ps.setBoolean(11, BY_ADMIN);
-        ps.setString( 12, DOCUMENT);
+        ps.setBoolean(4, ADMIN_ACKNOWLEDGE);
+//        ps.setString(  4, contactInformation);
+//        ps.setString(  5, photo);
+//        ps.setBoolean( 6, ADMIN_ACKNOWLEDGE);
+//        ps.setString(  7, rules);
+//        ps.setString(  8, dressCode);
+//        ps.setString(  9, program);
+//        ps.setString( 10, page);
+//        ps.setBoolean(11, BY_ADMIN);
+//        ps.setString( 12, DOCUMENT);
         ps.execute();
         ResultSet rs = ps.getGeneratedKeys();
         rs.next();
 
         return rs.getInt(1);
     }
+
+
     public void voteEvent(String eventId, String userId, String chose) throws SQLException {
         PreparedStatement ps = connection.prepareStatement("UPDATE public." + listName + " set "+ chose +" = CONCAT("+ chose +", '"+ userId +"', '/') WHERE ID= '"+ eventId +"' ");
             ps.execute();

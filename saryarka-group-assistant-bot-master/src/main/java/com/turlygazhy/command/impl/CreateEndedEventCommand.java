@@ -5,13 +5,13 @@ import com.turlygazhy.command.Command;
 import com.turlygazhy.dao.impl.ListDao;
 import com.turlygazhy.entity.Message;
 import com.turlygazhy.entity.MessageElement;
-import com.turlygazhy.tool.DateUtil;
 import com.turlygazhy.tool.EventAnonceUtil;
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendDocument;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.sql.SQLException;
@@ -20,36 +20,37 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Eshu on 19.06.2017.
+ * Created by Eshu on 17.07.2017.
  */
-public class EventCreateFromMemberCommand extends Command {
+public class CreateEndedEventCommand extends Command {
     private String             photo;
     private String             event;
     private String             where;
     private String             when;
-    private String             video;
+    //    private String             video;
     private String             contactInformation;
     private String             program;
     private String             dresscode;
     private String             rules;
     private String             page;
     private String             document;
-    private MessageElement     expectedMessageElement;
-    private boolean            needPhoto     = true;
-    private boolean            needVideo     = true;
-    private ListDao            listDao       = factory.getListDao("EVENTS_LIST");
-    private int                step          = 1;
-    private Date               date;
-
+    private MessageElement expectedMessageElement;
+    private boolean            needPhoto      = true;
+    private boolean            needVideo      = true;
+    private ListDao listDao        = factory.getListDao("ENDED_EVENTS_LIST");
+    private int                step           = 1;
+    private long               chatId;
+    private Date date;
 
 
     @Override
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
+        String GROUP_FOR_VOTE = bot.getGROUP_FOR_VOTE();
         org.telegram.telegrambots.api.objects.Message updateMessage = update.getMessage();
         if (updateMessage == null) {
             updateMessage = update.getCallbackQuery().getMessage();
         }
-        Long chatId = updateMessage.getChatId();
+        chatId = updateMessage.getChatId();
         if (expectedMessageElement != null) {
             switch (step){
                 case 1:
@@ -84,6 +85,7 @@ public class EventCreateFromMemberCommand extends Command {
                     }
                     step = 5;
                     break;
+
                 case 5:
                     contactInformation = updateMessage.getText();
                     step = 6;
@@ -158,6 +160,7 @@ public class EventCreateFromMemberCommand extends Command {
             expectedMessageElement = MessageElement.PHOTO;
             return false;
         }
+
         if (step == 5 & contactInformation == null){
             Message message = messageDao.getMessage(98);
             SendMessage sendMessage = message.getSendMessage()
@@ -204,35 +207,37 @@ public class EventCreateFromMemberCommand extends Command {
         }
 
         if(step == 11) {
-            long adminChatId = userDao.getAdminChatId();
-            //Сообщение "Ваше предложение отправлено администратору"
-            Message message = messageDao.getMessage(95);
+            long eventId = listDao.createNewEvent(event, where, when,photo,  contactInformation,rules, dresscode,program, page,document, true, true);
+            Message message = messageDao.getMessage(30);
             SendMessage sendMessage = message.getSendMessage().setChatId(chatId);
             bot.sendMessage(sendMessage);
-            //Новый ивент создаем
-            long eventId        = listDao.createNewEvent(event, where, when, photo,contactInformation,rules, dresscode, program, page, document, false,false);
-            //Предупреждаем админа о новом предложении
-            Message notifyAdmin = messageDao.getMessage(96);
-            Message patternPoolInfo = messageDao.getMessage(97);
-            String text = EventAnonceUtil.getEventWithPatternNoByAdmin(listDao.getEvent(String.valueOf(eventId)), messageDao);
-            SendMessage sendToAdmin = patternPoolInfo.getSendMessage().setChatId(userDao.getAdminChatId()).setParseMode(ParseMode.HTML);
-            sendToAdmin.setText(text).setReplyMarkup(getAdminKeyboardForEvent(String.valueOf(eventId)));
-            if (photo != null) {
-                SendPhoto sendPhoto = new SendPhoto();
-                sendPhoto.setPhoto(photo);
-                bot.sendPhoto(sendPhoto.setChatId(adminChatId));
-            }
-            bot.sendMessage(notifyAdmin.getSendMessage().setChatId(adminChatId));
-            bot.sendMessage(sendToAdmin);
-            if(document != null){
-                SendDocument sendDocument = new SendDocument();
-                sendDocument.setDocument(document);
-                bot.sendDocument(sendDocument.setChatId(adminChatId));
+            try {
+                createRemind(bot,eventId,when, chatId);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
 
+//            ReplyKeyboard replyKeyboard = getKeyBoardForVote(eventId, "будет", listDao);
 
-            contactInformation     = null;
-            video                  = null;
+//            Message poolNotificationMessage = messageDao.getMessage(92);
+//            SendMessage sendPool = poolNotificationMessage.getSendMessage().setChatId(GROUP_FOR_VOTE)
+//                    .setReplyMarkup(replyKeyboard);
+//            String text   = EventAnonceUtil.getEventWithPatternByAdmin(listDao.getEvent(String.valueOf(eventId)), messageDao);
+
+//            if (photo != null) {
+//                SendPhoto sendPhoto = new SendPhoto();
+//                sendPhoto.setPhoto(photo);
+//                bot.sendPhoto(sendPhoto.setChatId(GROUP_FOR_VOTE));
+//            }
+//
+////            sendPool.setText(text).setParseMode(ParseMode.HTML);
+////            bot.sendMessage(sendPool);
+//
+//            if(document != null){
+//                SendDocument sendDocument = new SendDocument();
+//                sendDocument.setDocument(document);
+//                bot.sendDocument(sendDocument.setChatId(GROUP_FOR_VOTE));
+//            }
             photo                  = null;
             event                  = null;
             when                   = null;
@@ -248,5 +253,4 @@ public class EventCreateFromMemberCommand extends Command {
         }
         return true;
     }
-
 }

@@ -78,7 +78,7 @@ public class CreateEventVoteCommand extends Command {
                     format.applyPattern("dd.MM.yy, hh:mm");
                     try {
                         date = format.parse(when);
-                        step = 4;
+                        step = 11;
                     } catch (ParseException e) {
                         SendMessage sendMessage = new SendMessage().setText("Вы ввели дату проведения в неправильном формате, попробуйте сначала")
                                 .setChatId(chatId);

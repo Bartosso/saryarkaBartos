@@ -80,4 +80,15 @@ public class ButtonDao extends AbstractDao {
         ps.setInt(2, buttonId);
         ps.execute();
     }
+
+    public ArrayList<String> getAllButtonsText() throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT TEXT FROM BUTTON");
+        ps.execute();
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        ResultSet rs = ps.getResultSet();
+        while (rs.next()){
+            stringArrayList.add(rs.getString(1));
+        }
+        return stringArrayList;
+    }
 }

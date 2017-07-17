@@ -176,6 +176,8 @@ public class CommandFactory {
                 return new VacancyPreEditMenuCommand();
             case CHANGE_CITY:
                 return new ChangeCityCommand();
+            case ADD_ENDED_EVENT:
+                return new CreateEndedEventCommand();
             default:
                 throw new NotRealizedMethodException("Not realized for type: " + type);
         }

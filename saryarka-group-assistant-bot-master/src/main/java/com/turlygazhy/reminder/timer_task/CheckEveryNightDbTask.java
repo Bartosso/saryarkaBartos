@@ -85,8 +85,9 @@ public class CheckEveryNightDbTask extends AbstractTask {
             for(Event event : eventArrayList){
                 eventDate = format.parse(event.getWHEN());
                 if(eventDate.before(now)){
-                    notEndedEvents.declineEvent(String.valueOf(event.getId()));
-                    endedEvents.addEndedEvent(event);
+                    notEndedEvents.delete(String.valueOf(event.getId()));
+//                    notEndedEvents.declineEvent(String.valueOf(event.getId()));
+//                    endedEvents.addEndedEvent(event);
                 }
             }
         }

@@ -90,7 +90,8 @@ public enum CommandType {
     EDIT_REQUEST_TENDER_BY_ADMIN(82),
     EDIT_EVENT_COMMAND(83),
     VACANCY_EDIT_COMMAND(84),
-    CHANGE_CITY(85);
+    CHANGE_CITY(85),
+    ADD_ENDED_EVENT(86);
 
 
     private final int id;
