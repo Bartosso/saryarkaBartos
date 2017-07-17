@@ -60,55 +60,16 @@ public class SheetsAdapter {
             dataRow.add(data.getFIO());
             dataRow.add(data.getCompanyName());
             dataRow.add(data.getNisha());
-
-//            dataRow.add(data.getNaviki());
             dataRow.add(data.getContact());
-//            dataRow.add(data.getPhoneNumber());
+            dataRow.add("t.me/" +data.getUserName());
             writeData.add(dataRow);
         }
 
         ValueRange vr = new ValueRange().setValues(writeData).setMajorDimension("ROWS");
-//        service.spreadsheets().values()
-//                .update(spreadsheetId, writeRange, vr)
-//                .setValueInputOption("RAW")
-//                .execute();
+
         service.spreadsheets().values()
                 .append(spreadsheetId, writeRange, vr)
                 .setValueInputOption("RAW")
                 .execute();
     }
-
-/*
-Этот метод умеет добавлять данные в хвост, но с ним еще нужно разбираться
-    private void  AddData() throws Exception {
-        service = getSheetsService();
-        String spreadSheetID = "1ZAFFrDgmkCcCVrw_zMFvOnogy0bQ258CxROT11R7LD0";
-        //Integer sheetID = 123;
-        String DateValue = "2015-07-13";
-        List<RowData> rowData = new ArrayList<RowData>();
-        List<CellData> cellData = new ArrayList<CellData>();
-        CellData cell = new CellData();
-        cell.setUserEnteredValue(new ExtendedValue().setStringValue(DateValue));
-        cell.setUserEnteredFormat(new CellFormat().setNumberFormat(new NumberFormat().setType("DATE")));
-        cellData.add(cell);
-        rowData.add(new RowData().setValues(cellData));
-        //Sheets.Spreadsheets
-        BatchUpdateSpreadsheetRequest batchRequests = new BatchUpdateSpreadsheetRequest();
-        BatchUpdateSpreadsheetResponse response;
-        List<Request> requests = new ArrayList<Request>();
-        AppendCellsRequest appendCellReq = new AppendCellsRequest();
-        //appendCellReq.setSheetId( sheetID);
-        appendCellReq.setRows(rowData);
-        appendCellReq.setFields("userEnteredValue,userEnteredFormat.numberFormat");
-        requests = new ArrayList<Request>();
-        requests.add(new Request().setAppendCells(appendCellReq));
-        batchRequests = new BatchUpdateSpreadsheetRequest();
-        batchRequests.setRequests(requests);
-        response = service.spreadsheets().batchUpdate(spreadSheetID, batchRequests).execute();
-        System.out.println("Request \n\n");
-        System.out.println(batchRequests.toPrettyString());
-        System.out.println("\n\nResponse \n\n");
-        System.out.println(response.toPrettyString());
-    }
-    */
 }
