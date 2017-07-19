@@ -326,8 +326,26 @@ public class ListDao {
 
 
 
+//    public ArrayList<Discount> getDiscounts(String discountType) throws  SQLException {
+//        PreparedStatement ps = connection.prepareStatement("SELECT * FROM PUBLIC."+ listName + " WHERE TYPE=?");
+//        ps.setString( 1, discountType);
+//        ps.execute();
+//        ArrayList<Discount> arrayList = new ArrayList<>();
+//        ResultSet resultSet = ps.getResultSet();
+//        while(resultSet.next()){
+//            arrayList.add(new Discount(
+//                    resultSet.getInt(1),
+//                    resultSet.getString(2),
+//                    resultSet.getString(3),
+//                    resultSet.getString(4),
+//                    resultSet.getString(5)
+//            ));
+//        }
+//        return arrayList;
+//    }
+
     public ArrayList<Discount> getDiscounts(String discountType) throws  SQLException {
-        PreparedStatement ps = connection.prepareStatement("SELECT * FROM PUBLIC."+ listName + " WHERE TYPE=?");
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM PUBLIC."+ listName + " WHERE DISCOUNT_TYPE=?");
         ps.setString( 1, discountType);
         ps.execute();
         ArrayList<Discount> arrayList = new ArrayList<>();
@@ -337,7 +355,7 @@ public class ListDao {
                     resultSet.getInt(1),
                     resultSet.getString(2),
                     resultSet.getString(3),
-                    resultSet.getString(4),
+                    resultSet.getString(8),
                     resultSet.getString(5)
             ));
         }
@@ -479,6 +497,20 @@ public class ListDao {
         ps.setString(2, discountName);
         ps.setString(3, discountAmount);
         ps.setString(4, discountPage);
+        ps.execute();
+    }
+
+    public void createDiscountVersion3(String discountType,String discountDescription, String discountName, String discountAmount,String discountAddress,
+                                       String discountPhone, String discountPhoto) throws SQLException{
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO PUBLIC."+ listName + " (DISCOUNT_TYPE, NAME, TEXT_ABOUT, PHOTO, ADDRESS," +
+                " PHONE, DISCOUNT ) VALUES (?,?,?,?,?,?,?)");
+        ps.setString(1, discountType);
+        ps.setString(2, discountName);
+        ps.setString(3, discountDescription);
+        ps.setString(4, discountPhoto);
+        ps.setString(5, discountAddress);
+        ps.setString(6, discountPhone);
+        ps.setString(7, discountAmount);
         ps.execute();
     }
 

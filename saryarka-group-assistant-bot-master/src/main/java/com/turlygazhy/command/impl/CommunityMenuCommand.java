@@ -2,8 +2,10 @@ package com.turlygazhy.command.impl;
 
 import com.turlygazhy.Bot;
 import com.turlygazhy.command.Command;
+import com.turlygazhy.entity.Message;
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
@@ -16,7 +18,11 @@ public class CommunityMenuCommand extends Command {
     @Override
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
         long chatId             = update.getMessage().getChatId();
-        SendMessage sendMessage = messageDao.getMessage(messageId).getSendMessage().setChatId(chatId).setReplyMarkup(
+        Message message         = messageDao.getMessage(messageId);
+        if(message.getSendPhoto()!=null){
+            bot.sendPhoto(new SendPhoto().setChatId(chatId).setPhoto(message.getSendPhoto().getPhoto()));
+        }
+        SendMessage sendMessage = message.getSendMessage().setChatId(chatId).setReplyMarkup(
                 keyboardMarkUpDao.select(messageDao.getMessage(messageId).getKeyboardMarkUpId()))
                 .setParseMode(ParseMode.HTML);
         bot.sendMessage(sendMessage);

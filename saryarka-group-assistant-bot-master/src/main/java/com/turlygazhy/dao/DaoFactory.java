@@ -72,4 +72,6 @@ public class DaoFactory {
     public KeyWordDao getKeyWordDao() {
         return new KeyWordDao(connection);
     }
+
+    public Top10Dao getTop10Dao(String top10ListDao){return new Top10Dao(connection, top10ListDao);}
 }

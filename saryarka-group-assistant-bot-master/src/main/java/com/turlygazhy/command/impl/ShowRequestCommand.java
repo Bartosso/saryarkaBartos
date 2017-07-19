@@ -29,10 +29,10 @@ public class ShowRequestCommand extends Command {
         SendPhoto sendPhoto = message.getSendPhoto();
         SendMessage sendMessage = message.getSendMessage();
         String text = message.getSendMessage().getText();
-        if (text.contains(FIRST_NAME_VAR)) {
-            text = text.replaceAll(FIRST_NAME_VAR, update.getMessage().getFrom().getFirstName());
-            sendMessage.setText(text);
-        }
+//        if (text.contains(FIRST_NAME_VAR)) {
+//            text = text.replaceAll(FIRST_NAME_VAR, update.getMessage().getFrom().getFirstName());
+//            sendMessage.setText(text);
+//        }
         try {
             if (sendPhoto != null) {
                 bot.sendPhoto(sendPhoto.setChatId(chatId));

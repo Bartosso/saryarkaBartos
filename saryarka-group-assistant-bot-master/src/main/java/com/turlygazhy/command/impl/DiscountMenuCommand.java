@@ -9,6 +9,7 @@ import com.turlygazhy.entity.Message;
 import com.turlygazhy.entity.MessageElement;
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
@@ -46,11 +47,11 @@ public class DiscountMenuCommand extends Command {
 
 //            String chose = update.getCallbackQuery().getData();
             if(menuChose.equals(buttonDao.getButtonText(97))){
-                getDiscounts(bot,update, "Restaurants","Рестораны");
+                getDiscounts(bot,update, "services","Услуги");
                 return true;
             }
             if(menuChose.equals(buttonDao.getButtonText(98))){
-                getDiscounts(bot,update, "Hotels", "Отели");
+                getDiscounts(bot,update, "goods", "Товары");
                 return true;
             }
             if(menuChose.equals(buttonDao.getButtonText(99))){
@@ -64,27 +65,12 @@ public class DiscountMenuCommand extends Command {
     }
 
 
-    private void getDiscounts(Bot bot, Update update, String discountsType, String textWithDiscounts) throws SQLException, TelegramApiException {
-        ListDao listDao = factory.getListDao("DISCOUNTS_LIST");
-        ArrayList<Discount> discountArrayList = listDao.getDiscounts(discountsType);
-        if(discountArrayList.isEmpty()){
-            SendMessage sendMessage = new SendMessage().setText("К сожалению ничего не найдено")
-                    .setChatId(update.getMessage().getChatId());
-            bot.sendMessage(sendMessage);
-        }
-        else{
-            ReplyKeyboard keyboard                = getDiscountViaButtons(discountArrayList);
-            SendMessage sendMessage               = new SendMessage().setChatId(chatId)
-                    .setText(textWithDiscounts).setReplyMarkup(keyboard);
-            bot.sendMessage(sendMessage);}
-    }
-//
 //    private void getDiscounts(Bot bot, Update update, String discountsType, String textWithDiscounts) throws SQLException, TelegramApiException {
-//        ListDao listDao = factory.getListDao("DISCOUNTS");
-//        ArrayList<Discount> discountArrayList = listDao.getDiscounts(discountsType, true);
+//        ListDao listDao = factory.getListDao("DISCOUNTS_LIST");
+//        ArrayList<Discount> discountArrayList = listDao.getDiscounts(discountsType);
 //        if(discountArrayList.isEmpty()){
 //            SendMessage sendMessage = new SendMessage().setText("К сожалению ничего не найдено")
-//                    .setChatId(String.valueOf(update.getCallbackQuery().getFrom().getId()));
+//                    .setChatId(update.getMessage().getChatId());
 //            bot.sendMessage(sendMessage);
 //        }
 //        else{
@@ -94,25 +80,21 @@ public class DiscountMenuCommand extends Command {
 //            bot.sendMessage(sendMessage);}
 //    }
 
-//
-//    private ReplyKeyboard getDiscountViaButtons(ArrayList<Discount> discountArrayList){
-//        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
-//        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
-//        List<InlineKeyboardButton> row;
-//
-//        for (Discount discount : discountArrayList) {
-//            row = new ArrayList<>();
-//            InlineKeyboardButton button = new InlineKeyboardButton();
-//            String buttonText = discount.getName() + " (" + discount.getDiscount() +")";
-//            button.setText(buttonText);
-//            button.setCallbackData("get_discount" + ":" + discount.getId());
-//            row.add(button);
-//            rows.add(row);
-//        }
-//        keyboard.setKeyboard(rows);
-//        return keyboard;
-//
-//    }
+    private void getDiscounts(Bot bot, Update update, String discountsType, String textWithDiscounts) throws SQLException, TelegramApiException {
+        ListDao listDao = factory.getListDao("DISCOUNTS");
+        ArrayList<Discount> discountArrayList = listDao.getDiscounts(discountsType);
+        if(discountArrayList.isEmpty()){
+            SendMessage sendMessage = new SendMessage().setText("К сожалению ничего не найдено")
+                    .setChatId(String.valueOf(update.getCallbackQuery().getFrom().getId()));
+            bot.sendMessage(sendMessage);
+        }
+        else{
+            ReplyKeyboard keyboard                = getDiscountViaButtons(discountArrayList);
+            SendMessage sendMessage               = new SendMessage().setChatId(chatId)
+                    .setText(textWithDiscounts).setReplyMarkup(keyboard);
+            bot.sendMessage(sendMessage);}
+    }
+
 
     private ReplyKeyboard getDiscountViaButtons(ArrayList<Discount> discountArrayList){
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
@@ -122,9 +104,9 @@ public class DiscountMenuCommand extends Command {
         for (Discount discount : discountArrayList) {
             row = new ArrayList<>();
             InlineKeyboardButton button = new InlineKeyboardButton();
-            String buttonText = discount.getName() + " (-" + discount.getDiscount() +")";
+            String buttonText = discount.getName() + " (" + discount.getDiscount() + ")";
             button.setText(buttonText);
-            button.setUrl(discount.getPage());
+            button.setCallbackData("get_discount" + ":" + discount.getId());
             row.add(button);
             rows.add(row);
         }
@@ -132,5 +114,24 @@ public class DiscountMenuCommand extends Command {
         return keyboard;
 
     }
+
+//    private ReplyKeyboard getDiscountViaButtons(ArrayList<Discount> discountArrayList){
+//        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+//        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+//        List<InlineKeyboardButton> row;
+//
+//        for (Discount discount : discountArrayList) {
+//            row = new ArrayList<>();
+//            InlineKeyboardButton button = new InlineKeyboardButton();
+//            String buttonText = discount.getName() + " (-" + discount.getDiscount() +")";
+//            button.setText(buttonText);
+//            button.setUrl(discount.getPage());
+//            row.add(button);
+//            rows.add(row);
+//        }
+//        keyboard.setKeyboard(rows);
+//        return keyboard;
+//
+//    }
 }
 

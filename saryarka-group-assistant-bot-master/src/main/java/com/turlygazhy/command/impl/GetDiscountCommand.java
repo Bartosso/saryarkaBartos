@@ -6,6 +6,7 @@ import com.turlygazhy.entity.Discount;
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
@@ -21,16 +22,16 @@ public class GetDiscountCommand extends Command {
         String discountId  = update.getCallbackQuery().getData().substring(update.getCallbackQuery().getData().indexOf(":")+1);
         Discount discount = factory.getListDao("DISCOUNTS").getDiscountById(discountId);
         SendMessage sendMessage = new SendMessage().setChatId(chatId).setText(messageDao.getMessage(messageId).getSendMessage().getText()
-                .replaceAll("company_name", discount.getName())
-                .replaceAll("text_about"  , discount.getTextAbout())
-                .replaceAll("address"     , discount.getAddress())
-                .replaceAll("page"        , discount.getPage())
-                .replaceAll("discount"    , discount.getDiscount()))
+                .replaceAll("company_name"        , discount.getName())
+                .replaceAll("companyDescription"  , discount.getTextAbout())
+                .replaceAll("address"             , discount.getAddress())
+                .replaceAll("page"                , discount.getPage())
+                .replaceAll("discount_count", discount.getDiscount()))
                 .setParseMode(ParseMode.HTML);
         if (discount.getPhoto() != null) {
             SendPhoto sendPhoto = new SendPhoto();
             sendPhoto.setPhoto(discount.getPhoto());
-            bot.sendPhoto(sendPhoto.setChatId(getAdminChatId()));
+            bot.sendPhoto(sendPhoto.setChatId(chatId));
         }
         bot.sendMessage(sendMessage);
 

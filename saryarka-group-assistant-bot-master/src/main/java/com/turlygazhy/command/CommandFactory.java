@@ -130,8 +130,9 @@ public class CommandFactory {
                 return new ShowAllVacanciesCommand();
             case SHOW_VACANCIES_BY_SFERA:
                 return new ShowVacanciesBySferaCommand();
+                //Actually version 3 lol :D
             case CREATE_DISCOUNT_VERSION2:
-                return new CreateDiscountViaLinkCommand();
+                return new CreateDiscountVersion3Command();
             case SHOW_DISCOUNT_FOR_ADMIN:
                 return new ShowDiscountForAdminAndDeleteMenuCommand();
             case DELETE_DISCOUNT:
@@ -178,6 +179,14 @@ public class CommandFactory {
                 return new ChangeCityCommand();
             case ADD_ENDED_EVENT:
                 return new CreateEndedEventCommand();
+            case CHANGE_ANY_MESSAGE_TEXT:
+                return new ChangeAnyMenuTextCommand();
+            case SHOW_ALL_BUTTONS_TO_CHANGE:
+                return new ShowAllButtonsToChange();
+            case ADDITIONAL_INFORMATION_ABOUT_DISCOUNT:
+                return new AdditionalInformationAboutDiscountCommand();
+            case CHANGE_BUTTON_TEXT:
+                return new ChangeButtonTextCommand();
             default:
                 throw new NotRealizedMethodException("Not realized for type: " + type);
         }

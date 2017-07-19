@@ -211,33 +211,7 @@ public class CreateEndedEventCommand extends Command {
             Message message = messageDao.getMessage(30);
             SendMessage sendMessage = message.getSendMessage().setChatId(chatId);
             bot.sendMessage(sendMessage);
-            try {
-                createRemind(bot,eventId,when, chatId);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
-//            ReplyKeyboard replyKeyboard = getKeyBoardForVote(eventId, "будет", listDao);
-
-//            Message poolNotificationMessage = messageDao.getMessage(92);
-//            SendMessage sendPool = poolNotificationMessage.getSendMessage().setChatId(GROUP_FOR_VOTE)
-//                    .setReplyMarkup(replyKeyboard);
-//            String text   = EventAnonceUtil.getEventWithPatternByAdmin(listDao.getEvent(String.valueOf(eventId)), messageDao);
-
-//            if (photo != null) {
-//                SendPhoto sendPhoto = new SendPhoto();
-//                sendPhoto.setPhoto(photo);
-//                bot.sendPhoto(sendPhoto.setChatId(GROUP_FOR_VOTE));
-//            }
-//
-////            sendPool.setText(text).setParseMode(ParseMode.HTML);
-////            bot.sendMessage(sendPool);
-//
-//            if(document != null){
-//                SendDocument sendDocument = new SendDocument();
-//                sendDocument.setDocument(document);
-//                bot.sendDocument(sendDocument.setChatId(GROUP_FOR_VOTE));
-//            }
             photo                  = null;
             event                  = null;
             when                   = null;

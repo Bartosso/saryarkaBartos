@@ -81,14 +81,20 @@ public class ButtonDao extends AbstractDao {
         ps.execute();
     }
 
-    public ArrayList<String> getAllButtonsText() throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("SELECT TEXT FROM BUTTON");
+    public ArrayList<Button> getAllButtons(boolean changeable) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM BUTTON WHERE CHANGEABLE="+ changeable);
         ps.execute();
-        ArrayList<String> stringArrayList = new ArrayList<>();
+        ArrayList<Button> buttonsArrayList = new ArrayList<>();
         ResultSet rs = ps.getResultSet();
         while (rs.next()){
-            stringArrayList.add(rs.getString(1));
+            Button button = new Button();
+            button.setId(rs.getInt(ID_INDEX));
+            button.setText(rs.getString(2));
+            button.setCommandId(rs.getInt(3));
+            button.setUrl(rs.getString(4));
+            button.setRequestContact(rs.getBoolean(5));
+            buttonsArrayList.add(button);
         }
-        return stringArrayList;
+        return buttonsArrayList;
     }
 }

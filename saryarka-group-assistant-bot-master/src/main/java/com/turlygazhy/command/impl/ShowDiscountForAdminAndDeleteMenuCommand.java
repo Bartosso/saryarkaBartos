@@ -42,17 +42,17 @@ public class ShowDiscountForAdminAndDeleteMenuCommand extends Command {
             if(menuChose != null){
 
             if(menuChose.equals(buttonDao.getButtonText(101))){
-                getDiscounts(bot,update, "Restaurants","Рестораны");
+                getDiscounts(bot,update, "services","Услуги");
                 return true;
             }
             if(menuChose.equals(buttonDao.getButtonText(102))){
-                getDiscounts(bot,update, "Hotels", "Отели");
+                getDiscounts(bot,update, "goods", "Товары");
                 return true;
             }
-            if(menuChose.equals(buttonDao.getButtonText(103))){
-                getDiscounts(bot,update, "BusinessSchools", "Бизнес-школы");
-                return true;
-            }
+//            if(menuChose.equals(buttonDao.getButtonText(103))){
+//                getDiscounts(bot,update, "BusinessSchools", "Бизнес-школы");
+//                return true;
+//            }
         }}
         chatId = 0;
         step   = 0;
@@ -61,7 +61,7 @@ public class ShowDiscountForAdminAndDeleteMenuCommand extends Command {
 
 
     private void getDiscounts(Bot bot, Update update, String discountsType, String textWithDiscounts) throws SQLException, TelegramApiException {
-        ListDao listDao = factory.getListDao("DISCOUNTS_LIST");
+        ListDao listDao = factory.getListDao("DISCOUNTS");
         ArrayList<Discount> discountArrayList = listDao.getDiscounts(discountsType);
         if(discountArrayList.isEmpty()){
             SendMessage sendMessage = new SendMessage().setText("К сожалению ничего не найдено")
@@ -86,7 +86,7 @@ public class ShowDiscountForAdminAndDeleteMenuCommand extends Command {
             InlineKeyboardButton button = new InlineKeyboardButton();
             String buttonText = discount.getName() + " (-" + discount.getDiscount() +")";
             button.setText(buttonText);
-            button.setUrl(discount.getPage());
+            button.setCallbackData("get_discount:"+ discount.getId());
             row.add(button);
             rows.add(row);
 
