@@ -7,6 +7,7 @@ public class Book {
     private int    id;
     private String bookName;
     private String book;
+    private String category;
 
     public int getId() {return id;}
 
@@ -20,9 +21,19 @@ public class Book {
 
     public void setBook(String book) {this.book = book;}
 
+    public String getCategory() {
+        return category;
+    }
+
     public Book(int id, String bookName, String book) {
         this.id = id;
         this.bookName = bookName;
         this.book = book;
+    }
+    public Book(int id, String bookName, String book, String category) {
+        this.id       = id;
+        this.bookName = bookName;
+        this.book     = book;
+        this.category = category;
     }
 }
