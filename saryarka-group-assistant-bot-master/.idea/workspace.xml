@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="975d932e-c7fc-45d4-bacd-3aec45a414ea" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowBooksCategoryCommand.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/CommandFactory$1.class" afterPath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/CommandFactory$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/turlygazhy/Bot.class" afterPath="$PROJECT_DIR$/target/classes/com/turlygazhy/Bot.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/CommandFactory.class" afterPath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/CommandFactory.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/CommandType.class" afterPath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/CommandType.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/impl/AddToGoogleSheetsCommand.class" afterPath="$PROJECT_DIR$/target/classes/com/turlygazhy/command/impl/AddToGoogleSheetsCommand.class" />
@@ -13,10 +13,13 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/turlygazhy/entity/Discount.class" afterPath="$PROJECT_DIR$/target/classes/com/turlygazhy/entity/Discount.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/turlygazhy/google_sheets/SheetsAdapter.class" afterPath="$PROJECT_DIR$/target/classes/com/turlygazhy/google_sheets/SheetsAdapter.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/saryarka.iml" afterPath="$PROJECT_DIR$/saryarka.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/CommandFactory.java" afterPath="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/CommandFactory.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/CommandType.java" afterPath="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/CommandType.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/AddToGoogleSheetsCommand.java" afterPath="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/AddToGoogleSheetsCommand.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ChangeButtonTextCommand.java" afterPath="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ChangeButtonTextCommand.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/GetDiscountCommand.java" afterPath="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/GetDiscountCommand.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowAllButtonsToChange.java" afterPath="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowAllButtonsToChange.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/turlygazhy/dao/impl/ListDao.java" afterPath="$PROJECT_DIR$/src/main/java/com/turlygazhy/dao/impl/ListDao.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/turlygazhy/entity/Book.java" afterPath="$PROJECT_DIR$/src/main/java/com/turlygazhy/entity/Book.java" />
@@ -40,10 +43,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Bot.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Bot.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/Bot.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="593">
+            <state relative-caret-position="330">
               <caret line="122" column="16" lean-forward="false" selection-start-line="122" selection-start-column="16" selection-end-line="122" selection-end-column="16" />
               <folding />
             </state>
@@ -64,20 +67,18 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowBooksCategoryCommand.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="255">
-              <caret line="15" column="2" lean-forward="false" selection-start-line="15" selection-start-column="2" selection-end-line="15" selection-end-column="2" />
+              <caret line="15" column="2" lean-forward="true" selection-start-line="15" selection-start-column="2" selection-end-line="15" selection-end-column="2" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ChangeButtonTextCommand.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ChangeButtonTextCommand.java">
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="398">
+              <caret line="96" column="19" lean-forward="true" selection-start-line="96" selection-start-column="19" selection-end-line="96" selection-end-column="19" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -85,8 +86,8 @@
       <file leaf-file-name="CommandType.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/CommandType.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="426">
-              <caret line="98" column="30" lean-forward="false" selection-start-line="98" selection-start-column="30" selection-end-line="98" selection-end-column="30" />
+            <state relative-caret-position="1">
+              <caret line="70" column="33" lean-forward="true" selection-start-line="70" selection-start-column="33" selection-end-line="70" selection-end-column="33" />
               <folding>
                 <element signature="e#2676#2677#0" expanded="true" />
                 <element signature="e#2704#2705#0" expanded="true" />
@@ -98,8 +99,38 @@
       <file leaf-file-name="CommandFactory.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/CommandFactory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="573">
-              <caret line="189" column="28" lean-forward="false" selection-start-line="189" selection-start-column="28" selection-end-line="190" selection-end-column="35" />
+            <state relative-caret-position="449">
+              <caret line="186" column="44" lean-forward="false" selection-start-line="186" selection-start-column="44" selection-end-line="186" selection-end-column="44" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AdditionalInformationAboutDiscountCommand.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/AdditionalInformationAboutDiscountCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="23" column="99" lean-forward="true" selection-start-line="23" selection-start-column="99" selection-end-line="23" selection-end-column="99" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GetDiscountCommand.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/GetDiscountCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="253">
+              <caret line="35" column="132" lean-forward="false" selection-start-line="35" selection-start-column="132" selection-end-line="35" selection-end-column="132" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ShowBooksToMemberCommand.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowBooksToMemberCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-214">
+              <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -108,30 +139,8 @@
       <file leaf-file-name="ListDao.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/dao/impl/ListDao.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="662" column="90" lean-forward="false" selection-start-line="662" selection-start-column="60" selection-end-line="662" selection-end-column="90" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Book.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/entity/Book.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="23" column="33" lean-forward="false" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
-              <folding>
-                <element signature="e#576#577#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ShowAllButtonsToChange.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowAllButtonsToChange.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="19" lean-forward="false" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
+            <state relative-caret-position="355">
+              <caret line="668" column="31" lean-forward="false" selection-start-line="668" selection-start-column="31" selection-end-line="668" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -178,7 +187,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/EditRequestTenderByAdminCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/EditEventCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/EditVacancyCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/CreateANewVacancyCommand.java" />
@@ -207,7 +215,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowRequestCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/AdditionalInformationAboutDiscontCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/AdditionalInformationAboutDiscountCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/GetDiscountCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/DiscountMenuCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ChangeAllButtonsCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/dao/impl/ButtonDao.java" />
@@ -223,12 +230,14 @@
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/AddToGoogleSheetsCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/entity/Book.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/CommandType.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/dao/impl/ListDao.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/Bot.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowBooksCategoryCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/CommandFactory.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowAllButtonsToChange.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ChangeButtonTextCommand.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/dao/impl/ListDao.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowBooksCategoryCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/CommandFactory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/GetDiscountCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/turlygazhy/Bot.java" />
       </list>
     </option>
   </component>
@@ -331,8 +340,14 @@
               <item name="saryarka" type="b2602c69:ProjectViewProjectNode" />
               <item name="saryarka-group-assistant-bot-master" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="Tools" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="saryarka" type="b2602c69:ProjectViewProjectNode" />
+              <item name="saryarka-group-assistant-bot-master" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Tools" type="462c0819:PsiDirectoryNode" />
+              <item name="tb_opentoolkit-0.04.jar" type="ab9368bb:PsiFileNode" />
             </path>
           </expand>
           <select />
@@ -760,6 +775,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="1000" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32897863" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -770,17 +786,17 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3337292" sideWeight="0.50647247" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928804" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32897863" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32897863" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32897863" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32897863" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15695792" sideWeight="0.4881235" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2710356" sideWeight="0.4881235" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17071198" sideWeight="0.51187646" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4038005" sideWeight="0.4935275" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4038005" sideWeight="0.4935275" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -893,20 +909,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/SolutionForEventFromAdminCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="83" column="0" lean-forward="false" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/tool/EventAnonceUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="697">
-          <caret line="45" column="45" lean-forward="false" selection-start-line="45" selection-start-column="45" selection-end-line="45" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/AddBookAdminCommand.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -983,20 +985,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-729">
           <caret line="13" column="13" lean-forward="false" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/AdditionalInformationAboutDiscountCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="27" column="0" lean-forward="true" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/GetDiscountCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="33" column="55" lean-forward="true" selection-start-line="33" selection-start-column="55" selection-end-line="33" selection-end-column="55" />
         </state>
       </provider>
     </entry>
@@ -1168,14 +1156,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/AddToGoogleSheetsCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="26" column="29" lean-forward="false" selection-start-line="26" selection-start-column="29" selection-end-line="26" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ChangeAnyMenuTextCommand.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="182">
@@ -1189,7 +1169,7 @@
         <state relative-caret-position="471">
           <caret line="126" column="77" lean-forward="false" selection-start-line="126" selection-start-column="77" selection-end-line="126" selection-end-column="77" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1212,49 +1192,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/CommandType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="426">
-          <caret line="98" column="30" lean-forward="false" selection-start-line="98" selection-start-column="30" selection-end-line="98" selection-end-column="30" />
-          <folding>
-            <element signature="e#2676#2677#0" expanded="true" />
-            <element signature="e#2704#2705#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/dao/impl/ListDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="662" column="90" lean-forward="false" selection-start-line="662" selection-start-column="60" selection-end-line="662" selection-end-column="90" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/Bot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="593">
-          <caret line="122" column="16" lean-forward="false" selection-start-line="122" selection-start-column="16" selection-end-line="122" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowBooksCategoryCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="2" lean-forward="false" selection-start-line="15" selection-start-column="2" selection-end-line="15" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/CommandFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="573">
-          <caret line="189" column="28" lean-forward="false" selection-start-line="189" selection-start-column="28" selection-end-line="190" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowAllButtonsToChange.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -1270,6 +1207,89 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="398">
+          <caret line="96" column="19" lean-forward="true" selection-start-line="96" selection-start-column="19" selection-end-line="96" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/dao/impl/ListDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="355">
+          <caret line="668" column="31" lean-forward="false" selection-start-line="668" selection-start-column="31" selection-end-line="668" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowBooksCategoryCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="2" lean-forward="true" selection-start-line="15" selection-start-column="2" selection-end-line="15" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/AddToGoogleSheetsCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="26" column="29" lean-forward="false" selection-start-line="26" selection-start-column="29" selection-end-line="26" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/ShowBooksToMemberCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-214">
+          <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/CommandType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1">
+          <caret line="70" column="33" lean-forward="true" selection-start-line="70" selection-start-column="33" selection-end-line="70" selection-end-column="33" />
+          <folding>
+            <element signature="e#2676#2677#0" expanded="true" />
+            <element signature="e#2704#2705#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/CommandFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="449">
+          <caret line="186" column="44" lean-forward="false" selection-start-line="186" selection-start-column="44" selection-end-line="186" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/AdditionalInformationAboutDiscountCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="23" column="99" lean-forward="true" selection-start-line="23" selection-start-column="99" selection-end-line="23" selection-end-column="99" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/command/impl/GetDiscountCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="35" column="132" lean-forward="false" selection-start-line="35" selection-start-column="132" selection-end-line="35" selection-end-column="132" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/turlygazhy/Bot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="122" column="16" lean-forward="false" selection-start-line="122" selection-start-column="16" selection-end-line="122" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>

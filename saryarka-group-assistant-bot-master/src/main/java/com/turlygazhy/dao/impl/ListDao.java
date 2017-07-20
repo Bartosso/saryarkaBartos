@@ -658,9 +658,21 @@ public class ListDao {
         return bookArrayList;
     }
 
-    public ArrayList<Book> getAllBooksInDistinctCategories()throws SQLException{
+    public ArrayList<String> getBooksCategories() throws SQLException{
+        PreparedStatement ps = connection.prepareStatement("select distinct category from "+listName);
+        ps.execute();
+        ResultSet rs = ps.getResultSet();
+        ArrayList<String> booksCategories = new ArrayList<>();
+        while (rs.next()){
+            booksCategories.add(rs.getString(1));
+        }
+        return booksCategories;
+    }
+
+    public ArrayList<Book> getAllBooksInDistinctCategories(String category)throws SQLException{
         ArrayList<Book> bookArrayList = new ArrayList<>();
-        PreparedStatement ps = connection.prepareStatement("SELECT DISTINCT CATEGORY FROM " + listName);
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + listName+ " where category =?");
+        ps.setString(1,category);
         ps.execute();
         ResultSet rs = ps.getResultSet();
         while (rs.next()){

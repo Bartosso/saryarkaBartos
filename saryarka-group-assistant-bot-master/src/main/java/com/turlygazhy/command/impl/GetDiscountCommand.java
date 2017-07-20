@@ -33,7 +33,7 @@ public class GetDiscountCommand extends Command {
             sendPhoto.setPhoto(discount.getPhoto());
             bot.sendPhoto(sendPhoto.setChatId(chatId));
         }
-        bot.sendMessage(sendMessage);
+        bot.sendMessage(sendMessage.setReplyMarkup(keyboardMarkUpDao.select(messageDao.getMessage(messageId).getKeyboardMarkUpId())));
 
         return true;
     }

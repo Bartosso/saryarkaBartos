@@ -1,6 +1,6 @@
 //package com.turlygazhy.command.impl;
 //
-////import Constructors.InlineKeyboardConstructor;
+//import Constructors.InlineKeyboardConstructor;
 //import com.turlygazhy.Bot;
 //import com.turlygazhy.command.Command;
 //import com.turlygazhy.dao.impl.ListDao;
@@ -25,19 +25,10 @@
 //    }
 //    private InlineKeyboardMarkup getCategories() throws SQLException {
 //        ListDao listDao = factory.getListDao("BOOKS");
-//        ArrayList<Book> bookArrayList = listDao.getAllBooksInDistinctCategories();
-//        ArrayList<String> buttonText  = new ArrayList<>();
-//        ArrayList<String> buttonData  = new ArrayList<>();
-//        for (Book book : bookArrayList){
-//            if(book.getCategory()!=null){
-//            buttonText.add(book.getCategory());
-//            //Передаем айди книги индивидуальной категории чтобы экономить байты для callbackData
-//            buttonData.add("getBooksInCat:" + book.getId());}
-//            else {
-//                buttonText.add(buttonDao.getButtonText(217));
-//                buttonData.add("getBooksInCat:" + book.getId());
-//            }
+//        ArrayList<String> booksCategories = listDao.getBooksCategories();
+//
+//        for(String string : booksCategories){
+//
 //        }
-////        return InlineKeyboardConstructor.getKeyboard(buttonText, buttonData);
 //    }
 //}

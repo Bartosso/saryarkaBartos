@@ -87,6 +87,13 @@
             <artifactId>google-api-client-gson</artifactId>
             <version>1.22.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.VanderKast</groupId>
+            <artifactId>VanderKast</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/Tools/tb_opentoolkit-0.04.jar</systemPath>
+        </dependency>
     </dependencies>
 
 </project>
