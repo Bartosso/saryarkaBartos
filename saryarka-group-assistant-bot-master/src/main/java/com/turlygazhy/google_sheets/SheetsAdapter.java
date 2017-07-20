@@ -67,6 +67,7 @@ public class SheetsAdapter {
 
         ValueRange vr = new ValueRange().setValues(writeData).setMajorDimension("ROWS");
 
+
         service.spreadsheets().values()
                 .append(spreadsheetId, writeRange, vr)
                 .setValueInputOption("RAW")
