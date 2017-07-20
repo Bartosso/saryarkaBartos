@@ -187,8 +187,8 @@ public class CommandFactory {
                 return new AdditionalInformationAboutDiscountCommand();
             case CHANGE_BUTTON_TEXT:
                 return new ChangeButtonTextCommand();
-//            case SHOW_BOOKS_CATEGORIES:
-//                return new ShowBooksCategoryCommand();
+            case SHOW_BOOKS_CATEGORIES:
+                return new ShowBooksCategoryCommand();
             default:
                 throw new NotRealizedMethodException("Not realized for type: " + type);
         }

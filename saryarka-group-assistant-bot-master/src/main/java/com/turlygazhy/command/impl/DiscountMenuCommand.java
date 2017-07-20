@@ -85,7 +85,7 @@ public class DiscountMenuCommand extends Command {
         ArrayList<Discount> discountArrayList = listDao.getDiscounts(discountsType);
         if(discountArrayList.isEmpty()){
             SendMessage sendMessage = new SendMessage().setText("К сожалению ничего не найдено")
-                    .setChatId(String.valueOf(update.getCallbackQuery().getFrom().getId()));
+                    .setChatId(chatId);
             bot.sendMessage(sendMessage);
         }
         else{
