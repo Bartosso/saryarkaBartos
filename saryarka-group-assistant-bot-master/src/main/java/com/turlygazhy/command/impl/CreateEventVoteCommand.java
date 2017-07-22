@@ -75,7 +75,7 @@ public class CreateEventVoteCommand extends Command {
                 case 3:
                     when  = updateMessage.getText();
                     SimpleDateFormat format = new SimpleDateFormat();
-                    format.applyPattern("dd.MM.yy, hh:mm");
+                    format.applyPattern("dd.MM.yy");
                     try {
                         date = format.parse(when);
                         step = 11;

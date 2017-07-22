@@ -32,6 +32,11 @@ public class ChangeCompanyCommand extends Command {
             waitingType = WaitingType.COMPANY_NAME;
             return false;
         }
+        boolean memberAdded = memberDao.isMemberAdded(Math.toIntExact(chatId));
+        if (!memberAdded) {
+            MemberChangedInfoButNotAddedToSheetsCommand memberChangedInfoButNotAddedToSheetsCommand = new MemberChangedInfoButNotAddedToSheetsCommand(chatId);
+            memberChangedInfoButNotAddedToSheetsCommand.execute(update, bot);
+        }
 
         memberDao.updateCompany(updateMessage.getFrom().getId(), company);
         ShowInfoAboutMemberCommand showInfoAboutMemberCommand = new ShowInfoAboutMemberCommand();

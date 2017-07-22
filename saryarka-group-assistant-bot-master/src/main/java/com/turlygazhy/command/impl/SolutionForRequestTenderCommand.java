@@ -45,6 +45,7 @@ public class SolutionForRequestTenderCommand extends Command {
         } else {
             if (chose.equals(buttonDao.getButtonText(157))) {
             listDao.makeStuffBe(tenderId);
+            factory.getTop10Dao("TOP10_REQUESTS").insert(listDao.getListDataById(tenderId).getText().toLowerCase());
             sendMessage(144, chatID, bot);
             }
             if (chose.equals(buttonDao.getButtonText(158))) {

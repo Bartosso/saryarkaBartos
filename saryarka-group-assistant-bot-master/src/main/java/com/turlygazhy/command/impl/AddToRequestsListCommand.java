@@ -78,6 +78,10 @@ public class AddToRequestsListCommand extends Command {
 //            expectedMessageElement = MessageElement.PHOTO;
 //            return false;
 //        }
+        if(update.getMessage().getFrom().getUserName()==null){
+            bot.sendMessage(new SendMessage(chatId, "Ошибка, у вас не указан username"));
+            return true;
+        }
         String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
         Date dateIn = new Date();
         LocalDateTime localDateTime = LocalDateTime.ofInstant(dateIn.toInstant(), ZoneId.systemDefault());

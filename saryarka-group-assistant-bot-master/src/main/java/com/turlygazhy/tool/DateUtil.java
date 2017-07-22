@@ -3,7 +3,10 @@ package com.turlygazhy.tool;
 import com.turlygazhy.entity.Week;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -227,6 +230,51 @@ public class DateUtil {
         }
 
         return string;
+    }
+
+    public static String dayOfWeekInRussian(int day){
+        String string = null;
+        switch (day){
+            case 1:
+                string = "понедельник";
+                break;
+            case 2:
+                string = "вторник";
+                break;
+            case 3:
+                string = "среда";
+                break;
+            case 4:
+                string = "четверг";
+                break;
+            case 5:
+                string = "пятница";
+                break;
+            case 6:
+                string = "суббота";
+                break;
+            case 7:
+                string = "воскресенье";
+                break;
+        }
+        return string;
+    }
+
+    public static Date getNextMonthEnd(){
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 12);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.DAY_OF_MONTH,Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH));
+        return cal.getTime();
+    }
+
+    public static Date getLastDayOfThisMonth(){
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 12);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.DAY_OF_MONTH,Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH));
+        return cal.getTime();
     }
 
 }

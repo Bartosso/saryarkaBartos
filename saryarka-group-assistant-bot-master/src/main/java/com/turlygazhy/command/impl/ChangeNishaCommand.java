@@ -31,6 +31,11 @@ public class ChangeNishaCommand extends Command {
             waitingType = WaitingType.NISHA;
             return false;
         }
+        boolean memberAdded = memberDao.isMemberAdded(Math.toIntExact(chatId));
+        if (!memberAdded) {
+            MemberChangedInfoButNotAddedToSheetsCommand memberChangedInfoButNotAddedToSheetsCommand = new MemberChangedInfoButNotAddedToSheetsCommand(chatId);
+            memberChangedInfoButNotAddedToSheetsCommand.execute(update, bot);
+        }
         memberDao.updateNishaByUserId(userId, nisha);
         ShowInfoAboutMemberCommand showInfoAboutMemberCommand = new ShowInfoAboutMemberCommand();
         showInfoAboutMemberCommand.setMessageId(8);

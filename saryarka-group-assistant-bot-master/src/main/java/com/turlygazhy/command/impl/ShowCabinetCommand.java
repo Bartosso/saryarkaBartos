@@ -2,6 +2,7 @@ package com.turlygazhy.command.impl;
 
 import com.turlygazhy.Bot;
 import com.turlygazhy.command.Command;
+import com.turlygazhy.entity.Member;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
@@ -17,6 +18,13 @@ public class ShowCabinetCommand extends Command {
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
         com.turlygazhy.entity.Message message = messageDao.getMessage(messageId);
         long chatId = update.getMessage().getChatId();
+
+        Member member = memberDao.selectByUserId(Math.toIntExact(chatId));
+        if(member == null ){
+            bot.sendMessage(new SendMessage(chatId, messageDao.getMessage(71).getSendMessage().getText()));
+            return true;
+        }
+
         SendMessage sendMessage = message.getSendMessage().setChatId(chatId).setReplyMarkup(keyboardMarkUpDao.select(message.getKeyboardMarkUpId()));
         bot.sendMessage(sendMessage);
         ShowInfoAboutMemberCommand showInfoAboutMemberCommand = new ShowInfoAboutMemberCommand();

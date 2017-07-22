@@ -189,6 +189,8 @@ public class CommandFactory {
                 return new ChangeButtonTextCommand();
             case SHOW_BOOKS_CATEGORIES:
                 return new ShowBooksCategoryCommand();
+            case EDIT_MEMBER_BID_TO_GOOGLE_SHEET:
+                return new EditMemberBidToGoogleSheetCommand();
             default:
                 throw new NotRealizedMethodException("Not realized for type: " + type);
         }

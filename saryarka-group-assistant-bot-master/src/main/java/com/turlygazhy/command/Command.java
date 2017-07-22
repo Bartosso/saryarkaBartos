@@ -145,12 +145,13 @@ public abstract class Command {
     }
 
     protected ReplyKeyboard getAddToSheetKeyboard(Integer id, Long chatId) throws SQLException {
-        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+        InlineKeyboardMarkup keyboard         = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
-        List<InlineKeyboardButton> row = new ArrayList<>();
+        List<InlineKeyboardButton> row               = new ArrayList<>();
         InlineKeyboardButton addToGoogleSheetsButton = new InlineKeyboardButton();
-        InlineKeyboardButton declineButton = new InlineKeyboardButton();
+        InlineKeyboardButton declineButton           = new InlineKeyboardButton();
+        InlineKeyboardButton editBidButton           = new InlineKeyboardButton();
 
         String buttonText = buttonDao.getButtonText(52);
         addToGoogleSheetsButton.setText(buttonText);
@@ -161,6 +162,14 @@ public abstract class Command {
         declineButton.setText(declineButtonText);
         declineButton.setCallbackData(declineButtonText + "/" + chatId);
         row.add(declineButton);
+        rows.add(row);
+
+        row = new ArrayList<>();
+
+        String editCollectedInfoText = buttonDao.getButtonText(218);
+        editBidButton.setText(editCollectedInfoText);
+        editBidButton.setCallbackData("editBid:" + chatId);
+        row.add(editBidButton);
 
         rows.add(row);
 
@@ -394,23 +403,24 @@ public abstract class Command {
     protected void createRemind(Bot bot, long eventId, String when, long chatId) throws ParseException, SQLException, TelegramApiException {
         Date now                 = new Date();
         SimpleDateFormat format  = new SimpleDateFormat();
-        format.applyPattern("dd.MM.yy, hh:mm");
+        format.applyPattern("dd.MM.yy");
         Date eventDate           = format.parse(when);
         LocalDateTime eventLocal = LocalDateTime.ofInstant(eventDate.toInstant(), ZoneId.systemDefault());
         Date dateEventMinusDay   = Date.from(eventLocal.minusDays(1).atZone(ZoneId.systemDefault()).toInstant());
         Date dateEventMinusHour  = Date.from(eventLocal.minusHours(1).atZone(ZoneId.systemDefault()).toInstant());
-        if (now.before(dateEventMinusDay)) {
-            Main.getReminder().setRemindEventStartOneDay(dateEventMinusDay, eventId);
-            Main.getReminder().setRemindEventsStartOneHour(dateEventMinusHour, eventId);
-        } else {
+//        if (now.before(dateEventMinusDay)) {
+//            Main.getReminder().setRemindEventStartOneDay(dateEventMinusDay, eventId);
+//            Main.getReminder().setRemindEventsStartOneHour(dateEventMinusHour, eventId);
+//        } else {
             if (now.before(dateEventMinusHour)){
-                Main.getReminder().setRemindEventsStartOneHour(dateEventMinusHour, eventId);
+//                Main.getReminder().setRemindEventsStartOneHour(dateEventMinusHour, eventId);
+                Main.getReminder().setRemindEventStartOneDay(dateEventMinusDay, eventId);
             }
             else {
                 bot.sendMessage(messageDao.getMessage(149).getSendMessage().setChatId(chatId));
             }
 
-        }
+//        }
     }
 
     protected void sendNewMessageForEditOfferTender(Bot bot, String tenderId, ListDao listDao, long chatId) throws TelegramApiException, SQLException {
@@ -539,48 +549,48 @@ public abstract class Command {
         row.add(editEventWhen);
         rows.add(row);
 
-        row = new ArrayList<>();
-        InlineKeyboardButton editEventContact   = new InlineKeyboardButton(buttonDao.getButtonText(173));
-        editEventContact.setCallbackData("editEventCont" + ":" + eventId);
-        row.add(editEventContact);
-        rows.add(row);
-
-        row = new ArrayList<>();
-        InlineKeyboardButton editEventPhoto     = new InlineKeyboardButton(buttonDao.getButtonText(175));
-        editEventPhoto.setCallbackData("editEventPhoto" + ":" + eventId);
-        row.add(editEventPhoto);
-        rows.add(row);
-
-        row = new ArrayList<>();
-        InlineKeyboardButton editEventRules     = new InlineKeyboardButton(buttonDao.getButtonText(177));
-        editEventRules.setCallbackData("editEventRules" + ":" + eventId);
-        row.add(editEventRules);
-        rows.add(row);
-
-        row = new ArrayList<>();
-        InlineKeyboardButton editEventDressCode = new InlineKeyboardButton(buttonDao.getButtonText(179));
-        editEventDressCode.setCallbackData("editEventDcode" + ":" + eventId);
-        row.add(editEventDressCode);
-        rows.add(row);
-
-        row = new ArrayList<>();
-        InlineKeyboardButton editEventProgram   = new InlineKeyboardButton(buttonDao.getButtonText(181));
-        editEventProgram.setCallbackData("editEventPrgm" + ":" + eventId);
-        row.add(editEventProgram);
-        rows.add(row);
-
-        row = new ArrayList<>();
-        InlineKeyboardButton editEventPage       = new InlineKeyboardButton(buttonDao.getButtonText(183));
-        editEventPage.setCallbackData("editEventPage" + ":" + eventId);
-        row.add(editEventPage);
-        rows.add(row);
-
-        row = new ArrayList<>();
-        InlineKeyboardButton editEventDocument   = new InlineKeyboardButton(buttonDao.getButtonText(185));
-        editEventDocument.setCallbackData("editEventDoc" + ":" + eventId);
-        row.add(editEventDocument);
-        rows.add(row);
-
+//        row = new ArrayList<>();
+//        InlineKeyboardButton editEventContact   = new InlineKeyboardButton(buttonDao.getButtonText(173));
+//        editEventContact.setCallbackData("editEventCont" + ":" + eventId);
+//        row.add(editEventContact);
+//        rows.add(row);
+//
+//        row = new ArrayList<>();
+//        InlineKeyboardButton editEventPhoto     = new InlineKeyboardButton(buttonDao.getButtonText(175));
+//        editEventPhoto.setCallbackData("editEventPhoto" + ":" + eventId);
+//        row.add(editEventPhoto);
+//        rows.add(row);
+//
+//        row = new ArrayList<>();
+//        InlineKeyboardButton editEventRules     = new InlineKeyboardButton(buttonDao.getButtonText(177));
+//        editEventRules.setCallbackData("editEventRules" + ":" + eventId);
+//        row.add(editEventRules);
+//        rows.add(row);
+//
+//        row = new ArrayList<>();
+//        InlineKeyboardButton editEventDressCode = new InlineKeyboardButton(buttonDao.getButtonText(179));
+//        editEventDressCode.setCallbackData("editEventDcode" + ":" + eventId);
+//        row.add(editEventDressCode);
+//        rows.add(row);
+//
+//        row = new ArrayList<>();
+//        InlineKeyboardButton editEventProgram   = new InlineKeyboardButton(buttonDao.getButtonText(181));
+//        editEventProgram.setCallbackData("editEventPrgm" + ":" + eventId);
+//        row.add(editEventProgram);
+//        rows.add(row);
+//
+//        row = new ArrayList<>();
+//        InlineKeyboardButton editEventPage       = new InlineKeyboardButton(buttonDao.getButtonText(183));
+//        editEventPage.setCallbackData("editEventPage" + ":" + eventId);
+//        row.add(editEventPage);
+//        rows.add(row);
+//
+//        row = new ArrayList<>();
+//        InlineKeyboardButton editEventDocument   = new InlineKeyboardButton(buttonDao.getButtonText(185));
+//        editEventDocument.setCallbackData("editEventDoc" + ":" + eventId);
+//        row.add(editEventDocument);
+//        rows.add(row);
+//
         row = new ArrayList<>();
         InlineKeyboardButton acceptEventButton   = new InlineKeyboardButton(buttonDao.getButtonText(90));
         acceptEventButton.setCallbackData("acceptEvent" + ":" + eventId);
@@ -596,6 +606,7 @@ public abstract class Command {
         keyboard.setKeyboard(rows);
 return keyboard;
     }
+
 
     protected void sendMessageForEditEventToAdmin(Bot bot, String eventId, ListDao listDao, long chatId) throws SQLException, TelegramApiException {
         Event event = listDao.getEvent(eventId);

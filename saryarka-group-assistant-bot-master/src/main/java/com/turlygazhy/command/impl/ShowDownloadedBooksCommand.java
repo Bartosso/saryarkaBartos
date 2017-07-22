@@ -12,6 +12,8 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -39,8 +41,8 @@ public class ShowDownloadedBooksCommand extends Command {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         List<InlineKeyboardButton> row;
         ListDao listDao = factory.getListDao("BOOKS");
-
-        for(String string: booksIds) {
+        LinkedHashSet<String> books = new LinkedHashSet<>(Arrays.asList(booksIds));
+        for(String string: books) {
             row        = new ArrayList<>();
             Book book  = listDao.getBookById(string);
             if(book == null){

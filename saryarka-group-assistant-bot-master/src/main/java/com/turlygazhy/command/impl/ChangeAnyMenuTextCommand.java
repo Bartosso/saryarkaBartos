@@ -33,8 +33,13 @@ public class ChangeAnyMenuTextCommand extends Command {
                     try {
                         photo = updateMessage.getPhoto().get(updateMessage.getPhoto().size() - 1).getFileId();
                     } catch (Exception e) {
+                        if(update.hasCallbackQuery()){
                         if (update.getCallbackQuery().getData().equals(buttonDao.getButtonText(51))) {
                             needPhoto = false;
+                        }}
+                        else {
+                            bot.sendMessage(new SendMessage(chatId,"Вы не загрузили фото либо не нажали на кнопку ''Без фото''"));
+                            return false;
                         }
                     }
                     break;

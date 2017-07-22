@@ -32,6 +32,7 @@ public class ChangeCityCommand extends Command {
             return false;
         }
 
+
         memberDao.updateCity(updateMessage.getFrom().getId(), city);
         ShowInfoAboutMemberCommand showInfoAboutMemberCommand = new ShowInfoAboutMemberCommand();
         showInfoAboutMemberCommand.setMessageId(8);

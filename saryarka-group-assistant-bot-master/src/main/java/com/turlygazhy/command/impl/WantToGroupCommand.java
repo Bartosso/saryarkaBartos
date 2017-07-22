@@ -37,6 +37,10 @@ public class WantToGroupCommand extends Command {
 
         try {
             Member member = memberDao.selectByUserId(userId);
+            if(member == null){
+                bot.sendMessage(new SendMessage().setChatId(String.valueOf(userId)).setText("Вы не заполнили анкету, нажмите /start"));
+                return true;
+            }
             String text = messageDao.getMessage(42).getSendMessage().getText();
             text = text.replaceAll("fio", member.getFIO()).replaceAll("companyName", member.getCompanyName())
                     .replaceAll("contact", member.getContact()).replaceAll("nisha", member.getNisha())

@@ -637,10 +637,11 @@ public class ListDao {
 
 
 
-    public void addNewBook(String bookName, String book) throws SQLException{
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO PUBLIC."+ listName + " (NAME, FILE) values (?,?)");
+    public void addNewBook(String bookName, String book, String category) throws SQLException{
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO PUBLIC."+ listName + " (NAME, FILE,CATEGORY) values (?,?,?)");
         ps.setString(1,bookName);
         ps.setString(2,book);
+        ps.setString(3,category);
         ps.execute();
     }
 

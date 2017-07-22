@@ -81,7 +81,7 @@ public class CheckEveryNightDbTask extends AbstractTask {
             Date now                    = new Date();
             Date eventDate;
             SimpleDateFormat format     = new SimpleDateFormat();
-            format.applyPattern("dd.MM.yy, hh:mm");
+            format.applyPattern("dd.MM.yy");
             for(Event event : eventArrayList){
                 eventDate = format.parse(event.getWHEN());
                 if(eventDate.before(now)){

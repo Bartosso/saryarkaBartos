@@ -94,6 +94,11 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/src/Tools/tb_opentoolkit-0.04.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>org.knowm.xchart</groupId>
+            <artifactId>xchart</artifactId>
+            <version>3.4.0</version>
+        </dependency>
     </dependencies>
 
 </project>

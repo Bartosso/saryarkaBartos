@@ -422,7 +422,7 @@ public class ShowEventsLikeIteratorCommand extends Command {
     private boolean addToReminderList(Bot bot, Update update) throws ParseException, SQLException, TelegramApiException {
         Date now                 = new Date();
         SimpleDateFormat format  = new SimpleDateFormat();
-        format.applyPattern("dd.MM.yy, hh:mm");
+        format.applyPattern("dd.MM.yy");
         Date eventDate           = format.parse(event.getWHEN());
         LocalDateTime eventLocal = LocalDateTime.ofInstant(eventDate.toInstant(), ZoneId.systemDefault());
         Date dateEventMinusDay   = Date.from(eventLocal.minusDays(1).atZone(ZoneId.systemDefault()).toInstant());

@@ -113,6 +113,7 @@ public class MemberDao {
         ps.setInt(1, userId);
         ps.execute();
         ResultSet rs = ps.getResultSet();
+        try{
         rs.next();
         member.setId(rs.getInt(ID_COLUMN_INDEX));
         member.setUserId(userId);
@@ -125,7 +126,10 @@ public class MemberDao {
         member.setFirstName(rs.getString(FIRST_NAME_COLUMN_INDEX));
         member.setLastName(rs.getString(LAST_NAME_COLUMN_INDEX));
         member.setPhoneNumber(rs.getString(PHONE_NUMBER_COLUMN_INDEX));
-        member.setCity(rs.getString(CITY_COLUMN_INDEX));
+        member.setCity(rs.getString(CITY_COLUMN_INDEX));}
+        catch (JdbcSQLException e){
+            return null;
+        }
         return member;
     }
 
@@ -314,8 +318,8 @@ public class MemberDao {
     }
 
     public void addDownloadedBook(String bookId, int memberId) throws SQLException{
-        PreparedStatement ps = connection.prepareStatement("UPDATE MEMBER SET DOWNLOADED_BOOKS= CONCAT('DOWNLOADED_BOOKS', '?', '/' ) WHERE ID="+memberId);
-        ps.setString(1, bookId);
+        PreparedStatement ps = connection.prepareStatement("UPDATE MEMBER SET DOWNLOADED_BOOKS= CONCAT(DOWNLOADED_BOOKS, '"+bookId+"', '/' ) WHERE ID="+memberId);
+        ps.execute();
     }
 
     public String[] getMemberBooks(String memberId) throws SQLException{

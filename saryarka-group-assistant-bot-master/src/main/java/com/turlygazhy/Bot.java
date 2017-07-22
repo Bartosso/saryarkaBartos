@@ -31,7 +31,8 @@ public class Bot extends TelegramLongPollingBot {
     private ListDao listDao                       = factory.getListDao("EVENTS_LIST");
     private String EVENTS_TABLE_NAME              = "EVENTS_LIST";
     //todo put group for vote id here
-    private final String GROUP_FOR_VOTE           = "";
+    private final String GROUP_FOR_VOTE           = null;
+//    private final String senimManagerChatId       = "";
 
 
 
@@ -125,4 +126,15 @@ public class Bot extends TelegramLongPollingBot {
 
     public String getGROUP_FOR_VOTE(){ return  GROUP_FOR_VOTE; }
 
+//    public String getSenimManagerChatId() { return senimManagerChatId; }
+
+    /**
+     * Checklist:
+     * 1. Set path to json in AddToGoogleSheets.java
+     * 2. Set Jaxsalik chat_id in table USER
+     * 3. Set Path to temp folder for pie charts in EndOfMonthTask.java
+     * 4. Set Bot Username
+     * 5. Set Bot Token
+     * 6. Set GROUP_FOR_VOTE, put chat id of group what you need to make voting
+     */
 }

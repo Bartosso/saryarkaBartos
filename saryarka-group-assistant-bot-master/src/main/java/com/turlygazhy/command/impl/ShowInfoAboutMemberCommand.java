@@ -35,17 +35,18 @@ public class ShowInfoAboutMemberCommand extends Command {
 
         ReplyKeyboardMarkup keyboard = (ReplyKeyboardMarkup) keyboardMarkUpDao.select(message.getKeyboardMarkUpId());
 
-        boolean memberAdded = memberDao.isMemberAdded(userId);
-        if (!memberAdded) {
-//            List<KeyboardRow> keyboardRows = keyboard.getKeyboard();
+        //            List<KeyboardRow> keyboardRows = keyboard.getKeyboard();
 //            KeyboardRow keyboardButtons = new KeyboardRow();
 //            KeyboardButton keyboardButton = new KeyboardButton();
 //            keyboardButton.setText(buttonDao.getButtonText(63));
 //            keyboardButtons.add(keyboardButton);
 //            keyboardRows.add(keyboardRows.size() - 1, keyboardButtons);
-            SendMessage sendMessage = new SendMessage().setChatId(getAdminChatId()).setText("Пользаватель изменил данные о себе\n" + text);
-            bot.sendMessage(sendMessage);
-        }
+//        boolean memberAdded = memberDao.isMemberAdded(userId);
+//        if (!memberAdded) {
+//            SendMessage sendMessage = new SendMessage().setChatId(getAdminChatId()).setText("Пользаватель изменил данные о себе\n" + text)
+//                    .setReplyMarkup(keyboardMarkUpDao.select(44));
+//            bot.sendMessage(sendMessage);
+//        }
 
         bot.sendMessage(new SendMessage()
                 .setChatId(update.getMessage().getChatId())

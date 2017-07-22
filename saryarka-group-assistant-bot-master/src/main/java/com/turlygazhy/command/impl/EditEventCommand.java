@@ -50,7 +50,7 @@ public class EditEventCommand extends Command {
                     return true;
                 case "editEventWhen":
                     SimpleDateFormat format = new SimpleDateFormat();
-                    format.applyPattern("dd.MM.yy, hh:mm");
+                    format.applyPattern("dd.MM.yy");
                     try {
                         Date date = format.parse(updateMessage.getText());
                         listDao.changeStuff(updateMessage.getText(), eventId, "WHEN");

@@ -32,6 +32,11 @@ public class ChangePhoneNumberCommand extends Command {
             showInfoAboutMemberCommand.execute(update, bot);
             return true;
         }
+        boolean memberAdded = memberDao.isMemberAdded(Math.toIntExact(chatId));
+        if (!memberAdded) {
+            MemberChangedInfoButNotAddedToSheetsCommand memberChangedInfoButNotAddedToSheetsCommand = new MemberChangedInfoButNotAddedToSheetsCommand(chatId);
+            memberChangedInfoButNotAddedToSheetsCommand.execute(update, bot);
+        }
 
         sendMessage(39, chatId, bot);
         expectContact = true;

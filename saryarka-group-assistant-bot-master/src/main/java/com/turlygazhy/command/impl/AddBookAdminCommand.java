@@ -20,6 +20,7 @@ public class AddBookAdminCommand extends Command {
     private MessageElement expectedMessageElement;
     private String         bookName;
     private String         book;
+    private String         category;
     @Override
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
         if(expectedMessageElement!= null){
@@ -31,6 +32,17 @@ public class AddBookAdminCommand extends Command {
                 case 1:
                     book     = update.getMessage().getDocument().getFileId();
                     step = 2;
+                    break;
+                case 2:
+                    try {
+                        category = update.getMessage().getText();
+                    } catch (Exception e){
+                        if(update.getCallbackQuery().getData().equals(buttonDao.getButtonText(217))){
+                        category = buttonDao.getButtonText(217);
+                        step = 3;
+                        }
+                    }
+                    step = 3;
             }
         }
 
@@ -46,8 +58,12 @@ public class AddBookAdminCommand extends Command {
             return false;
         }
         if(step == 2){
+            sendMessage(166, chatId, bot);
+            return false;
+        }
+        if(step == 3){
 
-            factory.getListDao("BOOKS").addNewBook(bookName,book);
+            factory.getListDao("BOOKS").addNewBook(bookName,book, category);
             sendMessage(130, chatId,bot);
         }
         chatId = 0;

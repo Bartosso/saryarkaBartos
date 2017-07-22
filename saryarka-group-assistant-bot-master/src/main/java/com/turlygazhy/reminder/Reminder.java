@@ -21,6 +21,7 @@ public class Reminder {
     public Reminder(Bot bot) {
         this.bot = bot;
         setCheckEveryNightDb(0);
+        setEndOfMonthTask(DateUtil.getLastDayOfThisMonth());
     }
 
     public void setCheckEveryNightDb(int hour) {
@@ -44,6 +45,14 @@ public class Reminder {
         RemindEventStartOneHourTask remindEventStartOneHourTask = new RemindEventStartOneHourTask(bot,this, eventId);
         timer.schedule(remindEventStartOneHourTask, eventsStartOneHour);
     }
+
+    public void setEndOfMonthTask(Date endOfMonth){
+        logger.info("New end of month task at " + endOfMonth);
+
+        EndOfMonthTask endOfMonthTask = new EndOfMonthTask(bot, this);
+        timer.schedule(endOfMonthTask, endOfMonth);
+    }
+
     public Logger getLogger(){
         return logger;
     }

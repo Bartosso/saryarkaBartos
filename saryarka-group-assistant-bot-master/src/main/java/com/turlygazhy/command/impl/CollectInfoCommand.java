@@ -28,6 +28,7 @@ public class CollectInfoCommand extends Command {
     private WaitingType waitingType;
     private String companyName;
     private String fio;
+    private Contact phoneNumber;
 
     @Override
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
@@ -84,24 +85,49 @@ public class CollectInfoCommand extends Command {
                     waitingType = WaitingType.PHONE_NUMBER;
                     return false;
                 case PHONE_NUMBER:
-                    Contact contact = updateMessage.getContact();
-                    User user = updateMessage.getFrom();
-                    memberDao.insert(nisha,  chatId, user.getUserName(), user.getId(), companyName, this.contact, fio, contact, city);
 
-                    String textToAdmin = messageDao.getMessage(42).getSendMessage().getText();
-                    textToAdmin = textToAdmin.replaceAll("fio", fio).replaceAll("companyName", companyName)
-                            .replaceAll("contact", this.contact).replaceAll("nisha", nisha)
-                    .replaceAll("phoneNumber", contact.getPhoneNumber())
-                    .replaceAll("memberCity", city);
+                    phoneNumber = updateMessage.getContact();
+                    if(phoneNumber==null){
+                        bot.sendMessage(new SendMessage(chatId,"Вы не нажали на кнопку ''Отправить контакт''"));
+                        return false;
+                    }
 
-                    SendMessage sendMessage = new SendMessage().setText(textToAdmin
-                    )
-                            .setChatId(userDao.getAdminChatId())
-                            .setReplyMarkup(getAddToSheetKeyboard(user.getId(), chatId));
-                   bot.sendMessage(sendMessage);
+                    bot.sendMessage(new SendMessage(chatId, messageDao.getMessage(167).getSendMessage().getText()+"\n\n"+
+                    getTextPattern()).setReplyMarkup(getKeyboardForAcceptOrStart()));
+                    waitingType = WaitingType.ACCEPT;
+                    return false;
+                case ACCEPT:
+                    if(update.hasCallbackQuery()){
+                        if (update.getCallbackQuery().getData().equals("AcceptSendToAdmin")){
+                            User user = update.getCallbackQuery().getFrom();
+                            memberDao.insert(nisha,  chatId, user.getUserName(), user.getId(), companyName, this.contact, fio, phoneNumber, city);
+                            SendMessage sendMessage = new SendMessage().setText("Заявка на добавление в группу\n"+getTextPattern())
+                                    .setChatId(userDao.getAdminChatId())
+                                    .setReplyMarkup(getAddToSheetKeyboard(user.getId(), chatId));
+                            bot.sendMessage(sendMessage);
 
-                    sendMessage(43, chatId, bot);
-                    return true;
+                            sendMessage(43, chatId, bot);
+                            return true;
+                        }
+                    }
+                    else {
+                        waitingType = WaitingType.FIO;
+                    }
+//                    memberDao.insert(nisha,  chatId, user.getUserName(), user.getId(), companyName, this.contact, fio, phoneNumber, city);
+//                    String textToAdmin = messageDao.getMessage(42).getSendMessage().getText();
+//                    textToAdmin = textToAdmin.replaceAll("fio", fio).replaceAll("companyName", companyName)
+//                            .replaceAll("contact", this.contact).replaceAll("nisha", nisha)
+//                    .replaceAll("phoneNumber", contact.getPhoneNumber())
+//                    .replaceAll("memberCity", city);
+//                    User user = updateMessage.getFrom();
+//                    memberDao.insert(nisha,  chatId, user.getUserName(), user.getId(), companyName, this.contact, fio, phoneNumber, city);
+//                    SendMessage sendMessage = new SendMessage().setText(getTextPattern())
+//                            .setChatId(userDao.getAdminChatId())
+//                            .setReplyMarkup(getAddToSheetKeyboard(user.getId(), chatId));
+//                   bot.sendMessage(sendMessage);
+//
+//                    sendMessage(43, chatId, bot);
+//                    return true;
             }
         }
 
@@ -112,5 +138,25 @@ public class CollectInfoCommand extends Command {
         }
 
         return false;
+    }
+
+    private String getTextPattern() throws SQLException {
+        String textToAdmin = messageDao.getMessage(42).getSendMessage().getText();
+        textToAdmin = textToAdmin.replaceAll("fio", fio).replaceAll("companyName", companyName)
+                .replaceAll("contact", contact).replaceAll("nisha", nisha)
+                .replaceAll("phoneNumber", phoneNumber.getPhoneNumber())
+                .replaceAll("memberCity", city);
+        return textToAdmin;
+    }
+    private InlineKeyboardMarkup getKeyboardForAcceptOrStart() {
+        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+        ArrayList<List<InlineKeyboardButton>> arrayListArrayList = new ArrayList<>();
+        ArrayList<InlineKeyboardButton> inlineKeyboardButtons = new ArrayList<>();
+        InlineKeyboardButton accept = new InlineKeyboardButton();
+        accept.setText("Отправить");
+        accept.setCallbackData("AcceptSendToAdmin");
+        inlineKeyboardButtons.add(accept);
+        arrayListArrayList.add(inlineKeyboardButtons);
+        return keyboard.setKeyboard(arrayListArrayList);
     }
 }

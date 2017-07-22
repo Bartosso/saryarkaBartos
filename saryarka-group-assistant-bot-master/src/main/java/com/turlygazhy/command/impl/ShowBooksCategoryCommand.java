@@ -43,6 +43,7 @@ public class ShowBooksCategoryCommand extends Command {
         else {
             bot.deleteMessage(new DeleteMessage(chatId, update.getCallbackQuery().getMessage().getMessageId()));
             String categoryId = update.getCallbackQuery().getData().substring(update.getCallbackQuery().getData().indexOf(":")+1);
+
             ArrayList<Book> chosenBooks = listDao.getAllBooksInDistinctCategories(categories.get(Integer.parseInt(categoryId)));
 
             bot.sendMessage(new SendMessage(chatId,messageDao.getMessage(132).getSendMessage().getText())
@@ -56,16 +57,17 @@ public class ShowBooksCategoryCommand extends Command {
         ArrayList<String> buttonText  = new ArrayList<>();
         ArrayList<String> buttonsData = new ArrayList<>();
         for(int i = 0; i<categories.size(); i++){
-            if(categories.get(i)==null){
-                buttonText.add(buttonDao.getButtonText(217));
-            }
-            else {
+//            if(categories.get(i)==null){
+//                buttonText.add(buttonDao.getButtonText(217));
+//            }
+//            else {
                 buttonText.add(categories.get(i));
-            }
+//            }
             buttonsData.add("getBookCat:" + i);
         }
         return InlineKeyboardConstructor.getKeyboard(buttonText, buttonsData);
     }
+
     private ReplyKeyboard getBooksViaButtons(ArrayList<Book> bookArrayList){
         InlineKeyboardMarkup keyboard         = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();

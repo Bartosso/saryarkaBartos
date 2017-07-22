@@ -32,6 +32,11 @@ public class ChangeContactCommand extends Command {
             waitingType = WaitingType.CONTACT;
             return false;
         }
+        boolean memberAdded = memberDao.isMemberAdded(Math.toIntExact(chatId));
+        if (!memberAdded) {
+            MemberChangedInfoButNotAddedToSheetsCommand memberChangedInfoButNotAddedToSheetsCommand = new MemberChangedInfoButNotAddedToSheetsCommand(chatId);
+            memberChangedInfoButNotAddedToSheetsCommand.execute(update, bot);
+        }
 
         memberDao.updateContact(updateMessage.getFrom().getId(), contact);
         ShowInfoAboutMemberCommand showInfoAboutMemberCommand = new ShowInfoAboutMemberCommand();
