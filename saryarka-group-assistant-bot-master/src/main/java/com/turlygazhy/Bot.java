@@ -31,7 +31,8 @@ public class Bot extends TelegramLongPollingBot {
     private ListDao listDao                       = factory.getListDao("EVENTS_LIST");
     private String EVENTS_TABLE_NAME              = "EVENTS_LIST";
     //todo put group for vote id here
-    private final String GROUP_FOR_VOTE           = null;
+    private final String GROUP_FOR_VOTE           =
+            null;
 //    private final String senimManagerChatId       = "";
 
 
@@ -115,9 +116,7 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     //todo put bot username here
-    public String getBotUsername() {
-        return "";
-    }
+    public String getBotUsername() { return ""; }
 
     //todo put bot token here
     public String getBotToken() {

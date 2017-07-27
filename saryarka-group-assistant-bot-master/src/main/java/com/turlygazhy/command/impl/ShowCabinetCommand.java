@@ -24,12 +24,15 @@ public class ShowCabinetCommand extends Command {
             bot.sendMessage(new SendMessage(chatId, messageDao.getMessage(71).getSendMessage().getText()));
             return true;
         }
-
+        if(memberDao.isMemberAdded(Math.toIntExact(chatId))){
         SendMessage sendMessage = message.getSendMessage().setChatId(chatId).setReplyMarkup(keyboardMarkUpDao.select(message.getKeyboardMarkUpId()));
         bot.sendMessage(sendMessage);
         ShowInfoAboutMemberCommand showInfoAboutMemberCommand = new ShowInfoAboutMemberCommand();
         showInfoAboutMemberCommand.setMessageId(8);
-        showInfoAboutMemberCommand.execute(update, bot);
+        showInfoAboutMemberCommand.execute(update, bot);}
+        else {
+            bot.sendMessage(new SendMessage(chatId, messageDao.getMessage(43).getSendMessage().getText()));
+        }
         return true;
     }
 }

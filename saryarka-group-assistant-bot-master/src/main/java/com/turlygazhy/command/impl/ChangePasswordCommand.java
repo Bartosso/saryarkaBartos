@@ -13,6 +13,7 @@ import java.sql.SQLException;
  * Created by user on 2/21/17.
  */
 public class ChangePasswordCommand extends Command {
+    @SuppressWarnings("FieldCanBeLocal")
     private int buttonId = 19;
     private WaitingType waitingType;
 

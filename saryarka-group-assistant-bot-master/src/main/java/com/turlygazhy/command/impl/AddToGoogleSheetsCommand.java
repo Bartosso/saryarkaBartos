@@ -16,11 +16,12 @@ import java.util.ArrayList;
 public class AddToGoogleSheetsCommand extends Command {
     private static final int LAST_ROW_DATA_ID = 3;
     private String userId;
-    private static final String KEY = "src/main/resources/members-36a5849089da.json";
-//    private static final String KEY = "C:\\bots-data\\members-36a5849089da.json";
+//    private static final String KEY = "src/main/resources/members-36a5849089da.json";
+    private static final String KEY = "C:\\bots-data\\members-36a5849089da.json";
     //todo don't forget about json
 
-    private static final String SPREAD_SHEET_ID = "1HyLocKj3xc-auD2zCbk5zpXNioHveMJEYYvpHHVvCEM";
+    private static final String SPREAD_SHEET_ID =
+            "1HyLocKj3xc-auD2zCbk5zpXNioHveMJEYYvpHHVvCEM";
 
     public AddToGoogleSheetsCommand(String userId) {
         super();
@@ -39,7 +40,7 @@ public class AddToGoogleSheetsCommand extends Command {
         int puttedRow = lastRow + 1;
         try {
             sheets.authorize(KEY);
-            sheets.writeData(SPREAD_SHEET_ID, "list", 'A', puttedRow, list);
+            sheets.writeData(SPREAD_SHEET_ID, "Лист1", 'B', puttedRow, list);
             constDao.update(LAST_ROW_DATA_ID, String.valueOf(puttedRow));
             memberDao.setAddedToGroup(userId);
         } catch (Exception e) {

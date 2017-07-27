@@ -60,8 +60,8 @@ public class SheetsAdapter {
             dataRow.add(data.getFIO());
             dataRow.add(data.getCompanyName());
             dataRow.add(data.getNisha());
-//            dataRow.add(data.getContact());
             dataRow.add("t.me/" +data.getUserName());
+            dataRow.add(data.getCity());
             writeData.add(dataRow);
         }
 
@@ -69,7 +69,7 @@ public class SheetsAdapter {
 
 
         service.spreadsheets().values()
-                .append(spreadsheetId, writeRange, vr)
+                .update(spreadsheetId, writeRange, vr)
                 .setValueInputOption("RAW")
                 .execute();
     }

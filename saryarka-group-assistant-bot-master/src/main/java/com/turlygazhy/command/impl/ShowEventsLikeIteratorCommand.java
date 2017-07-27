@@ -34,6 +34,7 @@ import java.util.List;
 /**
  * Created by Eshu on 27.06.2017.
  */
+@SuppressWarnings("Duplicates")
 public class ShowEventsLikeIteratorCommand extends Command {
     private int              photoId;
     private int              messageId;
@@ -48,6 +49,7 @@ public class ShowEventsLikeIteratorCommand extends Command {
     private boolean          photoPosted = false;
     private Event            event;
     private String           eventTypeInMember;
+    private int              page = 0;
     @Override
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
         String chose;
@@ -81,6 +83,11 @@ public class ShowEventsLikeIteratorCommand extends Command {
             return getFirst(bot, eventType, chatId);
         }
         if(chose.equals(buttonDao.getButtonText(116))){
+            page++;
+            return getNext(bot, update);
+        }
+        if(chose.equals(buttonDao.getButtonText(235))){
+            page--;
             return getNext(bot, update);
         }
         if(chose.equals("willGo")||chose.equals("maybeGo")||chose.equals("notGo")||
@@ -128,7 +135,7 @@ public class ShowEventsLikeIteratorCommand extends Command {
             return true;
         }
         else{
-        event     = events.get(0);
+        event     = events.get(page);
             String text = "";
             if(!event.isBY_ADMIN()){
 
@@ -148,7 +155,8 @@ public class ShowEventsLikeIteratorCommand extends Command {
             else {
                photoId = 0;
             }
-            ReplyKeyboard keyboard = getKeyBoardForVoteWithSomeThings(String.valueOf(event.getId()),eventType,listDao);
+            boolean gotNext = events.size()>1;
+            ReplyKeyboard keyboard = getKeyBoardForVoteWithSomeThings(String.valueOf(event.getId()),eventType,listDao, false, gotNext);
             messageId = bot.sendMessage(new SendMessage().setChatId(chatId).setText(text)
         .setReplyMarkup(keyboard)
         .setParseMode(ParseMode.HTML)).getMessageId();
@@ -159,7 +167,7 @@ public class ShowEventsLikeIteratorCommand extends Command {
             else{
                 documentId = 0;
             }
-                events.remove(0);
+//                events.remove(0);
 
     return false;}
 
@@ -208,7 +216,7 @@ public class ShowEventsLikeIteratorCommand extends Command {
                 wannaReminderId = 0;
             }
             bot.deleteMessage(new DeleteMessage().setChatId(String.valueOf(chatId)).setMessageId(update.getCallbackQuery().getMessage().getMessageId()));
-            event = events.get(0);
+            event = events.get(page);
             String text = "";
             if(!event.isBY_ADMIN()){
                 text      = EventAnonceUtil.getEventWithPatternNoByAdmin(event,messageDao);
@@ -226,9 +234,11 @@ public class ShowEventsLikeIteratorCommand extends Command {
             else{
                 photoId    = 0;
             }
+            boolean gotPrevious = page != 0;
+            boolean gotNext     = (page+1)<events.size();
 
             messageId = bot.sendMessage(new SendMessage().setChatId(chatId).setText(text)
-                    .setReplyMarkup(getKeyBoardForVoteWithSomeThings(String.valueOf(event.getId()),eventType, listDao ))
+                    .setReplyMarkup(getKeyBoardForVoteWithSomeThings(String.valueOf(event.getId()),eventType, listDao,gotPrevious, gotNext ))
                     .setParseMode(ParseMode.HTML))
                     .getMessageId();
             if(event.getDOCUMENT() != null) {
@@ -238,7 +248,7 @@ public class ShowEventsLikeIteratorCommand extends Command {
             else{
                 documentId = 0;
             }
-            events.remove(0);
+//            events.remove(0);
             return false;
         }
     }
@@ -247,7 +257,8 @@ public class ShowEventsLikeIteratorCommand extends Command {
 
 
 
-    private ReplyKeyboard getKeyBoardForVoteWithSomeThings(String eventId, String eventTypeToVote, ListDao listDao) throws SQLException {
+    @SuppressWarnings("Duplicates")
+    private ReplyKeyboard getKeyBoardForVoteWithSomeThings(String eventId, String eventTypeToVote, ListDao listDao, boolean gotPrevius, boolean gotNext) throws SQLException {
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         List<InlineKeyboardButton> row = new ArrayList<>();
@@ -279,12 +290,24 @@ public class ShowEventsLikeIteratorCommand extends Command {
 //                row.add(haha);
 //                rows.add(row);
 
+                if (gotNext){
                 row = new ArrayList<>();
                 InlineKeyboardButton next = new InlineKeyboardButton();
                 next.setText(buttonDao.getButtonText(116));
                 next.setCallbackData(buttonDao.getButtonText(116));
                 row.add(next);
                 rows.add(row);
+                }
+
+
+                if (gotPrevius){
+                    row = new ArrayList<>();
+                    InlineKeyboardButton next = new InlineKeyboardButton();
+                    next.setText(buttonDao.getButtonText(235));
+                    next.setCallbackData(buttonDao.getButtonText(235));
+                    row.add(next);
+                    rows.add(row);
+                }
                 break;
 
             case "будет":
@@ -311,12 +334,24 @@ public class ShowEventsLikeIteratorCommand extends Command {
 //                row.add(not_go);
 //                rows.add(row);
 
-                row = new ArrayList<>();
-                InlineKeyboardButton nextInFuture = new InlineKeyboardButton();
-                nextInFuture.setText(buttonDao.getButtonText(116));
-                nextInFuture.setCallbackData(buttonDao.getButtonText(116));
-                row.add(nextInFuture);
-                rows.add(row);
+                if (gotNext){
+                    row = new ArrayList<>();
+                    InlineKeyboardButton next = new InlineKeyboardButton();
+                    next.setText(buttonDao.getButtonText(116));
+                    next.setCallbackData(buttonDao.getButtonText(116));
+                    row.add(next);
+                    rows.add(row);
+                }
+
+
+                if (gotPrevius){
+                    row = new ArrayList<>();
+                    InlineKeyboardButton next = new InlineKeyboardButton();
+                    next.setText(buttonDao.getButtonText(235));
+                    next.setCallbackData(buttonDao.getButtonText(235));
+                    row.add(next);
+                    rows.add(row);
+                }
         }
         keyboard.setKeyboard(rows);
         return keyboard;
@@ -380,12 +415,15 @@ public class ShowEventsLikeIteratorCommand extends Command {
                             break;
                     }
             }
-            bot.editMessageReplyMarkup(new EditMessageReplyMarkup().setReplyMarkup((InlineKeyboardMarkup) getKeyBoardForVoteWithSomeThings(eventID, eventType, listDao))
+            boolean gotPrevious = page != 0;
+            boolean gotNext     = (page+1)<events.size();
+            bot.editMessageReplyMarkup(new EditMessageReplyMarkup().setReplyMarkup((InlineKeyboardMarkup) getKeyBoardForVoteWithSomeThings(eventID, eventType, listDao, gotPrevious,gotNext))
                     .setChatId(chatId).setMessageId(update.getCallbackQuery().getMessage().getMessageId()));
         }
     }
 
 
+    @SuppressWarnings("ConstantConditions")
     private boolean isVoted(String memberId, String eventId, String eventTypeInMember) throws SQLException {
         boolean isVoted  = false;
         String string    = memberDao.getEventsWhereVoted(memberId, eventTypeInMember);

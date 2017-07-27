@@ -3,17 +3,14 @@ package com.turlygazhy.command.impl;
 
 import com.turlygazhy.Bot;
 import com.turlygazhy.command.Command;
-import com.turlygazhy.entity.Button;
 import com.turlygazhy.entity.Message;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+
 
 /**
  * Created by Eshu on 17.07.2017.
@@ -23,6 +20,7 @@ public class ChangeButtonTextCommand extends Command {
     private int     buttonId;
     private boolean expectNewValue;
     private String  buttonDeniedText;
+    @SuppressWarnings("FieldCanBeLocal")
     private String  newValue;
     @Override
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {

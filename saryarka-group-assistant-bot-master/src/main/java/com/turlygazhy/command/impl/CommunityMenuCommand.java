@@ -22,10 +22,16 @@ public class CommunityMenuCommand extends Command {
         if(message.getSendPhoto()!=null){
             bot.sendPhoto(new SendPhoto().setChatId(chatId).setPhoto(message.getSendPhoto().getPhoto()));
         }
+        if(memberDao.isMemberAdded(Math.toIntExact(chatId))){
         SendMessage sendMessage = message.getSendMessage().setChatId(chatId).setReplyMarkup(
                 keyboardMarkUpDao.select(messageDao.getMessage(messageId).getKeyboardMarkUpId()))
                 .setParseMode(ParseMode.HTML);
-        bot.sendMessage(sendMessage);
+            bot.sendMessage(sendMessage);
+        }
+                else {
+            SendMessage sendMessage = messageDao.getMessage(43).getSendMessage().setChatId(chatId);
+            bot.sendMessage(sendMessage);
+        }
         return true;
     }
 }

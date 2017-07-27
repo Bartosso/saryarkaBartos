@@ -19,6 +19,7 @@ public class ChangeRequestTextCommand extends Command {
     private MessageElement expectedMessageElement;
     private boolean needPhoto = true;
 
+    @SuppressWarnings("Duplicates")
     @Override
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
 

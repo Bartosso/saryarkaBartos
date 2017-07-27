@@ -28,7 +28,7 @@ public class MemberChangedInfoButNotAddedToSheetsCommand extends Command {
                 .replaceAll("phoneNumber", member.getPhoneNumber())
                 .replaceAll("memberCity" , member.getCity());
         SendMessage sendMessage = new SendMessage().setChatId(getAdminChatId()).setText("Пользаватель изменил данные о себе\n" + text)
-                .setReplyMarkup(getAddToSheetKeyboard(Math.toIntExact(userId),userId));
+                .setReplyMarkup(getAddToSheetKeyboard(Math.toIntExact(userId),userId, member.getUserName()));
         bot.sendMessage(sendMessage);
         return true;
     }

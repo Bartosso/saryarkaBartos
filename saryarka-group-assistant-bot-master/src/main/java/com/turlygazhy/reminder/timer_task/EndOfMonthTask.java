@@ -1,6 +1,5 @@
 package com.turlygazhy.reminder.timer_task;
 
-import Charts.PieChartConstructor;
 import com.turlygazhy.Bot;
 import com.turlygazhy.dao.impl.ListDao;
 import com.turlygazhy.dao.impl.Top10Dao;
@@ -8,6 +7,7 @@ import com.turlygazhy.dao.impl.UserDao;
 import com.turlygazhy.entity.Top10;
 import com.turlygazhy.reminder.Reminder;
 import com.turlygazhy.tool.DateUtil;
+import com.turlygazhy.tool.vanderkastTools.Charts.PieChartConstructor;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.exceptions.TelegramApiException;

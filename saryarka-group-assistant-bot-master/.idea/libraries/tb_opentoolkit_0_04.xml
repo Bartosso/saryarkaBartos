@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="tb_opentoolkit-0.04">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/src/Tools/tb_opentoolkit-0.04.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

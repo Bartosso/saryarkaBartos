@@ -746,7 +746,12 @@ public class ListDao {
         ps.execute();
     }
 
-
+    public void changeBooksCategory(String oldCategory, String newCategory) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("UPDATE PUBLIC."+ listName +" SET CATEGORY=? WHERE CATEGORY=?");
+        ps.setString(1, newCategory);
+        ps.setString(2, oldCategory);
+        ps.execute();
+    }
 
 
 

@@ -54,6 +54,7 @@ public class CreateEventVoteCommand extends Command {
     private Date date;
 
 
+    @SuppressWarnings("Duplicates")
     @Override
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
         String GROUP_FOR_VOTE = bot.getGROUP_FOR_VOTE();

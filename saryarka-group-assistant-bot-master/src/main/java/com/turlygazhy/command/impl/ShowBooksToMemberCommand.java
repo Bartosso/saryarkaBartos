@@ -3,6 +3,7 @@ package com.turlygazhy.command.impl;
 import com.turlygazhy.Bot;
 import com.turlygazhy.command.Command;
 import com.turlygazhy.entity.Book;
+import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
@@ -26,9 +27,8 @@ public class ShowBooksToMemberCommand extends Command {
             return true;
         }
         else {
-            bot.sendMessage(messageDao.getMessage(132)
-            .getSendMessage().setChatId(chatId)
-            .setReplyMarkup(getBooksViaButtons(bookArrayList)));
+            bot.sendMessage(new SendMessage().setChatId(chatId)
+            .setReplyMarkup(getBooksViaButtons(bookArrayList)).setText(bookArrayList.get(0).getCategory()));
             return true;
         }
     }

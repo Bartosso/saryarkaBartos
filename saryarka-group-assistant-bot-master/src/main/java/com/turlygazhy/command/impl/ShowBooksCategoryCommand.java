@@ -1,13 +1,15 @@
 package com.turlygazhy.command.impl;
 
-import Constructors.InlineKeyboardConstructor;
+
 import com.turlygazhy.Bot;
 import com.turlygazhy.command.Command;
 import com.turlygazhy.dao.impl.ListDao;
 import com.turlygazhy.entity.Book;
+import com.turlygazhy.tool.vanderkastTools.Constructors.InlineKeyboardConstructor;
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
@@ -23,6 +25,8 @@ public class ShowBooksCategoryCommand extends Command {
     private ArrayList<String> categories;
     private int step = 0;
     private ListDao listDao;
+    private int page = 0;
+    private ArrayList<InlineKeyboardMarkup> pages;
     @Override
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
         if(step == 0){
@@ -41,14 +45,40 @@ public class ShowBooksCategoryCommand extends Command {
         return false;
         }
         else {
+            if(update.hasCallbackQuery()){
+                if (update.getCallbackQuery().getData().equals("nextPageInBooks")){
+                    page++;
+                    bot.editMessageReplyMarkup(new EditMessageReplyMarkup().setChatId(chatId).setMessageId(
+                            update.getCallbackQuery().getMessage().getMessageId()
+                    ).setReplyMarkup(pages.get(page)));
+                    return false;
+
+                }
+                if (update.getCallbackQuery().getData().equals("previousPageInBooks")){
+                    page--;
+                    bot.editMessageReplyMarkup(new EditMessageReplyMarkup().setChatId(chatId).setMessageId(
+                            update.getCallbackQuery().getMessage().getMessageId()
+                    ).setReplyMarkup(pages.get(page)));
+                    return false;
+                }
+
+
+
+
+
+            }
+
+
+
             bot.deleteMessage(new DeleteMessage(chatId, update.getCallbackQuery().getMessage().getMessageId()));
             String categoryId = update.getCallbackQuery().getData().substring(update.getCallbackQuery().getData().indexOf(":")+1);
 
             ArrayList<Book> chosenBooks = listDao.getAllBooksInDistinctCategories(categories.get(Integer.parseInt(categoryId)));
 
-            bot.sendMessage(new SendMessage(chatId,messageDao.getMessage(132).getSendMessage().getText())
-            .setReplyMarkup(getBooksViaButtons(chosenBooks)));
-            return true;
+            pages = getBooksViaButtons(chosenBooks);
+            bot.sendMessage(new SendMessage(chatId, chosenBooks.get(0).getCategory())
+            .setReplyMarkup(pages.get(page)));
+            return false;
         }
     }
     private InlineKeyboardMarkup getCategories() throws SQLException {
@@ -68,21 +98,47 @@ public class ShowBooksCategoryCommand extends Command {
         return InlineKeyboardConstructor.getKeyboard(buttonText, buttonsData);
     }
 
-    private ReplyKeyboard getBooksViaButtons(ArrayList<Book> bookArrayList){
-        InlineKeyboardMarkup keyboard         = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
-        List<InlineKeyboardButton> row;
+    @SuppressWarnings("Duplicates")
+    private ArrayList<InlineKeyboardMarkup> getBooksViaButtons(ArrayList<Book> bookArrayList){
+        ArrayList<InlineKeyboardMarkup>  keyboards = new ArrayList<>();
+        List<InlineKeyboardButton>       row;
+        List<List<InlineKeyboardButton>> rows;
 
-
-        for(Book book: bookArrayList) {
-            row        = new ArrayList<>();
-            InlineKeyboardButton bookButton = new InlineKeyboardButton();
-            bookButton.setText(book.getBookName());
-            bookButton.setCallbackData("get_book" + ":" + book.getId());
-            row.add(bookButton);
-            rows.add(row);
+        int pagesCount = 1 + (bookArrayList.size()/25);
+        int counter   = 0;
+        for (int b = 0; b < pagesCount; b++) {
+            InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+            rows = new ArrayList<>();
+            for (int i = 0; i < 25; i++){
+                if (counter<bookArrayList.size()){
+                row                             = new ArrayList<>();
+                InlineKeyboardButton bookButton = new InlineKeyboardButton();
+                bookButton.setText(bookArrayList.get(counter).getBookName());
+                bookButton.setCallbackData("get_book" + ":" + bookArrayList.get(counter).getId());
+                row.add(bookButton);
+                rows.add(row);
+                counter++;
+                }
         }
-        keyboard.setKeyboard(rows);
-        return keyboard;
+            row = new ArrayList<>();
+
+            if(keyboards.size()!=0){
+                InlineKeyboardButton buttonToPreviousPage = new InlineKeyboardButton();
+                buttonToPreviousPage.setText("⬅️ Сюда");
+                buttonToPreviousPage.setCallbackData("previousPageInBooks");
+                row.add(buttonToPreviousPage);}
+
+
+            if(pagesCount>(b+1)){
+                InlineKeyboardButton buttonToNextPage = new InlineKeyboardButton();
+                buttonToNextPage.setText("Туда ➡️");
+                buttonToNextPage.setCallbackData("nextPageInBooks");
+                row.add(buttonToNextPage);
+        }
+            rows.add(row);
+            keyboard.setKeyboard(rows);
+            keyboards.add(keyboard);
+    }
+    return keyboards;
     }
 }

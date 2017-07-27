@@ -2,7 +2,6 @@ package com.turlygazhy.command.impl;
 
 import com.turlygazhy.Bot;
 import com.turlygazhy.command.Command;
-import com.turlygazhy.entity.Button;
 import com.turlygazhy.entity.WaitingType;
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -10,7 +9,6 @@ import org.telegram.telegrambots.api.objects.Contact;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
@@ -42,6 +40,12 @@ public class CollectInfoCommand extends Command {
         }
 
         Long chatId = updateMessage.getChatId();
+        if(update.hasMessage()){
+            if(update.getMessage().getFrom().getUserName()==null){
+                bot.sendMessage(new SendMessage(chatId,messageDao.getMessage(170).getSendMessage().getText()));
+                return true;
+            }
+        }
 
         if (waitingType != null) {
             switch (waitingType) {
@@ -92,6 +96,7 @@ public class CollectInfoCommand extends Command {
                         return false;
                     }
 
+
                     bot.sendMessage(new SendMessage(chatId, messageDao.getMessage(167).getSendMessage().getText()+"\n\n"+
                     getTextPattern()).setReplyMarkup(getKeyboardForAcceptOrStart()));
                     waitingType = WaitingType.ACCEPT;
@@ -103,7 +108,7 @@ public class CollectInfoCommand extends Command {
                             memberDao.insert(nisha,  chatId, user.getUserName(), user.getId(), companyName, this.contact, fio, phoneNumber, city);
                             SendMessage sendMessage = new SendMessage().setText("Заявка на добавление в группу\n"+getTextPattern())
                                     .setChatId(userDao.getAdminChatId())
-                                    .setReplyMarkup(getAddToSheetKeyboard(user.getId(), chatId));
+                                    .setReplyMarkup(getAddToSheetKeyboard(user.getId(), chatId, user.getUserName()));
                             bot.sendMessage(sendMessage);
 
                             sendMessage(43, chatId, bot);

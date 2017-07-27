@@ -191,6 +191,14 @@ public class CommandFactory {
                 return new ShowBooksCategoryCommand();
             case EDIT_MEMBER_BID_TO_GOOGLE_SHEET:
                 return new EditMemberBidToGoogleSheetCommand();
+            case SHOW_ALL_EVENTS_TO_CHANGE:
+                return new ShowAllEventsToChangeCommand();
+            case CHANGE_LAST_PUTTED_ROW:
+                return new ChangeLastPuttedRowCommand();
+            case SHOW_ALL_MESSAGES_TO_CHANGE:
+                return new ShowAllMessagesToChange();
+            case CHANGE_BOOKS_CATEGORY:
+                return new ChangeBooksCategoryCommand();
             default:
                 throw new NotRealizedMethodException("Not realized for type: " + type);
         }

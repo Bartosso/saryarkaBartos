@@ -144,7 +144,7 @@ public abstract class Command {
         );
     }
 
-    protected ReplyKeyboard getAddToSheetKeyboard(Integer id, Long chatId) throws SQLException {
+    protected ReplyKeyboard getAddToSheetKeyboard(Integer id, Long chatId, String userName) throws SQLException {
         InlineKeyboardMarkup keyboard         = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
@@ -152,6 +152,7 @@ public abstract class Command {
         InlineKeyboardButton addToGoogleSheetsButton = new InlineKeyboardButton();
         InlineKeyboardButton declineButton           = new InlineKeyboardButton();
         InlineKeyboardButton editBidButton           = new InlineKeyboardButton();
+        InlineKeyboardButton openChatWithMember      = new InlineKeyboardButton();
 
         String buttonText = buttonDao.getButtonText(52);
         addToGoogleSheetsButton.setText(buttonText);
@@ -170,6 +171,14 @@ public abstract class Command {
         editBidButton.setText(editCollectedInfoText);
         editBidButton.setCallbackData("editBid:" + chatId);
         row.add(editBidButton);
+        rows.add(row);
+
+        row = new ArrayList<>();
+
+        String openChatWithMemberText = buttonDao.getButtonText(238);
+        openChatWithMember.setText(openChatWithMemberText);
+        openChatWithMember.setUrl("t.me/"+ userName);
+        row.add(openChatWithMember);
 
         rows.add(row);
 
@@ -527,25 +536,38 @@ public abstract class Command {
 
     }
 
-    private ReplyKeyboard getKeyboardForEditEvent(String eventId) throws SQLException {
+    private ReplyKeyboard getKeyboardForEditEvent(String eventId, boolean isEnded) throws SQLException {
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         List<InlineKeyboardButton> row = new ArrayList<>();
 
+        String editEventNameCallback  = "editEventName";
+        String editEventPlaceCallback = "editEventPlace";
+        String editEventWhenCallback  = "editEventWhen";
+        String acceptEventCallback    = "acceptEvent";
+        String rejectEventCallback    = "declineEvent";
+        if(isEnded){
+            editEventNameCallback  = "editEndedEventName";
+            editEventPlaceCallback = "editEndedEventPlace";
+            editEventWhenCallback  = "editEndedEventWhen";
+            acceptEventCallback    = "acceptEndedEvent";
+            rejectEventCallback    = "declineEndedEvent";
+        }
+
         InlineKeyboardButton editEventName     = new InlineKeyboardButton(buttonDao.getButtonText(167));
-        editEventName.setCallbackData("editEventName"+":" + eventId);
+        editEventName.setCallbackData(editEventNameCallback+":" + eventId);
         row.add(editEventName);
         rows.add(row);
 
         row = new ArrayList<>();
         InlineKeyboardButton editEventPlace     = new InlineKeyboardButton(buttonDao.getButtonText(169));
-        editEventPlace.setCallbackData("editEventPlace"+ ":" + eventId);
+        editEventPlace.setCallbackData(editEventPlaceCallback+ ":" + eventId);
         row.add(editEventPlace);
         rows.add(row);
 
         row = new ArrayList<>();
         InlineKeyboardButton editEventWhen      = new InlineKeyboardButton(buttonDao.getButtonText(171));
-        editEventWhen.setCallbackData("editEventWhen"+ ":" + eventId);
+        editEventWhen.setCallbackData(editEventWhenCallback+ ":" + eventId);
         row.add(editEventWhen);
         rows.add(row);
 
@@ -593,11 +615,11 @@ public abstract class Command {
 //
         row = new ArrayList<>();
         InlineKeyboardButton acceptEventButton   = new InlineKeyboardButton(buttonDao.getButtonText(90));
-        acceptEventButton.setCallbackData("acceptEvent" + ":" + eventId);
+        acceptEventButton.setCallbackData(acceptEventCallback + ":" + eventId);
         row.add(acceptEventButton);
 
         InlineKeyboardButton rejectEventButton   = new InlineKeyboardButton(buttonDao.getButtonText(91));
-        rejectEventButton.setCallbackData("declineEvent" + ":" + eventId);
+        rejectEventButton.setCallbackData(rejectEventCallback + ":" + eventId);
         row.add(rejectEventButton);
         rows.add(row);
 
@@ -611,7 +633,28 @@ return keyboard;
     protected void sendMessageForEditEventToAdmin(Bot bot, String eventId, ListDao listDao, long chatId) throws SQLException, TelegramApiException {
         Event event = listDao.getEvent(eventId);
         String photo = event.getPHOTO();
-        SendMessage sendEditMessage = new SendMessage(chatId, EventAnonceUtil.getEventWithPatternNoByAdmin(event,messageDao)).setReplyMarkup(getKeyboardForEditEvent(eventId))
+        SendMessage sendEditMessage = new SendMessage(chatId, EventAnonceUtil.getEventWithPatternNoByAdmin(event,messageDao)).setReplyMarkup(getKeyboardForEditEvent(eventId,false))
+                .setParseMode(ParseMode.HTML);
+
+        if (event.getPHOTO()!= null) {
+            SendPhoto sendPhoto = new SendPhoto();
+            sendPhoto.setPhoto(photo);
+            bot.sendPhoto(sendPhoto.setChatId(chatId));
+        }
+        bot.sendMessage(sendEditMessage);
+        if(event.getDOCUMENT() != null){
+            SendDocument sendDocument = new SendDocument();
+            sendDocument.setDocument(event.getDOCUMENT());
+            bot.sendDocument(sendDocument.setChatId(chatId));
+        }
+
+    }
+
+
+    protected void sendMessageForEditEndedEventToAdmin(Bot bot, String eventId, ListDao listDao, long chatId) throws SQLException, TelegramApiException {
+        Event event = listDao.getEvent(eventId);
+        String photo = event.getPHOTO();
+        SendMessage sendEditMessage = new SendMessage(chatId, EventAnonceUtil.getEventWithPatternNoByAdmin(event,messageDao)).setReplyMarkup(getKeyboardForEditEvent(eventId,true))
                 .setParseMode(ParseMode.HTML);
 
         if (event.getPHOTO()!= null) {

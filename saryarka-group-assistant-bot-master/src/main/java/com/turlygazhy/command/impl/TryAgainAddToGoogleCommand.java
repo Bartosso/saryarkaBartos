@@ -31,7 +31,7 @@ public class TryAgainAddToGoogleCommand extends Command {
 
         SendMessage sendMessage = new SendMessage().setText(textToAdmin + "\nphone: " + member.getPhoneNumber())
                 .setChatId(userDao.getAdminChatId())
-                .setReplyMarkup(getAddToSheetKeyboard(userId, chatId));
+                .setReplyMarkup(getAddToSheetKeyboard(userId, chatId, updateMessage.getFrom().getUserName()));
         bot.sendMessage(sendMessage);
 
         sendMessage(43, chatId, bot);

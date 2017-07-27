@@ -50,7 +50,7 @@ public class WantToGroupCommand extends Command {
             bot.sendMessage(new SendMessage()
                     .setChatId(getAdminChatId())
                     .setText(text)
-                    .setReplyMarkup(getAddToSheetKeyboard(userId, chatId))
+                    .setReplyMarkup(getAddToSheetKeyboard(userId, chatId, member.getUserName()))
             );
 
             sendMessage(43, chatId, bot);

@@ -2,11 +2,11 @@ package com.turlygazhy.command.impl;
 
 import com.turlygazhy.Bot;
 import com.turlygazhy.command.Command;
-import com.turlygazhy.dao.impl.ListDao;
-import com.turlygazhy.dao.impl.ListKeyboardDao;
-import com.turlygazhy.entity.Message;
-import com.turlygazhy.entity.MessageElement;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
+//import com.turlygazhy.dao.impl.ListDao;
+//import com.turlygazhy.dao.impl.ListKeyboardDao;
+//import com.turlygazhy.entity.Message;
+//import com.turlygazhy.entity.MessageElement;
+//import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
@@ -16,14 +16,14 @@ import java.sql.SQLException;
  * Created by user on 1/3/17.
  */
 public class AddToListCommand extends Command {
-    private String photo;
-    private boolean photoAsked = false;
-    private String text;
-    private MessageElement expectedMessageElement;
-    private long keyboardId = 0;
-    private boolean photoNeeded;
-    private boolean askPhotoNeeded;
-    private boolean contactNeeded;
+//    private String photo;
+//    private boolean photoAsked = false;
+//    private String text;
+//    private MessageElement expectedMessageElement;
+//    private long keyboardId = 0;
+//    private boolean photoNeeded;
+//    private boolean askPhotoNeeded;
+//    private boolean contactNeeded;
     private boolean nisha;
 
     @Override
@@ -103,29 +103,29 @@ public class AddToListCommand extends Command {
         throw new RuntimeException("Not realized class");
     }
 
-    public boolean isPhotoNeeded() {
-        return photoNeeded;
-    }
-
-    public void setPhotoNeeded(boolean photoNeeded) {
-        this.photoNeeded = photoNeeded;
-    }
-
-    public boolean isAskPhotoNeeded() {
-        return askPhotoNeeded;
-    }
-
-    public void setAskPhotoNeeded(boolean askPhotoNeeded) {
-        this.askPhotoNeeded = askPhotoNeeded;
-    }
-
-    public boolean isContactNeeded() {
-        return contactNeeded;
-    }
-
-    public void setContactNeeded(boolean contactNeeded) {
-        this.contactNeeded = contactNeeded;
-    }
+//    public boolean isPhotoNeeded() {
+//        return photoNeeded;
+//    }
+//
+//    public void setPhotoNeeded(boolean photoNeeded) {
+//        this.photoNeeded = photoNeeded;
+//    }
+//
+//    public boolean isAskPhotoNeeded() {
+//        return askPhotoNeeded;
+//    }
+//
+//    public void setAskPhotoNeeded(boolean askPhotoNeeded) {
+//        this.askPhotoNeeded = askPhotoNeeded;
+//    }
+//
+//    public boolean isContactNeeded() {
+//        return contactNeeded;
+//    }
+//
+//    public void setContactNeeded(boolean contactNeeded) {
+//        this.contactNeeded = contactNeeded;
+//    }
 
     public boolean isNisha() {
         return nisha;

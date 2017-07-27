@@ -6,7 +6,7 @@
 
     <groupId>com.qBots</groupId>
     <artifactId>saryarka</artifactId>
-    <version>0.9</version>
+    <version>1.2</version>
     <build>
         <plugins>
             <plugin>
@@ -14,7 +14,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.com.turlygazhy.Main</mainClass>
+                            <mainClass>com.turlygazhy.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -29,7 +29,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.com.turlygazhy.Main</mainClass>
+                            <mainClass>com.turlygazhy.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -87,13 +87,13 @@
             <artifactId>google-api-client-gson</artifactId>
             <version>1.22.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.VanderKast</groupId>
-            <artifactId>VanderKast</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/Tools/tb_opentoolkit-0.04.jar</systemPath>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.VanderKast</groupId>-->
+            <!--<artifactId>VanderKast</artifactId>-->
+            <!--<version>1.0</version>-->
+            <!--<scope>system</scope>-->
+            <!--<systemPath>${project.basedir}/src/main/resources/tb_opentoolkit-0.04.jar</systemPath>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.knowm.xchart</groupId>
             <artifactId>xchart</artifactId>

@@ -18,7 +18,6 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +28,7 @@ import java.util.List;
 public class AddToOfferListCommand extends Command {
     private String text;
     private MessageElement expectedMessageElement;
-    private boolean needPhoto = true;
+//    private boolean needPhoto = true;
     private ListDao listDao = factory.getListDao("OFFER_LIST");
 
 
@@ -80,7 +79,7 @@ public class AddToOfferListCommand extends Command {
 
         text                   = null;
         expectedMessageElement = null;
-        date                   = null;
+//        date                   = null;
         return true;
     }
     private SendMessage getTextToAdmin(int tenderId, Update update, String tender_text) throws SQLException {

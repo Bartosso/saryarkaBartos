@@ -43,10 +43,20 @@ public class EditEventCommand extends Command {
                     bot.sendMessage(new SendMessage(chatId,"изменения сохранены"));
                     sendMessageForEditEventToAdmin(bot,eventId, listDao, chatId);
                     return true;
+                case "editEndedEventName"  :
+                    factory.getListDao("ENDED_EVENTS_LIST").changeStuff(updateMessage.getText(),eventId,"EVENT_NAME");
+                    bot.sendMessage(new SendMessage(chatId,"изменения сохранены"));
+                    sendMessageForEditEndedEventToAdmin(bot,eventId, factory.getListDao("ENDED_EVENTS_LIST"), chatId);
+                    return true;
                 case "editEventPlace":
                     listDao.changeStuff(updateMessage.getText(), eventId,"PLACE");
                     bot.sendMessage(new SendMessage(chatId,"изменения сохранены"));
                     sendMessageForEditEventToAdmin(bot,eventId, listDao, chatId);
+                    return true;
+                case "editEndedEventPlace":
+                    factory.getListDao("ENDED_EVENTS_LIST").changeStuff(updateMessage.getText(),eventId,"PLACE");
+                    bot.sendMessage(new SendMessage(chatId,"изменения сохранены"));
+                    sendMessageForEditEndedEventToAdmin(bot,eventId, factory.getListDao("ENDED_EVENTS_LIST"), chatId);
                     return true;
                 case "editEventWhen":
                     SimpleDateFormat format = new SimpleDateFormat();
@@ -55,7 +65,22 @@ public class EditEventCommand extends Command {
                         Date date = format.parse(updateMessage.getText());
                         listDao.changeStuff(updateMessage.getText(), eventId, "WHEN");
                         bot.sendMessage(new SendMessage(chatId,"изменения сохранены"));
-                         sendMessageForEditEventToAdmin(bot,eventId, listDao, chatId);
+                        sendMessageForEditEventToAdmin(bot,eventId, listDao, chatId);
+                        return true;
+                    } catch (ParseException e) {
+                        SendMessage sendMessage = new SendMessage().setText("Вы ввели дату проведения в неправильном формате, попробуйте сначала")
+                                .setChatId(chatId);
+                        bot.sendMessage(sendMessage);
+                        return false;
+                    }
+                case "editEndedEventWhen":
+                    SimpleDateFormat formatEnded = new SimpleDateFormat();
+                    formatEnded.applyPattern("dd.MM.yy");
+                    try {
+                        Date date = formatEnded.parse(updateMessage.getText());
+                        factory.getListDao("ENDED_EVENTS_LIST").changeStuff(updateMessage.getText(), eventId, "WHEN");
+                        bot.sendMessage(new SendMessage(chatId,"изменения сохранены"));
+                        sendMessageForEditEndedEventToAdmin(bot,eventId, factory.getListDao("ENDED_EVENTS_LIST"), chatId);
                         return true;
                     } catch (ParseException e) {
                         SendMessage sendMessage = new SendMessage().setText("Вы ввели дату проведения в неправильном формате, попробуйте сначала")

@@ -48,7 +48,19 @@ public class SolutionForEventFromAdminCommand extends Command {
                 .setMessageId(update.getCallbackQuery().getMessage().getMessageId()));
                 sendMessageForEditEventToAdmin(bot, eventId,listDao, chatId);
                 return true;
-
+            case "editEndedEvent":
+                bot.deleteMessage(new DeleteMessage().setChatId(String.valueOf(chatId))
+                        .setMessageId(update.getCallbackQuery().getMessage().getMessageId()));
+                sendMessageForEditEndedEventToAdmin(bot, eventId,factory.getListDao("ENDED_EVENTS_LIST"), chatId);
+                return true;
+            case "acceptEndedEvent":
+                bot.sendMessage(new SendMessage(chatId,"Изменения сохранены"));
+                return true;
+            case "declineEndedEvent":
+                factory.getListDao("ENDED_EVENTS_LIST").declineEvent(eventId);
+                SendMessage sendMessageEnded = new SendMessage().setChatId(chatId).setText("Вы решили удалить ивент");
+                bot.sendMessage(sendMessageEnded);
+                return true;
         }
         com.turlygazhy.entity.Message messageToAdmin = messageDao.getMessage(messageId);
         SendMessage sendMessageToAdmin = messageToAdmin.getSendMessage().setChatId(chatId);

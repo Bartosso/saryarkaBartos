@@ -5,7 +5,7 @@ import com.turlygazhy.command.Command;
 import com.turlygazhy.dao.impl.ListDao;
 import com.turlygazhy.entity.Message;
 import com.turlygazhy.entity.MessageElement;
-import com.turlygazhy.entity.Vacancy;
+
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
@@ -15,10 +15,7 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboar
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,9 +29,9 @@ public class CreateANewVacancyCommand extends Command {
     private String             workingConditions;
     private String             salary;
     private String             contact;
-    private String             photo;
+//    private String             photo;
     private MessageElement expectedMessageElement;
-    private boolean            needPhoto     = true;
+//    private boolean            needPhoto     = true;
     private ListDao            listDao       = factory.getListDao("VACANCIES");
     private int                step          = 1;
 

@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by user on 12/11/16.
@@ -43,6 +44,7 @@ public class MessageDao extends AbstractDao {
 //        message.setId(messageId);
 //        return message;
 //    }
+
 
     public Message getMessage(long messageId) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(SELECT_FROM_MESSAGE_BY_ID);
@@ -88,5 +90,24 @@ public class MessageDao extends AbstractDao {
     public void update(long messageId, String photo, String text) {
         updatePhoto(photo, messageId);
         updateText(text, messageId);
+    }
+
+    public ArrayList<Message> getAllMessages() throws SQLException {
+    ArrayList<Message> messageArrayList = new ArrayList<>();
+    PreparedStatement ps = connection.prepareStatement("SELECT * FROM MESSAGE ");
+    ps.execute();
+    ResultSet rs = ps.getResultSet();
+    while (rs.next()){
+        Message message = new Message();
+        message.setId(rs.getLong(1));
+        message.setSendMessage(new SendMessage()
+                .setText(rs.getString(MESSAGE_TEXT_COLUMN_INDEX)));
+        String photo = rs.getString(3);
+        if (photo != null) {
+            message.setSendPhoto(new SendPhoto().setPhoto(photo));
+        }
+        messageArrayList.add(message);
+    }
+    return messageArrayList;
     }
 }

@@ -20,6 +20,7 @@ public class ChangeInfoCommand extends Command {
     private boolean needPhoto = true;
 
 
+    @SuppressWarnings("Duplicates")
     @Override
     public boolean execute(Update update, Bot bot) throws TelegramApiException, SQLException {
         org.telegram.telegrambots.api.objects.Message updateMessage = update.getMessage();
