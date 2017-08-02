@@ -1,9 +1,7 @@
 package com.turlygazhy.reminder.timer_task;
 
 import com.turlygazhy.Bot;
-import com.turlygazhy.dao.impl.ListDao;
 import com.turlygazhy.dao.impl.Top10Dao;
-import com.turlygazhy.dao.impl.UserDao;
 import com.turlygazhy.entity.Top10;
 import com.turlygazhy.reminder.Reminder;
 import com.turlygazhy.tool.DateUtil;
@@ -20,21 +18,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+
 
 public class EndOfMonthTask extends AbstractTask {
     public EndOfMonthTask(Bot bot, Reminder reminder) {
         super(bot, reminder);
     }
     //todo set dis shit for whatever you want
-    private final String pathToTempFolder =
-            //chose what you want
-//            "C:/bots-data/";
-            System.getProperty("user.dir");
+    private final String pathToTempFolder = "C:/bots-data/";
 
     @Override
     public void run() {

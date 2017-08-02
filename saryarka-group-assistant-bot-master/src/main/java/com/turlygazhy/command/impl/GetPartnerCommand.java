@@ -30,6 +30,7 @@ public class GetPartnerCommand extends Command {
         }
         SendMessage sendMessage = new SendMessage().setText(text).setParseMode(ParseMode.HTML).setChatId(chatId);
         bot.sendMessage(sendMessage);
+
         return true;
     }
 }

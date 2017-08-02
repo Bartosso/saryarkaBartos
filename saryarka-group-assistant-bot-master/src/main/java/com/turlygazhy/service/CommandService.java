@@ -20,7 +20,10 @@ public class CommandService extends Service {
         if (text != null) {
             String[] split = text.split("/");
             if (split[0].equals(buttonDao.getButtonText(52))) {
-                return new AddToGoogleSheetsCommand(split[1]);
+                return new AddToGoogleSheetsCommand(split[1],true);
+            }
+            if (split[0].equals(buttonDao.getButtonText(244))) {
+                return new AddToGoogleSheetsCommand(split[1],false);
             }
             if (split[0].equals(buttonDao.getButtonText(53))) {
                 return new DeclineRequestToGoogleSheetsCommand(split[1]);

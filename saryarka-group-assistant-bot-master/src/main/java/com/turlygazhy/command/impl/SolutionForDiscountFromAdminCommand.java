@@ -3,9 +3,7 @@ package com.turlygazhy.command.impl;
 import com.turlygazhy.Bot;
 import com.turlygazhy.command.Command;
 import com.turlygazhy.dao.impl.ListDao;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.sql.SQLException;
@@ -14,6 +12,7 @@ import java.sql.SQLException;
  * Created by Eshu on 22.06.2017.
  */
 public class SolutionForDiscountFromAdminCommand extends Command {
+    @SuppressWarnings("unused")
     @Override
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
         ListDao listDao   = factory.getListDao("DISCOUNTS");

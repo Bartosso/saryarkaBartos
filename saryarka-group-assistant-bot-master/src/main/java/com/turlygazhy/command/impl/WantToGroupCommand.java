@@ -5,7 +5,6 @@ import com.turlygazhy.command.Command;
 import com.turlygazhy.entity.Member;
 import org.h2.jdbc.JdbcSQLException;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.api.objects.Contact;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.exceptions.TelegramApiException;

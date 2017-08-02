@@ -5,7 +5,9 @@ import com.turlygazhy.reminder.timer_task.*;
 import com.turlygazhy.tool.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.telegram.telegrambots.api.methods.send.SendMessage;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
 
@@ -17,11 +19,16 @@ public class Reminder {
 
     private Bot bot;
     private Timer timer = new Timer(true);
+    private ArrayList<SendMessage> messagesToMorning;
 
     public Reminder(Bot bot) {
         this.bot = bot;
         setCheckEveryNightDb(0);
         setEndOfMonthTask(DateUtil.getLastDayOfThisMonth());
+        setNightTask(DateUtil.getThisNight());
+        setMorningTask(DateUtil.getNextMorning());
+        setRevokeInviteLinkInIntervalTask();
+        setEveryHourTask(DateUtil.getNextHour());
     }
 
     public void setCheckEveryNightDb(int hour) {
@@ -39,18 +46,53 @@ public class Reminder {
         timer.schedule(remindEventStartOneDayTask, eventDateStartMinusDay);
     }
 
-    public void setRemindEventsStartOneHour(Date eventsStartOneHour, long eventId){
-        logger.info("New event remind before hour at " + eventsStartOneHour);
-
-        RemindEventStartOneHourTask remindEventStartOneHourTask = new RemindEventStartOneHourTask(bot,this, eventId);
-        timer.schedule(remindEventStartOneHourTask, eventsStartOneHour);
-    }
+//    public void setRemindEventsStartOneHour(Date eventsStartOneHour, long eventId){
+//        logger.info("New event remind before hour at " + eventsStartOneHour);
+//
+//        RemindEventStartOneHourTask remindEventStartOneHourTask = new RemindEventStartOneHourTask(bot,this, eventId);
+//        timer.schedule(remindEventStartOneHourTask, eventsStartOneHour);
+//    }
 
     public void setEndOfMonthTask(Date endOfMonth){
         logger.info("New end of month task at " + endOfMonth);
 
         EndOfMonthTask endOfMonthTask = new EndOfMonthTask(bot, this);
         timer.schedule(endOfMonthTask, endOfMonth);
+    }
+
+    public void setMorningTask(Date morningDate){
+        messagesToMorning = new ArrayList<>();
+        logger.info("New morning task at " + morningDate);
+
+        MorningTask morningTask = new MorningTask(bot, this);
+        timer.schedule(morningTask, morningDate);
+    }
+
+    public void setNightTask(Date nightDate){
+        logger.info("New night task at " + nightDate);
+
+        NightTask nightTask = new NightTask(bot, this);
+        timer.schedule(nightTask, nightDate);
+    }
+
+    private void setRevokeInviteLinkInIntervalTask(){
+        RevokeInviteLinkInIntervalTask revokeInviteLinkInIntervalTask = new RevokeInviteLinkInIntervalTask(bot, this);
+        long interval = 60000;
+        timer.schedule(revokeInviteLinkInIntervalTask,new Date(), interval);
+    }
+
+    private void setEveryHourTask(Date nextHour){
+        long interval = 3600000;
+        EveryHourTask everyHourTask = new EveryHourTask(bot,this);
+        timer.schedule(everyHourTask, nextHour, interval);
+    }
+
+    public void addNewMessageToMorning(SendMessage sendMessage){
+        messagesToMorning.add(sendMessage);
+    }
+
+    public ArrayList<SendMessage> getMessagesToMorning(){
+        return messagesToMorning;
     }
 
     public Logger getLogger(){

@@ -74,4 +74,6 @@ public class DaoFactory {
     }
 
     public Top10Dao getTop10Dao(String top10ListDao){return new Top10Dao(connection, top10ListDao);}
+
+    public PoorGuysDao getPoorGuysDao(){return  new PoorGuysDao(connection);}
 }

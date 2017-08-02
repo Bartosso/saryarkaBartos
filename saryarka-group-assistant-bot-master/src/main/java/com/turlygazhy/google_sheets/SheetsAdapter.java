@@ -73,4 +73,32 @@ public class SheetsAdapter {
                 .setValueInputOption("RAW")
                 .execute();
     }
+
+    @SuppressWarnings("Duplicates")
+    public void appendData(String spreadsheetId,
+                           String sheetName,
+                           char colStart, int rowStart,
+                           List<Member> myData) throws IOException {
+
+        String writeRange = sheetName + "!" + colStart + rowStart + ":" + (char) (colStart + 5);
+
+        List<List<Object>> writeData = new ArrayList<>();
+        for (Member data : myData) {
+            List<Object> dataRow = new ArrayList<>();
+            dataRow.add(data.getFIO());
+            dataRow.add(data.getCompanyName());
+            dataRow.add(data.getNisha());
+            dataRow.add("t.me/" +data.getUserName());
+            dataRow.add(data.getCity());
+            writeData.add(dataRow);
+        }
+
+        ValueRange vr = new ValueRange().setValues(writeData).setMajorDimension("ROWS");
+
+
+        service.spreadsheets().values()
+                .append(spreadsheetId, writeRange, vr)
+                .setValueInputOption("RAW")
+                .execute();
+    }
 }

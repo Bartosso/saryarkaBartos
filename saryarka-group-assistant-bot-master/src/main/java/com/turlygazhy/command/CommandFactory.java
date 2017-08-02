@@ -199,6 +199,10 @@ public class CommandFactory {
                 return new ShowAllMessagesToChange();
             case CHANGE_BOOKS_CATEGORY:
                 return new ChangeBooksCategoryCommand();
+            case SOLUTION_FOR_CURFEW:
+                return new SolutionForCurfewCommand();
+            case SOLUTION_FOR_SPAM:
+                return new SolutionForSpamCommand();
             default:
                 throw new NotRealizedMethodException("Not realized for type: " + type);
         }

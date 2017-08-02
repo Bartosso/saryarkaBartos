@@ -4,6 +4,7 @@ import com.turlygazhy.Bot;
 import com.turlygazhy.command.Command;
 import com.turlygazhy.entity.Member;
 import com.turlygazhy.entity.MessageElement;
+import org.h2.jdbc.JdbcSQLException;
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
@@ -49,19 +50,24 @@ public class RequestToAddPartnerCommand extends Command {
         }
 
         if(step == 1) {
-            Member wannaBePartner = memberDao.getMember(chatId);
-            String chatPartner    = String.valueOf(memberDao.getMemberById(Long.parseLong(idPartner)).getUserId());
-            ReplyKeyboard inlineKeyboardMarkup = keyboardForPartner(String.valueOf(wannaBePartner.getChatId()));
-            String pattern = messageDao.getMessage(37).getSendMessage().getText()
-                    .replaceAll("fio"        , wannaBePartner.getFIO())
-                    .replaceAll("companyName", wannaBePartner.getCompanyName())
-                    .replaceAll("contact"    , wannaBePartner.getContact())
-                    .replaceAll("nisha"      , wannaBePartner.getNisha());
-            SendMessage sendNotificationToPartner = new SendMessage().setText("<b>Вам написали:</b>\n"+ message + "\n" +pattern).setChatId(chatPartner)
-                    .setReplyMarkup(inlineKeyboardMarkup).setParseMode(ParseMode.HTML);
-            SendMessage sendMessageToWannaBe = new SendMessage().setText("Ваше сообщение отправленно").setChatId(wannaBePartner.getChatId());
-            bot.sendMessage(sendNotificationToPartner);
-            bot.sendMessage(sendMessageToWannaBe);
+            try {
+                Member wannaBePartner = memberDao.getMember(chatId);
+
+                String chatPartner = String.valueOf(memberDao.getMemberById(Long.parseLong(idPartner)).getUserId());
+                ReplyKeyboard inlineKeyboardMarkup = keyboardForPartner(String.valueOf(wannaBePartner.getChatId()));
+                String pattern = messageDao.getMessage(37).getSendMessage().getText()
+                        .replaceAll("fio", wannaBePartner.getFIO())
+                        .replaceAll("companyName", wannaBePartner.getCompanyName())
+                        .replaceAll("contact", wannaBePartner.getContact())
+                        .replaceAll("nisha", wannaBePartner.getNisha());
+                SendMessage sendNotificationToPartner = new SendMessage().setText("<b>Вам написали:</b>\n" + message + "\n" + pattern).setChatId(chatPartner)
+                        .setReplyMarkup(inlineKeyboardMarkup).setParseMode(ParseMode.HTML);
+                SendMessage sendMessageToWannaBe = new SendMessage().setText("Ваше сообщение отправленно").setChatId(wannaBePartner.getChatId());
+                bot.sendMessage(sendNotificationToPartner);
+                bot.sendMessage(sendMessageToWannaBe);
+            } catch (JdbcSQLException e){
+                bot.sendMessage(messageDao.getMessage(71).getSendMessage().setChatId(chatId));
+            }
             idPartner              = null;
             step                   = 0;
             message                = null;

@@ -2,6 +2,7 @@ package com.turlygazhy.command.impl;
 
 import com.turlygazhy.Bot;
 import com.turlygazhy.command.Command;
+import org.telegram.telegrambots.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
@@ -23,6 +24,7 @@ public class DeclineRequestToGoogleSheetsCommand extends Command {
     @Override
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
         if (!commentAsked) {
+            bot.execute(new DeleteMessage(chatId, update.getCallbackQuery().getMessage().getMessageId()));
             sendMessage(61, update.getCallbackQuery().getMessage().getChatId(), bot);
             commentAsked = true;
             return false;

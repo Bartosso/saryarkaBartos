@@ -3,7 +3,6 @@ package com.turlygazhy.command.impl;
 import com.turlygazhy.Bot;
 import com.turlygazhy.command.Command;
 import com.turlygazhy.entity.Vacancy;
-import org.h2.util.New;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 /**
  * Created by Eshu on 28.06.2017.
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class ShowVacanciesBySferaCommand extends Command {
     private int    step = 0;
     private String sfera;

@@ -5,9 +5,7 @@ import com.turlygazhy.Main;
 import com.turlygazhy.dao.DaoFactory;
 import com.turlygazhy.dao.impl.*;
 import com.turlygazhy.entity.*;
-import com.turlygazhy.tool.DateUtil;
 import com.turlygazhy.tool.EventAnonceUtil;
-import javafx.scene.chart.Chart;
 import org.telegram.telegrambots.api.methods.ParseMode;
 import org.telegram.telegrambots.api.methods.send.SendContact;
 import org.telegram.telegrambots.api.methods.send.SendDocument;
@@ -33,6 +31,7 @@ import java.util.List;
 /**
  * Created by Yerassyl_Turlygazhy on 11/27/2016.
  */
+@SuppressWarnings("unused")
 public abstract class Command {
     protected long id;
     protected long messageId;
@@ -107,6 +106,7 @@ public abstract class Command {
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
     protected void sendMessageToAdmin(long messageId, TelegramLongPollingBot bot) throws SQLException, TelegramApiException {
         long adminChatId = getAdminChatId();
         sendMessage(messageId, adminChatId, bot);
@@ -153,6 +153,7 @@ public abstract class Command {
         InlineKeyboardButton declineButton           = new InlineKeyboardButton();
         InlineKeyboardButton editBidButton           = new InlineKeyboardButton();
         InlineKeyboardButton openChatWithMember      = new InlineKeyboardButton();
+        InlineKeyboardButton addToArchiveButton      = new InlineKeyboardButton();
 
         String buttonText = buttonDao.getButtonText(52);
         addToGoogleSheetsButton.setText(buttonText);
@@ -179,8 +180,17 @@ public abstract class Command {
         openChatWithMember.setText(openChatWithMemberText);
         openChatWithMember.setUrl("t.me/"+ userName);
         row.add(openChatWithMember);
-
         rows.add(row);
+
+        row = new ArrayList<>();
+
+        String addToArchiveText = buttonDao.getButtonText(244);
+        addToArchiveButton.setText(addToArchiveText);
+        addToArchiveButton.setCallbackData(addToArchiveText+"/" + id);
+        row.add(addToArchiveButton);
+        rows.add(row);
+
+
 
         keyboard.setKeyboard(rows);
         return keyboard;
@@ -271,6 +281,7 @@ public abstract class Command {
 
     }
 
+    @SuppressWarnings("Duplicates")
     private long getVoteCount(String votes) {
         long count = 0;
         if (votes == null) {

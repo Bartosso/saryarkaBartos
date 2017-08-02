@@ -81,6 +81,13 @@ public class ButtonDao extends AbstractDao {
         ps.execute();
     }
 
+    public void updateButtonUrl(int buttonId, String url) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("update BUTTON set URL=? WHERE ID=?");
+        ps.setString(1, url);
+        ps.setInt(2, buttonId);
+        ps.execute();
+    }
+
     public ArrayList<Button> getAllButtons(boolean changeable) throws SQLException {
         PreparedStatement ps = connection.prepareStatement("SELECT * FROM BUTTON WHERE CHANGEABLE="+ changeable);
         ps.execute();
