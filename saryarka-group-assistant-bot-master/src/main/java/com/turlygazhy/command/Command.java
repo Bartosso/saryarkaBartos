@@ -80,9 +80,9 @@ public abstract class Command {
         SendMessage sendMessage = message.getSendMessage();
         sendMessage.setChatId(chatId);
         sendMessage.setReplyMarkup(keyboardMarkUpDao.select(message.getKeyboardMarkUpId()));
-        bot.sendMessage(sendMessage);
+        bot.execute(sendMessage);
         if (contact != null) {
-            bot.sendContact(new SendContact()
+            bot.execute(new SendContact()
                     .setChatId(chatId)
                     .setFirstName(contact.getFirstName())
                     .setLastName(contact.getLastName())

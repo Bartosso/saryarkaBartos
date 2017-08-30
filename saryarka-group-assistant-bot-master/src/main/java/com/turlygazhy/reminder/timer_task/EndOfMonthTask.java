@@ -33,7 +33,7 @@ public class EndOfMonthTask extends AbstractTask {
         try {
             getPieWithOffers();
             getPieWithRequests();
-            reminder.setEndOfMonthTask(DateUtil.getNextMonthEnd());
+//            reminder.setEndOfMonthTask(DateUtil.getNextMonthEnd());
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
@@ -47,7 +47,7 @@ public class EndOfMonthTask extends AbstractTask {
         ArrayList<Top10>   top10ArrayList = top10Dao.getTop10();
         if(top10ArrayList.size()==0){
             try {
-                bot.sendMessage(new SendMessage(factory.getUserDao().getAdminChatId(),"К сожалению в этом месяце не было размещено ни одного предложения"));
+                bot.execute(new SendMessage(factory.getUserDao().getAdminChatId(),"К сожалению в этом месяце не было размещено ни одного предложения"));
                 return;
             } catch (TelegramApiException e) {
                 e.printStackTrace();
@@ -93,7 +93,7 @@ public class EndOfMonthTask extends AbstractTask {
         ArrayList<Top10>   top10ArrayList = top10Dao.getTop10();
         if(top10ArrayList.size()==0){
             try {
-                bot.sendMessage(new SendMessage(factory.getUserDao().getAdminChatId(),"К сожалению в этом месяце небыло размещено ни одного запроса"));
+                bot.execute(new SendMessage(factory.getUserDao().getAdminChatId(),"К сожалению в этом месяце небыло размещено ни одного запроса"));
                 return;
             } catch (TelegramApiException e) {
                 e.printStackTrace();

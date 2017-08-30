@@ -9,6 +9,7 @@ import com.turlygazhy.dao.impl.KeyWordDao;
 import com.turlygazhy.dao.impl.ListDao;
 import com.turlygazhy.dao.impl.UserDao;
 import com.turlygazhy.service.FloodFilterService;
+import com.turlygazhy.tool.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.api.methods.groupadministration.GetChatAdministrators;
@@ -42,8 +43,9 @@ public class Bot extends TelegramLongPollingBot {
     private ListDao                          listDao            = factory.getListDao("EVENTS_LIST");
     private String                           EVENTS_TABLE_NAME  = "EVENTS_LIST";
     //todo put group for vote id here
-    private final String GROUP_FOR_VOTE                = null;
-//    private final String senimManagerChatId       = "";
+    private final String GROUP_FOR_VOTE                =
+            null;
+
 
 
 
@@ -118,6 +120,7 @@ public class Bot extends TelegramLongPollingBot {
                     }
                 }
                 new FloodFilterService().floodFilter(Long.valueOf(update.getMessage().getFrom().getId()),update, this, floodCount, factory);
+                new FloodFilterService().textFilter(update, this);
             }
             try {
 
@@ -165,17 +168,10 @@ public class Bot extends TelegramLongPollingBot {
 
     public void setCurfew(boolean curfew) { this.curfew = curfew; }
 
-    public void restartFloodCount() {this.floodCount = new ConcurrentHashMap<>();}
-
-    //    public String getSenimManagerChatId() { return senimManagerChatId; }
-
-    /**
-     * Checklist:
-     * 1. Set path to json in AddToGoogleSheets.java
-     * 2. Set Jaxsalik chat_id in table USER
-     * 3. Set Path to temp folder for pie charts in EndOfMonthTask.java
-     * 4. Set Bot Username
-     * 5. Set Bot Token
-     * 6. Set GROUP_FOR_VOTE, put chat id of group what you need to make voting
-     */
+    public void restartFloodCountByChatId(long chatId) {
+        this.floodCount.remove(chatId);
+    }
+    public void createNewTimerForFloodCountByChatId(long chatId) {
+        Main.getReminder().setEveryHourTask(DateUtil.getNextHour(),chatId);
+    }
 }

@@ -5,6 +5,7 @@ import com.turlygazhy.dao.DaoFactory;
 import org.telegram.telegrambots.api.methods.groupadministration.GetChatMember;
 import org.telegram.telegrambots.api.methods.groupadministration.RestrictChatMember;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
@@ -43,10 +44,28 @@ public class FloodFilterService {
                     }
                 } else {
                     floodCount.put(chatIdForFloodCount, 1);
+                    bot.createNewTimerForFloodCountByChatId(chatIdForFloodCount);
                 }
             }
         } catch (TelegramApiException e) {
             e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public void textFilter(Update update, Bot bot) throws TelegramApiException {
+        long userChatId = update.getMessage().getFrom().getId();
+        String userStatus =  bot.execute(new GetChatMember().setChatId(bot.getGROUP_FOR_VOTE()).setUserId(Math.toIntExact(userChatId)))
+                .getStatus();
+        if (userStatus.equals("member")||userStatus.equals("restricted")||userStatus.equals("left")
+                ||userStatus.equals("kicked")){
+                   if (update.getMessage().hasDocument() || update.getMessage().hasPhoto()
+                    || update.getMessage().hasLocation()
+                    || update.getMessage().getVoice()     != null || update.getMessage().getVideo() != null
+                    || update.getMessage().getVideoNote() != null || update.getMessage().getAudio() != null
+                    || update.getMessage().getVenue()     != null){
+                bot.execute(new DeleteMessage(update.getMessage().getChatId(),update.getMessage().getMessageId()));
+            }
         }
     }
 }

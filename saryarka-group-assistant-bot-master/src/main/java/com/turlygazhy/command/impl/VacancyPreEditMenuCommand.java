@@ -36,43 +36,43 @@ public class VacancyPreEditMenuCommand extends Command {
             if (updateMessage == null) {
                 updateMessage = update.getCallbackQuery().getMessage();
             }
-            bot.deleteMessage(new DeleteMessage(chatId, secondMessageId));
-            bot.editMessageReplyMarkup(new EditMessageReplyMarkup().setMessageId(messageId).setReplyMarkup(null).setChatId(chatId));
+            bot.execute(new DeleteMessage(chatId, secondMessageId));
+            bot.execute(new EditMessageReplyMarkup().setMessageId(messageId).setReplyMarkup(null).setChatId(chatId));
             ListDao listDao = factory.getListDao("VACANCIES");
             switch (chose){
                 case "editVacancyName":
                     listDao.changeStuff(updateMessage.getText(),vacancyId, "COMPANY_NAME");
-                    bot.sendMessage(new SendMessage(chatId,"изменения сохранены"));
+                    bot.execute(new SendMessage(chatId,"изменения сохранены"));
                     sendEditMessageToAdmin(bot,vacancyId);
                     return true;
                 case "editVacancySfera":
                     listDao.changeStuff(updateMessage.getText(),vacancyId, "SFERA");
-                    bot.sendMessage(new SendMessage(chatId,"изменения сохранены"));
+                    bot.execute(new SendMessage(chatId,"изменения сохранены"));
                     sendEditMessageToAdmin(bot,vacancyId);
                     return true;
                 case "editVacancyExp":
                     listDao.changeStuff(updateMessage.getText(),vacancyId, "EXPERIENCE");
-                    bot.sendMessage(new SendMessage(chatId,"изменения сохранены"));
+                    bot.execute(new SendMessage(chatId,"изменения сохранены"));
                     sendEditMessageToAdmin(bot,vacancyId);
                     return true;
                 case "editVacancyPlc":
                     listDao.changeStuff(updateMessage.getText(),vacancyId, "PLACE");
-                    bot.sendMessage(new SendMessage(chatId,"изменения сохранены"));
+                    bot.execute(new SendMessage(chatId,"изменения сохранены"));
                     sendEditMessageToAdmin(bot,vacancyId);
                     return true;
                 case "editVacancyWC":
                     listDao.changeStuff(updateMessage.getText(),vacancyId, "WORKING_CONDITIONS");
-                    bot.sendMessage(new SendMessage(chatId,"изменения сохранены"));
+                    bot.execute(new SendMessage(chatId,"изменения сохранены"));
                     sendEditMessageToAdmin(bot,vacancyId);
                     return true;
                 case "editVacancySlr":
                     listDao.changeStuff(updateMessage.getText(),vacancyId, "SALARY");
-                    bot.sendMessage(new SendMessage(chatId,"изменения сохранены"));
+                    bot.execute(new SendMessage(chatId,"изменения сохранены"));
                     sendEditMessageToAdmin(bot,vacancyId);
                     return true;
                 case "editVacancyCnt":
                     listDao.changeStuff(updateMessage.getText(),vacancyId, "CONTACT");
-                    bot.sendMessage(new SendMessage(chatId,"изменения сохранены"));
+                    bot.execute(new SendMessage(chatId,"изменения сохранены"));
                     sendEditMessageToAdmin(bot,vacancyId);
                     return true;
             }
@@ -87,7 +87,7 @@ public class VacancyPreEditMenuCommand extends Command {
             return false;
         }
         expectData      = true;
-        secondMessageId = bot.sendMessage(new SendMessage(chatId,"Введите новое значение")).getMessageId();
+        secondMessageId = bot.execute(new SendMessage(chatId,"Введите новое значение")).getMessageId();
         }
         return false;
     }
@@ -102,7 +102,7 @@ public class VacancyPreEditMenuCommand extends Command {
                 .replaceAll("working_coniditions", vacancy.getWorkingConditions())
                 .replaceAll("salary"             , vacancy.getSalary())
                 .replaceAll("contact_info"       , vacancy.getContact());
-       return bot.sendMessage(new SendMessage().setText("Редактирование вакансии перед публикацией\n" + text)
+       return bot.execute(new SendMessage().setText("Редактирование вакансии перед публикацией\n" + text)
                 .setParseMode(ParseMode.HTML).setReplyMarkup(getKeyboardForEdit(vacancyId)).setChatId(chatId)).getMessageId();
     }
 

@@ -24,11 +24,9 @@ public class Reminder {
     public Reminder(Bot bot) {
         this.bot = bot;
         setCheckEveryNightDb(0);
-        setEndOfMonthTask(DateUtil.getLastDayOfThisMonth());
         setNightTask(DateUtil.getThisNight());
         setMorningTask(DateUtil.getNextMorning());
         setRevokeInviteLinkInIntervalTask();
-        setEveryHourTask(DateUtil.getNextHour());
     }
 
     public void setCheckEveryNightDb(int hour) {
@@ -46,19 +44,13 @@ public class Reminder {
         timer.schedule(remindEventStartOneDayTask, eventDateStartMinusDay);
     }
 
-//    public void setRemindEventsStartOneHour(Date eventsStartOneHour, long eventId){
-//        logger.info("New event remind before hour at " + eventsStartOneHour);
+
+//    public void setEndOfMonthTask(Date endOfMonth){
+//        logger.info("New end of month task at " + endOfMonth);
 //
-//        RemindEventStartOneHourTask remindEventStartOneHourTask = new RemindEventStartOneHourTask(bot,this, eventId);
-//        timer.schedule(remindEventStartOneHourTask, eventsStartOneHour);
+//        EndOfMonthTask endOfMonthTask = new EndOfMonthTask(bot, this);
+//        timer.schedule(endOfMonthTask, endOfMonth);
 //    }
-
-    public void setEndOfMonthTask(Date endOfMonth){
-        logger.info("New end of month task at " + endOfMonth);
-
-        EndOfMonthTask endOfMonthTask = new EndOfMonthTask(bot, this);
-        timer.schedule(endOfMonthTask, endOfMonth);
-    }
 
     public void setMorningTask(Date morningDate){
         messagesToMorning = new ArrayList<>();
@@ -81,10 +73,8 @@ public class Reminder {
         timer.schedule(revokeInviteLinkInIntervalTask,new Date(), interval);
     }
 
-    private void setEveryHourTask(Date nextHour){
-        long interval = 3600000;
-        EveryHourTask everyHourTask = new EveryHourTask(bot,this);
-        timer.schedule(everyHourTask, nextHour, interval);
+   public void setEveryHourTask(Date nextHour, long chatId){
+        timer.schedule(new EveryHourTask(bot,this,chatId), nextHour);
     }
 
     public void addNewMessageToMorning(SendMessage sendMessage){

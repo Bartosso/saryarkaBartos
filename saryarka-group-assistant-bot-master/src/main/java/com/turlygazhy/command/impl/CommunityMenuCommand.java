@@ -26,11 +26,11 @@ public class CommunityMenuCommand extends Command {
         SendMessage sendMessage = message.getSendMessage().setChatId(chatId).setReplyMarkup(
                 keyboardMarkUpDao.select(messageDao.getMessage(messageId).getKeyboardMarkUpId()))
                 .setParseMode(ParseMode.HTML);
-            bot.sendMessage(sendMessage);
+            bot.execute(sendMessage);
         }
                 else {
             SendMessage sendMessage = messageDao.getMessage(43).getSendMessage().setChatId(chatId);
-            bot.sendMessage(sendMessage);
+            bot.execute(sendMessage);
         }
         return true;
     }

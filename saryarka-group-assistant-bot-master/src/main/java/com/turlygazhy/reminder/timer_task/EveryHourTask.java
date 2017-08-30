@@ -4,12 +4,14 @@ import com.turlygazhy.Bot;
 import com.turlygazhy.reminder.Reminder;
 
 public class EveryHourTask extends AbstractTask {
-    public EveryHourTask(Bot bot, Reminder reminder) {
+    private long chatId;
+    public EveryHourTask(Bot bot, Reminder reminder, long chatId) {
         super(bot, reminder);
+        this.chatId = chatId;
     }
 
     @Override
     public void run() {
-    bot.restartFloodCount();
+    bot.restartFloodCountByChatId(chatId);
     }
 }

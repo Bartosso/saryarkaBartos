@@ -18,13 +18,13 @@ public class WantToGroupCommand extends Command {
     @Override
     public boolean execute(Update update, Bot bot) throws SQLException, TelegramApiException {
         Message updateMessage = update.getMessage();
-        Integer userId = updateMessage.getFrom().getId();
-        boolean memberAdded = memberDao.isMemberAdded(userId);
-        Long chatId = updateMessage.getChatId();
+        Integer userId        = updateMessage.getFrom().getId();
+        boolean memberAdded   = memberDao.isMemberAdded(userId);
+        Long chatId           = updateMessage.getChatId();
 
         if (memberAdded) {
             if(!memberDao.checkMemberAgreeToRules(memberDao.getMemberId(chatId))) {
-                bot.sendMessage(messageDao.getMessage(70).getSendMessage()
+                bot.execute(messageDao.getMessage(70).getSendMessage()
                 .setChatId(chatId).setReplyMarkup(keyboardMarkUpDao.select(36)));
             }
             else{
@@ -37,7 +37,7 @@ public class WantToGroupCommand extends Command {
         try {
             Member member = memberDao.selectByUserId(userId);
             if(member == null){
-                bot.sendMessage(new SendMessage().setChatId(String.valueOf(userId)).setText("Вы не заполнили анкету, нажмите /start"));
+                bot.execute(new SendMessage().setChatId(String.valueOf(userId)).setText("Вы не заполнили анкету, нажмите /start"));
                 return true;
             }
             String text = messageDao.getMessage(42).getSendMessage().getText();
@@ -46,11 +46,11 @@ public class WantToGroupCommand extends Command {
                     .replaceAll("phoneNumber", member.getPhoneNumber())
                     .replaceAll("memberCity", member.getCity());
 
-            bot.sendMessage(new SendMessage()
-                    .setChatId(getAdminChatId())
-                    .setText(text)
-                    .setReplyMarkup(getAddToSheetKeyboard(userId, chatId, member.getUserName()))
-            );
+//            bot.execute(new SendMessage()
+//                    .setChatId(getAdminChatId())
+//                    .setText(text)
+//                    .setReplyMarkup(getAddToSheetKeyboard(userId, chatId, member.getUserName()))
+//            );
 
             sendMessage(43, chatId, bot);
             return true;

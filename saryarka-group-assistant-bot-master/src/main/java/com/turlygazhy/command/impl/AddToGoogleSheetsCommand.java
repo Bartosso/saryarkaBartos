@@ -24,7 +24,8 @@ public class AddToGoogleSheetsCommand extends Command {
     private static final String KEY = "C:\\bots-data\\members-36a5849089da.json";
     //todo don't forget about json
 
-    private static final String SPREAD_SHEET_ID = null;
+    private static final String SPREAD_SHEET_ID = "1YiXnofbXojLCpPLxlAednPxRYN1c-oxZVdUddg0luLM";
+//            "1HyLocKj3xc-auD2zCbk5zpXNioHveMJEYYvpHHVvCEM";
 
     public AddToGoogleSheetsCommand(String userId, boolean toMainSheet) {
         super();

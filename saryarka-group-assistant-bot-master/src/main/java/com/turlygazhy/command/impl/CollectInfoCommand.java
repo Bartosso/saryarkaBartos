@@ -42,7 +42,7 @@ public class CollectInfoCommand extends Command {
         Long chatId = updateMessage.getChatId();
         if(update.hasMessage()){
             if(update.getMessage().getFrom().getUserName()==null){
-                bot.sendMessage(new SendMessage(chatId,messageDao.getMessage(170).getSendMessage().getText()));
+                bot.execute(new SendMessage(chatId,messageDao.getMessage(170).getSendMessage().getText()));
                 return true;
             }
         }
@@ -52,20 +52,20 @@ public class CollectInfoCommand extends Command {
                 case FIO:
                     fio = text;
 //                    sendMessage(47, chatId, bot);
-                    bot.sendMessage(new SendMessage(chatId,messageDao.getMessage(47)
+                    bot.execute(new SendMessage(chatId,messageDao.getMessage(47)
                             .getSendMessage().getText()).setParseMode(ParseMode.HTML));
                     waitingType = WaitingType.COMPANY_NAME;
                     return false;
                 case COMPANY_NAME:
                     companyName = text;
-                    bot.sendMessage(new SendMessage(chatId,messageDao.getMessage(48)
+                    bot.execute(new SendMessage(chatId,messageDao.getMessage(48)
                             .getSendMessage().getText()).setParseMode(ParseMode.HTML));
 //                    sendMessage(48, chatId, bot);
                     waitingType = WaitingType.NISHA;
                     return false;
                 case NISHA:
                     nisha = text;
-                    bot.sendMessage(new SendMessage(chatId,messageDao.getMessage(49)
+                    bot.execute(new SendMessage(chatId,messageDao.getMessage(49)
                             .getSendMessage().getText()).setParseMode(ParseMode.HTML));
 //                    sendMessage(49, chatId, bot);
                     waitingType = WaitingType.CONTACT;
@@ -82,7 +82,7 @@ public class CollectInfoCommand extends Command {
                 case CITY:
                     city = text;
 //                    sendMessage(51, chatId, bot);
-                    bot.sendMessage(new SendMessage(chatId,messageDao.getMessage(51)
+                    bot.execute(new SendMessage(chatId,messageDao.getMessage(51)
                             .getSendMessage().getText()).setParseMode(ParseMode.HTML)
                             .setReplyMarkup(keyboardMarkUpDao.select(messageDao.
                                     getMessage(51).getKeyboardMarkUpId())));
@@ -92,12 +92,12 @@ public class CollectInfoCommand extends Command {
 
                     phoneNumber = updateMessage.getContact();
                     if(phoneNumber==null){
-                        bot.sendMessage(new SendMessage(chatId,"Вы не нажали на кнопку ''Отправить контакт''"));
+                        bot.execute(new SendMessage(chatId,"Вы не нажали на кнопку ''Отправить контакт''"));
                         return false;
                     }
 
 
-                    bot.sendMessage(new SendMessage(chatId, messageDao.getMessage(167).getSendMessage().getText()+"\n\n"+
+                    bot.execute(new SendMessage(chatId, messageDao.getMessage(167).getSendMessage().getText()+"\n\n"+
                     getTextPattern()).setReplyMarkup(getKeyboardForAcceptOrStart()));
                     waitingType = WaitingType.ACCEPT;
                     return false;
@@ -109,7 +109,7 @@ public class CollectInfoCommand extends Command {
                             SendMessage sendMessage = new SendMessage().setText("Заявка на добавление в группу\n"+getTextPattern())
                                     .setChatId(userDao.getAdminChatId())
                                     .setReplyMarkup(getAddToSheetKeyboard(user.getId(), chatId, user.getUserName()));
-                            bot.sendMessage(sendMessage);
+                            bot.execute(sendMessage);
 
                             sendMessage(43, chatId, bot);
                             return true;
@@ -135,11 +135,12 @@ public class CollectInfoCommand extends Command {
 //                    return true;
             }
         }
-
+       if (text!=null){
         if (text.equals(buttonDao.getButtonText(1))) {
             sendMessage(46, chatId, bot);
             waitingType = WaitingType.FIO;
             return false;
+        }
         }
 
         return false;

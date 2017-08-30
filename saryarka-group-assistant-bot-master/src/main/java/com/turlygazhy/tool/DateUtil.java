@@ -1,15 +1,7 @@
 package com.turlygazhy.tool;
 
-import com.turlygazhy.entity.Week;
-import sun.util.resources.ar.CalendarData_ar;
-
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Yerassyl_Turlygazhy on 06-Mar-17.
@@ -72,7 +64,7 @@ public class DateUtil {
         return string;
     }
 
-    public static String dayOfWeekInRussian(int day){
+    static String dayOfWeekInRussian(int day){
         String string = null;
         switch (day){
             case 1:
@@ -144,17 +136,16 @@ public class DateUtil {
         return cal.getTime();
     }
 
-    public static Date getThisMorning(){
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 9);
-        cal.set(Calendar.MINUTE, 0);
-        return cal.getTime();
-    }
+//    public static Date getThisMorning(){
+//        Calendar cal = Calendar.getInstance();
+//        cal.set(Calendar.HOUR_OF_DAY, 9);
+//        cal.set(Calendar.MINUTE, 0);
+//        return cal.getTime();
+//    }
 
     public static Date getNextHour(){
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.HOUR_OF_DAY,1);
-        cal.set(Calendar.MINUTE, 0);
         return cal.getTime();
     }
 
